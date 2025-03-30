@@ -24,6 +24,7 @@ public:
 	ArrayStack()
 	{
 		top = -1;
+		count = 0;
 	}  // end default constructor
 
 	bool isEmpty() const
