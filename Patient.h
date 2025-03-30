@@ -25,4 +25,9 @@ public:
 	void setPt(int newPt) { pt = newPt; }
 	void setVt(int newVt) { vt = newVt; }
 
+	// friend function to overload << operator
+	friend ostream& operator<<(ostream& os, const Patient* p) {
+		os << "[Patient ID: " << p->id << ", PT: " << p->pt << ", VT: " << p->vt << ", Type: " << (p->type ? "Normal]" : "Recovering]");
+		return os;
+	}
 };
