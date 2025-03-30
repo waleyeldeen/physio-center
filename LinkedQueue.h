@@ -107,7 +107,7 @@ void LinkedQueue<T>::print() const
 {
 	Node<T>* current = frontPtr;
 
-	cout << "LinkedQueue: ";
+	cout << "LinkedQueue(front): ";
 
 	while (current)
 	{

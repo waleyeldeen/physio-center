@@ -68,7 +68,7 @@ public:
 	// prints all th contents of arraystack from top to bottom
 	void print() const
 	{
-		cout << "ArrayStack: ";
+		cout << "ArrayStack(top): ";
 		for (int i = top; i >= 0; i--)
 		{
 			cout << items[i];
