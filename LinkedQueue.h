@@ -57,6 +57,7 @@ private:
 public:
 	LinkedQueue();
 	int getCount() const;
+	void print() const;
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
@@ -91,6 +92,29 @@ template <typename T>
 int LinkedQueue<T>::getCount() const
 {
 	return count;
+}
+/////////////////////////////////////////////////////////////////////////////////////////
+
+/*Function:print
+prints the contents of queue
+
+Input: None.
+Output: None.
+*/
+
+template <typename T>
+void LinkedQueue<T>::print() const
+{
+	Node<T>* current = frontPtr;
+
+	cout << "LinkedQueue: ";
+
+	while (current)
+	{
+		cout << current->getItem() << ", ";
+		current = current->getNext();
+	}
+	cout << endl;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
