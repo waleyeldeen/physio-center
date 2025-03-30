@@ -10,6 +10,13 @@ class PriQueue
 {
     PriNode<T>* head;
     int count;
+
+protected:
+    PriNode<T>* getHead()
+    {
+        return head;
+    }
+
 public:
     PriQueue() : head(nullptr), count(0) {}
 
