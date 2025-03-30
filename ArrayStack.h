@@ -71,7 +71,8 @@ public:
 		cout << "ArrayStack: ";
 		for (int i = top; i >= 0; i--)
 		{
-			cout << items[i] << ", ";
+			cout << items[i];
+			if (i) cout << ", ";
 		}
 		cout << endl;
 	}

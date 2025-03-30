@@ -111,8 +111,9 @@ void LinkedQueue<T>::print() const
 
 	while (current)
 	{
-		cout << current->getItem() << ", ";
+		cout << current->getItem();
 		current = current->getNext();
+		if (current) cout << ", ";
 	}
 	cout << endl;
 }
