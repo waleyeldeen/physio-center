@@ -51,8 +51,9 @@ public:
         if (isEmpty())
             return false;
 
-        topEntry = head->getItem();
-        pri = head->getPri();
+        //topEntry = head->getItem();
+        //pri = head->getPri(); 
+        topEntry = head->getItem(pri);
         return true;
     }
 
