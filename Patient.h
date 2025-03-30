@@ -1,0 +1,28 @@
+#pragma once
+using namespace std;
+#include <iostream>
+
+class Patient
+{
+private:
+	int id, pt, vt;
+
+	// True: Normal Patient
+	// False: Recovering Patient
+	bool type;
+
+public:
+	Patient() : id(0), pt(0), vt(0), type(true) {}
+	Patient(int id, int pt, int vt, bool type) : id(id), pt(pt), vt(vt), type(type) {}
+
+	// getters
+	int getId() { return id; }
+	int getPt() { return pt; }
+	int getVt() { return vt; }
+
+	// setters
+	void setId(int newId) { id = newId; }
+	void setPt(int newPt) { pt = newPt; }
+	void setVt(int newVt) { vt = newVt; }
+
+};
