@@ -18,7 +18,7 @@ class ArrayStack : public StackADT<T>
 private:
 	T items[MAX_SIZE];		// Array of stack items
 	int top;                   // Index to top of stack
-
+	int count;				// number of elements in stack
 public:
 
 	ArrayStack()
@@ -56,6 +56,11 @@ public:
 		TopEntry = items[top];
 		return true;
 	}  // end peek
+
+	int getCount() const
+	{
+		return (top + 1);
+	}
 
 }; // end ArrayStack
 
