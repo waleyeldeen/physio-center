@@ -44,6 +44,8 @@ Single Node Case:
 
 #include "Node.h"
 #include "QueueADT.h"
+#include <iostream>
+using namespace std;
 
 template <typename T>
 class LinkedQueue :public QueueADT<T>
@@ -51,8 +53,10 @@ class LinkedQueue :public QueueADT<T>
 private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
+	int count;
 public:
 	LinkedQueue();
+	int getCount() const;
 	bool isEmpty() const;
 	bool enqueue(const T& newEntry);
 	bool dequeue(T& frntEntry);
@@ -72,7 +76,21 @@ LinkedQueue<T>::LinkedQueue()
 {
 	backPtr = nullptr;
 	frontPtr = nullptr;
+	count = 0;
+}
+/////////////////////////////////////////////////////////////////////////////////////////
 
+/*Function:getCount
+returns count data member
+
+Input: None.
+Output: count as int.
+*/
+
+template <typename T>
+int LinkedQueue<T>::getCount() const
+{
+	return count;
 }
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -109,6 +127,7 @@ bool LinkedQueue<T>::enqueue(const T& newEntry)
 		backPtr->setNext(newNodePtr); // The queue was not empty
 
 	backPtr = newNodePtr; // New node is the last node now
+	count++;
 	return true;
 } // end enqueue
 
@@ -138,7 +157,7 @@ bool LinkedQueue<T>::dequeue(T& frntEntry)
 
 	// Free memory reserved for the dequeued node
 	delete nodeToDeletePtr;
-
+	count--;
 	return true;
 }
 
