@@ -7,7 +7,7 @@
 
 #ifndef ARRAY_STACK_
 #define ARRAY_STACK_
-int x = 5;
+
 #include "StackADT.h"
 
  //Unless spesificed by the stack user, the default size is 100
