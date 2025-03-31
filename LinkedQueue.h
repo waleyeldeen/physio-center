@@ -54,6 +54,9 @@ private:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
 	int count;
+protected:
+	Node<T>* getFrontPtr() { return frontPtr; }
+	void setFrontPtr(Node<T>* newF) { frontPtr = newF; }
 public:
 	LinkedQueue();
 	int getCount() const;
