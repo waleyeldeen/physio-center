@@ -4,6 +4,8 @@
     <Filter Include="DS" />
     <Filter Include="Patient" />
     <Filter Include="Helpers" />
+    <Filter Include="Resources" />
+    <Filter Include="Treatments" />
   </ItemGroup>
   <ItemGroup>
     <!-- <ClCompile Include="main.cpp">
@@ -48,10 +50,10 @@
       <Filter>DS</Filter>
     </ClInclude>
     <ClInclude Include="Treatment.h">
-      <Filter>Patient</Filter>
+      <Filter>Treatments</Filter>
     </ClInclude>
     <ClInclude Include="Resource.h">
-      <Filter>Patient</Filter>
+      <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="DEFS.h">
       <Filter>Helpers</Filter>
