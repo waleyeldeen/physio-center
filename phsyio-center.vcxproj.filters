@@ -6,13 +6,17 @@
     <Filter Include="Helpers" />
     <Filter Include="Resources" />
     <Filter Include="Treatments" />
+    <Filter Include="Scheduler" />
   </ItemGroup>
   <ItemGroup>
-    <!-- <ClCompile Include="main.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile> -->
+    <ClCompile Include="Scheduler.cpp">
+      <Filter>Scheduler</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Scheduler</Filter>
+    </ClInclude>
     <ClInclude Include="StackADT.h">
       <Filter>DS</Filter>
     </ClInclude>
