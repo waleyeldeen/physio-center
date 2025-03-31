@@ -133,6 +133,7 @@
     <ClInclude Include="ArrayStack.h" />
     <ClInclude Include="DEFS.h" />
     <ClInclude Include="EarlyPList.h" />
+    <ClInclude Include="EDevice.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="LinkedQueue.h" />
     <ClInclude Include="Node.h" />
@@ -142,7 +143,9 @@
     <ClInclude Include="QueueADT.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="StackADT.h" />
+    <ClInclude Include="UDevice.h" />
     <ClInclude Include="UEWaitlist.h" />
+    <ClInclude Include="XRoom.h" />
     <ClInclude Include="XWaitlist.h" />
     <ClInclude Include="Treatment.h" />
   </ItemGroup>

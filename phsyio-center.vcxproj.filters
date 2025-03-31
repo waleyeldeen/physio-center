@@ -55,6 +55,15 @@
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
+    <ClInclude Include="XRoom.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="UDevice.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="EDevice.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
     <ClInclude Include="DEFS.h">
       <Filter>Helpers</Filter>
     </ClInclude>
