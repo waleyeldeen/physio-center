@@ -28,4 +28,8 @@ public:
         newNode->setNext(current->getNext());
         current->setNext(newNode);
 	}  
+
+    int calcTreatmentLat() {
+        return 0;
+    }
 };
