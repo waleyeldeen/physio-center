@@ -23,6 +23,6 @@ public:
 		assignedRes->available();
 	}
 
-	virtual void CanAssign() = 0;
-	virtual void MoveToWait() = 0;
+	virtual void canAssign() = 0;
+	virtual void moveToWait() = 0;
 };

@@ -6,12 +6,12 @@ using namespace std;
 class ETherapy : public Treatment
 {
 public:
-	void CanAssign()
+	void canAssign()
 	{
 
 	}
 
-	void MoveToWait()
+	void moveToWait()
 	{
 
 	}
