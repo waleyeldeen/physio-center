@@ -9,8 +9,7 @@ class Patient
 private:
 	int id, pt, vt;
 
-	// TODO: Ask Eng if this is allowed or not
-	LinkedQueue<Treatment> reqTreatment;  // make reqTreatment made of Treatment obj instead of pointer
+	LinkedQueue<Treatment*> reqTreatment;  // make reqTreatment made of Treatment obj instead of pointer
 
 	// True: Normal Patient
 	// False: Recovering Patient
@@ -33,7 +32,7 @@ public:
 	
 	// returns true if treatment is added succeffuly
 	// returns false if treatment cannot be added (max no of treatments)
-	bool addTreatment(Treatment newT)
+	bool addTreatment(Treatment* newT)
 	{
 		if (reqTreatment.getCount() <= 3)
 		{
