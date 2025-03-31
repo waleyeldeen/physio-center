@@ -50,5 +50,11 @@
     <ClInclude Include="Treatment.h">
       <Filter>Patient</Filter>
     </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Patient</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFS.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

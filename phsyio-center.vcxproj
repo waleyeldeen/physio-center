@@ -131,6 +131,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayStack.h" />
+    <ClInclude Include="DEFS.h" />
     <ClInclude Include="EarlyPList.h" />
     <ClInclude Include="Helpers.h" />
     <ClInclude Include="LinkedQueue.h" />
@@ -139,6 +140,7 @@
     <ClInclude Include="PriNode.h" />
     <ClInclude Include="PriQueue.h" />
     <ClInclude Include="QueueADT.h" />
+    <ClInclude Include="Resource.h" />
     <ClInclude Include="StackADT.h" />
     <ClInclude Include="UEWaitlist.h" />
     <ClInclude Include="XWaitlist.h" />
