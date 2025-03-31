@@ -3,7 +3,9 @@
 
 enum ResourceType
 {
-	UDevice,
-	EDevice,
-	XRoom
+	
+	UDEVICE,
+	EDEVICE,
+	XROOM,
+	NONE
 };
