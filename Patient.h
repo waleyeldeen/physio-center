@@ -16,9 +16,10 @@ public:
 	Patient(int id, int pt, int vt, bool type) : id(id), pt(pt), vt(vt), type(type) {}
 
 	// getters
-	int getId() { return id; }
-	int getPt() { return pt; }
-	int getVt() { return vt; }
+	int getId() const { return id; }
+	int getPt() const { return pt; }
+	int getVt() const { return vt; }
+	int getType() const { return type; }
 
 	// setters
 	void setId(int newId) { id = newId; }
