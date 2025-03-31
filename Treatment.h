@@ -17,10 +17,12 @@ public:
 		assignedRes->unavailable();
 	}
 
+	// TODO: update it to make it do the check automatically
 	void finishTreatment()
 	{
 		assignedRes->available();
 	}
 
-	virtual void dummyAbstract() = 0;
+	virtual void CanAssign() = 0;
+	virtual void MoveToWait() = 0;
 };
