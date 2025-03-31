@@ -35,11 +35,17 @@
     <ClInclude Include="EarlyPList.h">
       <Filter>DS</Filter>
     </ClInclude>
+    <ClInclude Include="UEWaitlist.h">
+      <Filter>DS</Filter>
+    </ClInclude>
     <ClInclude Include="Helpers.h">
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="Patient.h">
       <Filter>Patient</Filter>
+    </ClInclude>
+    <ClInclude Include="XWaitlist.h">
+      <Filter>DS</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
