@@ -31,4 +31,13 @@ public:
 		os << "[Patient ID: " << p->id << ", PT: " << p->pt << ", VT: " << p->vt << ", Type: " << (p->type ? "Normal]" : "Recovering]");
 		return os;
 	}
+
+	// copy constructor
+	Patient(const Patient* other)
+	{
+		id = other->getId();
+		pt = other->getPt();
+		vt = other->getVt();
+		type = other->getType();
+	}
 };
