@@ -1,11 +1,14 @@
 #pragma once
 using namespace std;
 #include <iostream>
+#include "LinkedQueue.h"
 
 class Patient
 {
 private:
 	int id, pt, vt;
+
+	LinkedQueue<int*> reqTreatment;
 
 	// True: Normal Patient
 	// False: Recovering Patient
@@ -25,6 +28,14 @@ public:
 	void setId(int newId) { id = newId; }
 	void setPt(int newPt) { pt = newPt; }
 	void setVt(int newVt) { vt = newVt; }
+
+	// check if a patient has anymore treatments in the reqTreatment list
+	// used by cancel function in XWaitlist
+	// TODO: create a function that checks if patient has any treatments after.
+	bool hasLastTreatment() {
+		if (reqTreatment.getCount() == 1) return true;
+		return false;
+	}
 
 	// friend function to overload << operator
 	friend ostream& operator<<(ostream& os, const Patient* p) {
