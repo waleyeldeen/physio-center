@@ -2,13 +2,14 @@
 using namespace std;
 #include <iostream>
 #include "LinkedQueue.h"
+#include "Treatment.h"
 
 class Patient
 {
 private:
 	int id, pt, vt;
 
-	LinkedQueue<int*> reqTreatment;
+	LinkedQueue<Treatment*> reqTreatment;
 
 	// True: Normal Patient
 	// False: Recovering Patient
