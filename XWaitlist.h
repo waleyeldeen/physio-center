@@ -6,6 +6,7 @@ using namespace std;
 
 class XWaitlist : public UEWaitlist
 {
+public:
 	/*
 		function that removes a patient from the queue and return a pointer to it
 		there is a probability Pcancel loaded from the input file
@@ -47,10 +48,15 @@ class XWaitlist : public UEWaitlist
 		}
 
 		// remove node from queue
-		// incase of node is the at the front
 		if (randomIteration == 0)
 		{
-			this->dequeue();
+			// incase of node is the at the front
+			this->dequeue(patientPtr);
+		}
+		else
+		{
+			// incase of node is in the middle or at the end
+
 		}
 
 		return current->getItem();
