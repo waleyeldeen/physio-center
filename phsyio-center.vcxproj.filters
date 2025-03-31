@@ -52,6 +52,15 @@
     <ClInclude Include="Treatment.h">
       <Filter>Treatments</Filter>
     </ClInclude>
+    <ClInclude Include="XTherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="UTherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="ETherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
     <ClInclude Include="Resource.h">
       <Filter>Resources</Filter>
     </ClInclude>
