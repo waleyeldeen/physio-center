@@ -47,5 +47,8 @@
     <ClInclude Include="XWaitlist.h">
       <Filter>DS</Filter>
     </ClInclude>
+    <ClInclude Include="Treatment.h">
+      <Filter>Patient</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
