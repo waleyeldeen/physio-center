@@ -17,6 +17,7 @@ public:
 	*/
 	void reschedule()
 	{
+		if (this->isEmpty()) { return; }
 		// the -1 is to avoid being close to the nullptr (end of queue)
 		int randomIteration = getRandInRange(0, this->getCount() - 1);
 		PriNode<Patient*>* current = this->getHead();
