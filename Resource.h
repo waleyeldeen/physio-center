@@ -19,7 +19,7 @@ public:
 	bool isAvailable() { return isAvailable; }
 
 	// setters
-	void setId(int newId) { type = newId; }
+	void setId(int newId) { id = newId; }
 
 	void available() { isAvailable = true; }
 	void unavailable() { isAvailable = false; }
