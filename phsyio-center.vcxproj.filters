@@ -4,6 +4,8 @@
     <Filter Include="DS" />
     <Filter Include="Patient" />
     <Filter Include="Helpers" />
+    <Filter Include="Resources" />
+    <Filter Include="Treatments" />
   </ItemGroup>
   <ItemGroup>
     <!-- <ClCompile Include="main.cpp">
@@ -46,6 +48,33 @@
     </ClInclude>
     <ClInclude Include="XWaitlist.h">
       <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Treatment.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="XTherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="UTherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="ETherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="XRoom.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="UDevice.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="EDevice.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFS.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
