@@ -8,21 +8,9 @@ using namespace std;
 template <typename T>
 class PriQueue
 {
+protected:
     PriNode<T>* head;
     int count;
-
-protected:
-    PriNode<T>* getHead()
-    {
-        return head;
-    }
-
-    void setHead(PriNode<T>* newHead)
-    {
-        head = newHead;
-    }
-
-    void decCount() { count--; }
 
 public:
     PriQueue() : head(nullptr), count(0) {}
