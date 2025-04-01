@@ -10,14 +10,14 @@ public:
 	{  
         Node<Patient*>* newNode = new Node<Patient*>(newP);
         
-        Node<Patient*>* front = this->getFrontPtr();
+        Node<Patient*>* front = frontPtr;
         int pri = newP->getPt();
         int headPri = front->getItem()->getPt();
 
         if (front == nullptr || pri > headPri) {
 
             newNode->setNext(front);
-            this->setFrontPtr(newNode);
+            frontPtr = newNode;
             return;
         }
 

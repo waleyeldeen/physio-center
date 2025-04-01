@@ -20,7 +20,7 @@ public:
 		if (this->isEmpty()) { return; }
 		// the -1 is to avoid being close to the nullptr (end of queue)
 		int randomIteration = getRandInRange(0, this->getCount() - 1);
-		PriNode<Patient*>* current = this->getHead();
+		PriNode<Patient*>* current = head;
 
 		Patient* copy;
 		int pri;
@@ -28,7 +28,7 @@ public:
 		// pick the random patient
 		if (randomIteration == 0)
 		{
-			this->setHead(current->getNext());
+			head = current->getNext();
 			copy = current->getItem(pri);
 		}
 		else
@@ -49,6 +49,6 @@ public:
 		copy->setPt(newPt);
 
 		this->enqueue(copy, newPt);
-		this->decCount();
+		count--;
 	}
 };
