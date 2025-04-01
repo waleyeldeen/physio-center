@@ -1,6 +1,10 @@
 #include "Scheduler.h"
 #include "fstream"
 
+#include "ETherapy.h"
+#include "UTherapy.h"
+#include "XTherapy.h"
+
 Scheduler::Scheduler() { }
 
 void Scheduler::loadInputFile(string fileName)
@@ -41,6 +45,42 @@ void Scheduler::loadInputFile(string fileName)
 	// input pCancel and pResc
 	file >> this->pCancel >> this->pResc;
 	
+	// input number of patients
+	file >> numPatients;
+
+	for (int i = 0; i < numPatients; i++)
+	{
+		char inType;
+		file >> inType;
+		bool type = (inType == 'N') ? true : false;
+
+		int pt, vt, numTreatments;
+
+		file >> pt >> vt >> numTreatments;
+
+		Patient* newP = new Patient(i + 1, pt, vt, type);
+		idle.enqueue(newP);
+
+		for (int j = 0; j < numTreatments; j++)
+		{
+			char therapyType;
+			file >> therapyType;
+
+			int duration;
+			file >> duration;
+
+			switch (therapyType)
+			{
+				case 'E':
+					newP->addTreatment(new ETherapy()); break;
+				case 'U':
+					newP->addTreatment(new UTherapy()); break;
+				case 'X':
+					newP->addTreatment(new XTherapy()); break;
+					
+			}
+		}
+	}
 
 	
 	file.close();
