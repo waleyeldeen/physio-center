@@ -7,4 +7,6 @@ class UDevice : public Resource
 {
 public:
 	UDevice(int id = 0, ResourceType type = NONE) : Resource(id, type) {}
+
+	void makeAbstract() {}
 };

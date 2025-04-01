@@ -9,20 +9,20 @@ class Resource
 protected:
 	int id;
 	ResourceType type;
-	bool isAvailable;
+	bool avail;
 public:
-	Resource(int id = 0, ResourceType type = NONE) : id(id), type(type), isAvailable(true) {}
+	Resource(int id = 0, ResourceType type = NONE) : id(id), type(type), avail(true) {}
 
 	// getters
 	int getId() { return id; }
 	ResourceType getType() { return type; }
-	bool isAvailable() { return isAvailable; }
+	bool isAvailable() { return avail; }
 
 	// setters
 	void setId(int newId) { id = newId; }
 
-	void available() { isAvailable = true; }
-	void unavailable() { isAvailable = false; }
+	void available() { avail = true; }
+	void unavailable() { avail = false; }
 
 	virtual void makeAbstract() = 0;
 };

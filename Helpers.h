@@ -2,7 +2,7 @@
 #include <iostream>
 using namespace std;
 
-int getRandInRange(int low, int high)
+inline int getRandInRange(int low, int high)
 {
 	return low + rand() % (high - low + 1);
 }
