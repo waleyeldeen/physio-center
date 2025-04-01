@@ -50,13 +50,10 @@ using namespace std;
 template <typename T>
 class LinkedQueue :public QueueADT<T>
 {
-private:
+protected:
 	Node<T>* backPtr;
 	Node<T>* frontPtr;
 	int count;
-protected:
-	Node<T>* getFrontPtr() { return frontPtr; }
-	void setFrontPtr(Node<T>* newF) { frontPtr = newF; }
 public:
 	LinkedQueue();
 	int getCount() const;

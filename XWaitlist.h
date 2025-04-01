@@ -30,7 +30,7 @@ public:
 		// pick the random patient
 		while (!isLastTreatment)
 		{
-			current = this->getFrontPtr();
+			current = frontPtr;
 
 			randomIteration = getRandInRange(0, this->getCount() - 1);
 
