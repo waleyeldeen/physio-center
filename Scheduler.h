@@ -9,6 +9,10 @@ using namespace std;
 #include "XWaitlist.h"
 #include "ArrayStack.h"
 
+#include "EDevice.h"
+#include "UDevice.h"
+#include "XRoom.h"
+
 class Scheduler
 {
 private:
@@ -22,9 +26,9 @@ private:
 
 	PriQueue<Patient*> serving;
 
-	LinkedQueue<Patient*> uDevices;
-	LinkedQueue<Patient*> eDevices;
-	LinkedQueue<Patient*> xRooms;
+	LinkedQueue<UDevice*> uDevices;
+	LinkedQueue<EDevice*> eDevices;
+	LinkedQueue<XRoom*> xRooms;
 
 	ArrayStack<Patient*> finish;
 
