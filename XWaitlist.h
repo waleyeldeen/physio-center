@@ -15,12 +15,11 @@ public:
 		treatment (move to finish)
 		Conditions:
 		Patient has to have XTherapy as his last treatment
-
-
 	*/
 	Patient* pickRandCancelPatient()
 	{
-		if (this->isEmpty()) { return; }
+		// TODO: what can I do if the list is empty
+		// if (this->isEmpty()) { return; }
 
 		Node<Patient*>* current = nullptr;
 		Node<Patient*>* previous = nullptr;
