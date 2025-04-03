@@ -18,12 +18,14 @@ Patient::Patient(const Patient* other)
 int Patient::getId() const { return id; }
 int Patient::getPt() const { return pt; }
 int Patient::getVt() const { return vt; }
+PatientStatus Patient::getStatus() const { return status; }
 int Patient::getType() const { return type; }
 
 // Setters
 void Patient::setId(int newId) { id = newId; }
 void Patient::setPt(int newPt) { pt = newPt; }
 void Patient::setVt(int newVt) { vt = newVt; }
+void Patient::setStatus(PatientStatus s) { status = s; }
 
 
 // Treatment operations
