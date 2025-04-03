@@ -21,7 +21,9 @@ string UI::inInputFileName()
 void UI::printAllInformation(Scheduler& sObj, int ts)
 {
 	cout << "Current Timestep: " << ts << endl
-		<< "=================  ALL List  =================" << endl;
-	//<< sObj.getIdle().getCount();
+		<< "=================  ALL List  =================" << endl
+		<< sObj.getIdle().getCount() << " patients remaining: " << endl;
+	// print idle
+	sObj.getIdle().print(true);
 }
 
