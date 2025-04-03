@@ -15,4 +15,8 @@ public:
 	*/
 	string inInputFileName();
 
+	/*
+		Prints all the lists in the Scheduler object
+	*/
+	void printAllInformation(Scheduler& sObj, int ts);
 };

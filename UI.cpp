@@ -17,3 +17,11 @@ string UI::inInputFileName()
 		return name;
 	}
 }
+
+void UI::printAllInformation(Scheduler& sObj, int ts)
+{
+	cout << "Current Timestep: " << ts << endl
+		<< "=================  ALL List  =================" << endl;
+	//<< sObj.getIdle().getCount();
+}
+
