@@ -25,7 +25,17 @@ void Patient::setId(int newId) { id = newId; }
 void Patient::setPt(int newPt) { pt = newPt; }
 void Patient::setVt(int newVt) { vt = newVt; }
 
+
 // Treatment operations
+
+Treatment* Patient::peekReqTreatment()
+{
+    Treatment* toBeReturned = nullptr;
+    reqTreatment.peek(toBeReturned);
+    return toBeReturned;
+}
+
+
 bool Patient::addTreatment(Treatment* newT)
 {
     if (reqTreatment.getCount() <= 3)

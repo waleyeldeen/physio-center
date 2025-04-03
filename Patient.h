@@ -27,6 +27,10 @@ public:
     void setVt(int newVt);
 
     // Treatment operations
+    /*
+        Return a pointer to the Treatment object at the front
+    */
+    Treatment* peekReqTreatment();
     bool addTreatment(Treatment* newT);
     bool hasLastTreatment();
 
