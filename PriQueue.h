@@ -21,12 +21,12 @@ public:
         while (dequeue(tmp, p));
     }
 
-    int getCount()
+    int getCount() const
     {
         return count;
     }
 
-    void print()
+    void print() const
     {
         PriNode<T>* current = head;
         cout << "Priority Node(front): ";
