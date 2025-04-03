@@ -9,3 +9,13 @@ enum ResourceType
 	XROOM,
 	NONE
 };
+
+enum PatientStatus
+{
+	IDLE,
+	ERLY,
+	LATE,
+	WAIT,
+	SERV,
+	FNSH
+};

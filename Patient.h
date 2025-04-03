@@ -2,11 +2,13 @@
 #include <iostream>
 #include "LinkedQueue.h"
 #include "Treatment.h"
+#include "DEFS.h"
 
 class Patient
 {
 private:
     int id, pt, vt;
+    PatientStatus status;
     LinkedQueue<Treatment*> reqTreatment;
     bool type;  // True: Normal, False: Recovering
 
@@ -19,12 +21,14 @@ public:
     int getId() const;
     int getPt() const;
     int getVt() const;
+    PatientStatus getStatus() const;
     int getType() const;
 
     // Setters
     void setId(int newId);
     void setPt(int newPt);
     void setVt(int newVt);
+    void setStatus(PatientStatus s);
 
     // Treatment operations
     /*
