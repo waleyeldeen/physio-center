@@ -1,0 +1,61 @@
+#include "Patient.h"
+
+Patient::Patient() : id(0), pt(0), vt(0), type(true) {}
+
+Patient::Patient(int id, int pt, int vt, bool type)
+    : id(id), pt(pt), vt(vt), type(type) {
+}
+
+Patient::Patient(const Patient* other)
+{
+    id = other->getId();
+    pt = other->getPt();
+    vt = other->getVt();
+    type = other->getType();
+}
+
+// Getters
+int Patient::getId() const { return id; }
+int Patient::getPt() const { return pt; }
+int Patient::getVt() const { return vt; }
+int Patient::getType() const { return type; }
+
+// Setters
+void Patient::setId(int newId) { id = newId; }
+void Patient::setPt(int newPt) { pt = newPt; }
+void Patient::setVt(int newVt) { vt = newVt; }
+
+
+// Treatment operations
+
+Treatment* Patient::peekReqTreatment()
+{
+    Treatment* toBeReturned = nullptr;
+    reqTreatment.peek(toBeReturned);
+    return toBeReturned;
+}
+
+
+bool Patient::addTreatment(Treatment* newT)
+{
+    if (reqTreatment.getCount() <= 3)
+    {
+        reqTreatment.enqueue(newT);
+        return true;
+    }
+    return false;
+}
+
+bool Patient::hasLastTreatment()
+{
+    return reqTreatment.getCount() == 1;
+}
+
+// Output stream operator
+std::ostream& operator<<(std::ostream& os, const Patient* p)
+{
+    os << "[Patient ID: " << p->id << ", PT: " << p->pt
+        << ", VT: " << p->vt << ", Type: "
+        << (p->type ? "Normal]" : "Recovering]");
+    return os;
+}

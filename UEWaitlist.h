@@ -29,7 +29,21 @@ public:
         current->setNext(newNode);
 	}  
 
-    int calcTreatmentLat() {
-        return 0;
+    /*
+    Returns the sum of all treatment durations in waiting list.
+    used for recovering patient
+    Assume that the treatment at the front of the reqTreatment Queue is of the same
+    type the patient is currently waiting in.
+    */
+    int calcTreatmentLat()
+    {
+        int latency = 0;
+        Node<Patient*>* current = frontPtr;
+
+        for (int i = 0; i < this->count; i++)
+        {
+            //                  Node*    Patient*    Treatment*          int
+            latency = latency + current->getItem()->peekReqTreatment()->getDuration();
+        }
     }
 };
