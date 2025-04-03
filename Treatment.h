@@ -11,6 +11,13 @@ private:
 public:
 	Treatment(int duration = 0, int assignmentTime = 0) : duration(duration), assignmentTime(assignmentTime), assignedRes(nullptr) {}
 
+	// getters
+	int getDuration()
+	{
+		return duration;
+	}
+
+
 	void setAssignedRes(Resource* newResource)
 	{
 		assignedRes = newResource;
