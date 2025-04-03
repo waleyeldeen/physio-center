@@ -7,6 +7,22 @@
 
 Scheduler::Scheduler() { }
 
+const LinkedQueue<Patient*>& Scheduler::getIdle() const { return idle; }
+const EarlyPList& Scheduler::getEarly() const { return early; }
+const PriQueue<Patient*>& Scheduler::getLate() const { return late; }
+
+const UEWaitlist& Scheduler::getWaitU() const { return waitU; }
+const UEWaitlist& Scheduler::getWaitE() const { return waitE; }
+const XWaitlist& Scheduler::getWaitX() const { return waitX; }
+
+const PriQueue<Patient*>& Scheduler::getServing() const { return serving; }
+
+const LinkedQueue<UDevice*>& Scheduler::getUDevices() const { return uDevices; }
+const LinkedQueue<EDevice*>& Scheduler::getEDevices() const { return eDevices; }
+const LinkedQueue<XRoom*>& Scheduler::getXRooms() const { return xRooms; }
+
+const ArrayStack<Patient*>& Scheduler::getFinish() const { return finish; }
+
 void Scheduler::loadInputFile(string fileName)
 {
 	fstream file(fileName);

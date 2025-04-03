@@ -7,8 +7,12 @@
     <Filter Include="Resources" />
     <Filter Include="Treatments" />
     <Filter Include="Scheduler" />
+    <Filter Include="UI" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="UI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
     <ClCompile Include="Scheduler.cpp">
       <Filter>Scheduler</Filter>
     </ClCompile>
@@ -17,6 +21,9 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
     <ClInclude Include="Scheduler.h">
       <Filter>Scheduler</Filter>
     </ClInclude>

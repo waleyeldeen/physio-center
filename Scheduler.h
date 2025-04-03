@@ -39,6 +39,22 @@ private:
 public:
 	Scheduler();
 
+	const LinkedQueue<Patient*>& getIdle() const;
+	const EarlyPList& getEarly() const;
+	const PriQueue<Patient*>& getLate() const;
+
+	const UEWaitlist& getWaitU() const;
+	const UEWaitlist& getWaitE() const;
+	const XWaitlist& getWaitX() const;
+
+	const PriQueue<Patient*>& getServing() const;
+
+	const LinkedQueue<UDevice*>& getUDevices() const;
+	const LinkedQueue<EDevice*>& getEDevices() const;
+	const LinkedQueue<XRoom*>& getXRooms() const;
+
+	const ArrayStack<Patient*>& getFinish() const;
+
 	/*Called at each timestep to check the idle list for patients who
 	arrived and move them to early or late accordingle*/
 	void checkIdleForArrivedPatients();
