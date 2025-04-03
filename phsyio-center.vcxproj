@@ -130,6 +130,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Patient.cpp" />
     <ClCompile Include="Scheduler.cpp" />
+    <ClCompile Include="UI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArrayStack.h" />
@@ -149,6 +150,7 @@
     <ClInclude Include="StackADT.h" />
     <ClInclude Include="UDevice.h" />
     <ClInclude Include="UEWaitlist.h" />
+    <ClInclude Include="UI.h" />
     <ClInclude Include="UTherapy.h" />
     <ClInclude Include="XRoom.h" />
     <ClInclude Include="XTherapy.h" />
