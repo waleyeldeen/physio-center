@@ -44,6 +44,7 @@ public:
         {
             //                  Node*    Patient*    Treatment*          int
             latency = latency + current->getItem()->peekReqTreatment()->getDuration();
+            current = current->getNext();
         }
     }
 };
