@@ -411,3 +411,5 @@ FodyWeavers.xsd
 *BASE_*
 *LOCAL_*
 *REMOTE_*
+inputFile.txt
+input.txt
