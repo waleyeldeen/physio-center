@@ -44,8 +44,7 @@ void UI::printAllInformation(Scheduler& sObj, int ts)
 
 	cout << "=================  Late List  =================" << endl
 		<< sObj.getLate().getCount() << " patients: ";
-	sObj.getEarly().print();
-
+	sObj.getLate().print();
 	cout << endl;
 
 	cout << "=================  Avail E-Devices  =================" << endl
