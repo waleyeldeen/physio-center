@@ -1,7 +1,6 @@
 #include "UI.h"
 
-UI::UI(bool isIneractive) : isInteractive(isIneractive) {}
-
+UI::UI(bool isInteractive) : isInteractive(isInteractive) {}
 string UI::inInputFileName()
 {
 	string name;
