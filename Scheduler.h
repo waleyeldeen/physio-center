@@ -59,8 +59,8 @@ public:
 	arrived and move them to early or late accordingle*/
 	void checkIdleForArrivedPatients();
 
-	void addToEarly(Patient* p);
-	void addToLate(Patient* p);
+	void addToEarly();
+	void addToLate();
 
 	void addToWaitU(Patient* p);
 	void addToWaitE(Patient* p);
