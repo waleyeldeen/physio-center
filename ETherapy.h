@@ -13,8 +13,8 @@ public:
 
 	}
 
-	void moveToWait()
+	void moveToWait(Scheduler* s)
 	{
-
+		s->addToWaitE(patient);
 	}
 };

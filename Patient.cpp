@@ -1,9 +1,9 @@
 #include "Patient.h"
 
-Patient::Patient() : id(0), pt(0), vt(0), type(true) {}
+Patient::Patient() : s(nullptr), id(0), pt(0), vt(0), type(true) {}
 
-Patient::Patient(int id, int pt, int vt, bool type)
-    : id(id), pt(pt), vt(vt), type(type) {
+Patient::Patient(Scheduler* s, int id, int pt, int vt, bool type)
+    : s(s), id(id), pt(pt), vt(vt), type(type) {
 }
 
 Patient::Patient(const Patient* other)
@@ -51,6 +51,13 @@ bool Patient::addTreatment(Treatment* newT)
 bool Patient::hasLastTreatment()
 {
     return reqTreatment.getCount() == 1;
+}
+
+void Patient::moveNextTreatmentToWait()
+{
+    Treatment* t;
+    reqTreatment.peek(t);
+    t->moveToWait(s);
 }
 
 // Output stream operator

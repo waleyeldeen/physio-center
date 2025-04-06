@@ -5,6 +5,7 @@ using namespace std;
 
 /*Forward Declaration*/
 class Patient;
+class Scheduler;
 
 class Treatment
 {
@@ -36,5 +37,5 @@ public:
 	}
 
 	virtual void canAssign() = 0;
-	virtual void moveToWait() = 0;
+	virtual void moveToWait(Scheduler* s) = 0;
 };
