@@ -88,11 +88,11 @@ void Scheduler::loadInputFile(string fileName)
 			switch (therapyType)
 			{
 				case 'E':
-					newP->addTreatment(new ETherapy(duration)); break;
+					newP->addTreatment(new ETherapy(newP, duration)); break;
 				case 'U':
-					newP->addTreatment(new UTherapy(duration)); break;
+					newP->addTreatment(new UTherapy(newP, duration)); break;
 				case 'X':
-					newP->addTreatment(new XTherapy(duration)); break;
+					newP->addTreatment(new XTherapy(newP, duration)); break;
 			}
 		}
 	}
