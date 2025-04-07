@@ -6,23 +6,25 @@ using namespace std;
 class UEWaitlist : public LinkedQueue<Patient*>  
 {  
 public:
-	void insertSorted(Patient* const newP)  
+	void insertSorted(Patient* const newPatient)  
 	{  
-        Node<Patient*>* newNode = new Node<Patient*>(newP);
+        count++;
+
+        Node<Patient*>* newNode = new Node<Patient*>(newPatient);
         
         Node<Patient*>* front = frontPtr;
-        int pri = newP->getPt();
+        int newPri = -newPatient->getPt();
 
 
-        if (front == nullptr) {
-            newNode->setNext(front);
+        if (isEmpty()) {
             frontPtr = newNode;
+            backPtr = newNode;
             return;
         }
 
-        int headPri = front->getItem()->getPt();
+        int headPri = -front->getItem()->getPt();
 
-        if (pri > headPri) {
+        if (newPri > headPri) {
 
             newNode->setNext(front);
             frontPtr = newNode;
@@ -30,12 +32,17 @@ public:
         }
 
         Node<Patient*>* current = front;
-        while (current->getNext() && pri <= current->getNext()->getItem()->getPt()) {
+        while (current->getNext() != nullptr && newPri <= -current->getNext()->getItem()->getPt()) {
             current = current->getNext();
         }
         newNode->setNext(current->getNext());
+
+        // incase newNode is inserted at the back
+        if (current->getNext() == nullptr)
+            backPtr = newNode;
+
         current->setNext(newNode);
-	}  
+	} 
 
     /*
     Returns the sum of all treatment durations in waiting list.
