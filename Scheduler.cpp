@@ -107,8 +107,8 @@ void Scheduler::checkIdleForArrivedPatients()
 }
 
 void Scheduler::addToIdle(Patient* p) { idle.enqueue(p); }
-void Scheduler::addToEarly() { Patient* p; idle.dequeue(p); early.enqueue(p, p->getPt()); }
-void Scheduler::addToLate() { Patient* p; idle.dequeue(p); late.enqueue(p, p->getPt()); }
+void Scheduler::addToEarly() { Patient* p; idle.dequeue(p); early.enqueue(p, -p->getPt()); }
+void Scheduler::addToLate() { Patient* p; idle.dequeue(p); late.enqueue(p, -p->getPt()); }
 
 void Scheduler::addToWaitU(Patient* p) { waitU.enqueue(p); }
 void Scheduler::addToWaitE(Patient* p) { waitE.enqueue(p); }
