@@ -69,6 +69,9 @@ int main()
             // dequeu next patient from late and get point to it
             if (s.getLate().dequeue(rp, pri))
             {
+                int penalty = (rp->getVt() - rp->getPt()) / 2;
+                int newPt = penalty + rp->getPt();
+                rp->setPt(newPt);
                 switch (therapy)
                 {
                 case ELECTRO:
