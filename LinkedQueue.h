@@ -151,7 +151,10 @@ bool LinkedQueue<T>::enqueue(const T& newEntry)
 	Node<T>* newNodePtr = new Node<T>(newEntry);
 	// Insert the new node
 	if (isEmpty())	//special case if this is the first node to insert
+	{
 		frontPtr = newNodePtr; // The queue is empty
+		backPtr = newNodePtr;
+	}
 	else
 		backPtr->setNext(newNodePtr); // The queue was not empty
 
