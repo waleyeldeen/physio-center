@@ -152,7 +152,7 @@ void Scheduler::runSimulation(UI* ui)
         int x = getRandInRange(0, 105);
         cout << "####RANDOM: " << x << endl;
 
-        Patient* rp;
+        Patient* rp = nullptr;
         int pri;
 
         if (x < 15)
@@ -193,7 +193,7 @@ void Scheduler::runSimulation(UI* ui)
         else if (x < 45)
         {
             // move 2 next patients from a RandomWaiting to serving list
-            Patient* rp2;
+            Patient* rp2 = nullptr;
 
             bool getPatient1, getPatient2;
 
@@ -214,12 +214,16 @@ void Scheduler::runSimulation(UI* ui)
 
             if (getPatient1)
             {
-                // TODO: should it be negative or what???
-                int finishTime = ts + 10 - 1;
-                getServing().enqueue(rp, finishTime);
+                // TODO: should we do a minus one to finish time or not
+                // get duration of next treatment in reqTreatment list (trivial)
+                int duration = rp->peekReqTreatment()->getDuration();
+                int finishTime = ts + duration;
+                getServing().enqueue(rp, -finishTime);
                 if (getPatient2)
                 {
-                    getServing().enqueue(rp2, finishTime);
+                    duration = rp2->peekReqTreatment()->getDuration();
+                    finishTime = ts + duration;
+                    getServing().enqueue(rp2, -finishTime);
                 }
             }
 
