@@ -17,6 +17,7 @@ int main()
     // start of simulation
     while (ts != -1)
     {
+        cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
         ts++;
         Patient* p = nullptr;
         if (s.getIdle().peek(p))
@@ -44,12 +45,13 @@ int main()
         else
 	        therapy = GYM;
 
-        int x = getRandInRange(0, 100);
+        int x = getRandInRange(0, 105);
+        cout << "####RANDOM: " << x << endl;
 
 	    Patient* rp;
 	    int pri;
 
-        if (x < 50)
+        if (x < 15)
         {
 	        // dequeue next patient from early and get pointer to it
 	        if (s.getEarly().dequeue(rp, pri))	// this line should be transferred
@@ -65,7 +67,7 @@ int main()
 		        }
 	        }
         }
-        else if (x < 100)
+        else if (x < 30)
         {
             // dequeu next patient from late and get point to it
             if (s.getLate().dequeue(rp, pri))
@@ -84,9 +86,77 @@ int main()
                 }
             }
         }
+        else if (x < 45)
+        {
+            // more 2 next patient from a RandomWaiting to serving list
+            Patient* rp2;
+
+            bool getPatient1, getPatient2;
+            
+            switch (therapy)
+            {
+            case ELECTRO:
+                getPatient1 = s.getWaitE().dequeue(rp);
+                getPatient2 = s.getWaitE().dequeue(rp2);
+                break;
+            case ULTRA:
+                getPatient1 = s.getWaitU().dequeue(rp);
+                getPatient2 = s.getWaitU().dequeue(rp2);
+                break;
+            case GYM:
+                getPatient1 = s.getWaitU().dequeue(rp);
+                getPatient2 = s.getWaitU().dequeue(rp2);
+            }
+
+            if (getPatient1)
+            {
+                //TODO: shoud it be negetive or what???
+                int finishTime = ts + 10 - 1;
+                s.getServing().enqueue(rp, finishTime);
+                if (getPatient2)
+                {
+                    s.getServing().enqueue(rp2, finishTime);
+                }
+            }
+
+        }
+        else if (x < 60)
+        {
+            if (s.getServing().dequeue(rp, pri))
+            {
+                switch (therapy)
+                {
+                case ELECTRO:
+                    s.getWaitE().enqueue(rp); break;
+                case ULTRA:
+                    s.getWaitU().enqueue(rp); break;
+                case GYM:
+                    s.getWaitX().enqueue(rp); break;
+                }
+            }
+        }
+        else if (x < 75)
+        {
+            if (s.getServing().dequeue(rp, pri))
+            {
+                s.getFinish().push(rp);
+            }
+        }
+        else if (x < 90)
+        {
+            rp = s.getWaitX().pickRandCancelPatient();
+            if (rp != nullptr)
+            {
+                s.getFinish().push(rp);
+            }
+        }
+        else
+        {
+            s.getEarly().reschedule();
+        }
 
 
-        if (s.getIdle().getCount() == 0)
+        if (s.getFinish().getCount() == 10)
             ts = -1;
         
         ui.printAllInformation(s, ts);
