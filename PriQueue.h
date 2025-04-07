@@ -26,17 +26,20 @@ public:
         return count;
     }
 
-    void print() const
+    void print(bool newline = false) const
     {
         PriNode<T>* current = head;
-        cout << "Priority Node(front): ";
 
         while (current)
         {
             int x;
             cout << current->getItem(x);
             current = current->getNext();
-            if (current) cout << ", ";
+            if (current)
+                if (newline)
+                    cout << endl;
+                else
+                    cout << ", ";
         }
         cout << endl;
     }

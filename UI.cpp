@@ -28,23 +28,23 @@ void UI::printAllInformation(Scheduler& sObj, int ts)
 
     cout << "=================  Waiting Lists  =================" << endl
         << sObj.getWaitE().getCount() << " Electro Therapy Patients: ";
-    sObj.getWaitE().print();
+    sObj.getWaitE().print(true);
     cout << sObj.getWaitU().getCount() << " Ultra Therapy Patients: ";
-    sObj.getWaitU().print();
+    sObj.getWaitU().print(true);
     cout << sObj.getWaitX().getCount() << " X Therapy Patients: ";
-    sObj.getWaitX().print();
+    sObj.getWaitX().print(true);
 
     cout << endl;
 
     cout << "=================  Early List  =================" << endl
-        << sObj.getEarly().getCount() << " patients: ";
-    sObj.getEarly().print();
+        << sObj.getEarly().getCount() << " patients: " << endl;
+    sObj.getEarly().print(true);
 
     cout << endl;
 
     cout << "=================  Late List  =================" << endl
-        << sObj.getLate().getCount() << " patients: ";
-    sObj.getLate().print();
+        << sObj.getLate().getCount() << " patients: " << endl;
+    sObj.getLate().print(true);
 
     cout << endl;
 
