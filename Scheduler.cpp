@@ -7,21 +7,21 @@
 
 Scheduler::Scheduler() { }
 
-const LinkedQueue<Patient*>& Scheduler::getIdle() const { return idle; }
-const EarlyPList& Scheduler::getEarly() const { return early; }
-const PriQueue<Patient*>& Scheduler::getLate() const { return late; }
+LinkedQueue<Patient*>& Scheduler::getIdle() { return idle; }
+EarlyPList& Scheduler::getEarly() { return early; }
+PriQueue<Patient*>& Scheduler::getLate() { return late; }
 
-const UEWaitlist& Scheduler::getWaitU() const { return waitU; }
-const UEWaitlist& Scheduler::getWaitE() const { return waitE; }
-const XWaitlist& Scheduler::getWaitX() const { return waitX; }
+UEWaitlist& Scheduler::getWaitU() { return waitU; }
+UEWaitlist& Scheduler::getWaitE() { return waitE; }
+XWaitlist& Scheduler::getWaitX() { return waitX; }
 
-const PriQueue<Patient*>& Scheduler::getServing() const { return serving; }
+PriQueue<Patient*>& Scheduler::getServing() { return serving; }
 
-const LinkedQueue<UDevice*>& Scheduler::getUDevices() const { return uDevices; }
-const LinkedQueue<EDevice*>& Scheduler::getEDevices() const { return eDevices; }
-const LinkedQueue<XRoom*>& Scheduler::getXRooms() const { return xRooms; }
+LinkedQueue<UDevice*>& Scheduler::getUDevices() { return uDevices; }
+LinkedQueue<EDevice*>& Scheduler::getEDevices() { return eDevices; }
+LinkedQueue<XRoom*>& Scheduler::getXRooms() { return xRooms; }
 
-const ArrayStack<Patient*>& Scheduler::getFinish() const { return finish; }
+ArrayStack<Patient*>& Scheduler::getFinish() { return finish; }
 
 void Scheduler::loadInputFile(string fileName)
 {
