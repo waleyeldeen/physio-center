@@ -12,9 +12,17 @@ public:
         
         Node<Patient*>* front = frontPtr;
         int pri = newP->getPt();
+
+
+        if (front == nullptr) {
+            newNode->setNext(front);
+            frontPtr = newNode;
+            return;
+        }
+
         int headPri = front->getItem()->getPt();
 
-        if (front == nullptr || pri > headPri) {
+        if (pri > headPri) {
 
             newNode->setNext(front);
             frontPtr = newNode;
