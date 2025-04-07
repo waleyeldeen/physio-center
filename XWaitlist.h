@@ -19,7 +19,7 @@ public:
 	Patient* pickRandCancelPatient()
 	{
 		// TODO: what can I do if the list is empty
-		// if (this->isEmpty()) { return; }
+		if (this->isEmpty()) { return nullptr; }
 
 		Node<Patient*>* current = nullptr;
 		Node<Patient*>* previous = nullptr;
