@@ -16,7 +16,6 @@ private:
     Scheduler* s;
 
 public:
-    Patient();
     Patient(Scheduler* s, int id, int pt, int vt, bool type);
     Patient(const Patient* other);
 

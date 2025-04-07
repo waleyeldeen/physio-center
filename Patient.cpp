@@ -1,7 +1,5 @@
 #include "Patient.h"
 
-Patient::Patient() : s(nullptr), id(0), pt(0), vt(0), type(true) {}
-
 Patient::Patient(Scheduler* s, int id, int pt, int vt, bool type)
     : s(s), id(id), pt(pt), vt(vt), type(type) {
 }
