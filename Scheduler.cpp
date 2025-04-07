@@ -113,3 +113,157 @@ void Scheduler::addToLate() { Patient* p; idle.dequeue(p); late.enqueue(p, p->ge
 void Scheduler::addToWaitU(Patient* p) { waitU.enqueue(p); }
 void Scheduler::addToWaitE(Patient* p) { waitE.enqueue(p); }
 void Scheduler::addToWaitX(Patient* p) { waitX.enqueue(p); }
+
+#include "UI.h"
+
+void Scheduler::runSimulation(UI* ui)
+{
+    int ts = 0;
+    while (ts != -1)
+    {
+        cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+        ts++;
+        Patient* p = nullptr;
+        if (getIdle().peek(p))
+        {
+            // check if a patient has arrived
+            if (p->getVt() == ts)
+            {
+                // check if the patient is late or early
+                if (p->getPt() >= p->getVt())
+                    addToEarly();
+                else
+                    addToLate();
+            }
+        }
+
+        /*
+            Random Waiting Procedure
+        */
+        TherapyType therapy;
+        int chooseTherapy = getRandInRange(0, 100);
+        if (chooseTherapy < 33)
+            therapy = ELECTRO;
+        else if (chooseTherapy < 66)
+            therapy = ULTRA;
+        else
+            therapy = GYM;
+
+        int x = getRandInRange(0, 105);
+        cout << "####RANDOM: " << x << endl;
+
+        Patient* rp;
+        int pri;
+
+        if (x < 15)
+        {
+            // dequeue next patient from early and get pointer to it
+            if (getEarly().dequeue(rp, pri))
+            {
+                switch (therapy)
+                {
+                case ELECTRO:
+                    getWaitE().enqueue(rp); break;
+                case ULTRA:
+                    getWaitU().enqueue(rp); break;
+                case GYM:
+                    getWaitX().enqueue(rp); break;
+                }
+            }
+        }
+        else if (x < 30)
+        {
+            // dequeue next patient from late and get pointer to it
+            if (getLate().dequeue(rp, pri))
+            {
+                int penalty = (rp->getVt() - rp->getPt()) / 2;
+                int newPt = penalty + rp->getPt();
+                rp->setPt(newPt);
+                switch (therapy)
+                {
+                case ELECTRO:
+                    getWaitE().insertSorted(rp); break;
+                case ULTRA:
+                    getWaitU().insertSorted(rp); break;
+                case GYM:
+                    getWaitX().insertSorted(rp); break;
+                }
+            }
+        }
+        else if (x < 45)
+        {
+            // move 2 next patients from a RandomWaiting to serving list
+            Patient* rp2;
+
+            bool getPatient1, getPatient2;
+
+            switch (therapy)
+            {
+            case ELECTRO:
+                getPatient1 = getWaitE().dequeue(rp);
+                getPatient2 = getWaitE().dequeue(rp2);
+                break;
+            case ULTRA:
+                getPatient1 = getWaitU().dequeue(rp);
+                getPatient2 = getWaitU().dequeue(rp2);
+                break;
+            case GYM:
+                getPatient1 = getWaitU().dequeue(rp);
+                getPatient2 = getWaitU().dequeue(rp2);
+            }
+
+            if (getPatient1)
+            {
+                // TODO: should it be negative or what???
+                int finishTime = ts + 10 - 1;
+                getServing().enqueue(rp, finishTime);
+                if (getPatient2)
+                {
+                    getServing().enqueue(rp2, finishTime);
+                }
+            }
+
+        }
+        else if (x < 60)
+        {
+            if (getServing().dequeue(rp, pri))
+            {
+                switch (therapy)
+                {
+                case ELECTRO:
+                    getWaitE().enqueue(rp); break;
+                case ULTRA:
+                    getWaitU().enqueue(rp); break;
+                case GYM:
+                    getWaitX().enqueue(rp); break;
+                }
+            }
+        }
+        else if (x < 75)
+        {
+            if (getServing().dequeue(rp, pri))
+            {
+                getFinish().push(rp);
+            }
+        }
+        else if (x < 90)
+        {
+            rp = getWaitX().pickRandCancelPatient();
+            if (rp != nullptr)
+            {
+                getFinish().push(rp);
+            }
+        }
+        else
+        {
+            getEarly().reschedule();
+        }
+
+        if (getFinish().getCount() == 10)
+            ts = -1;
+
+        ui->printAllInformation(*this, ts);
+
+        cin.get();
+    }
+}

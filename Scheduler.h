@@ -13,6 +13,8 @@ using namespace std;
 #include "UDevice.h"
 #include "XRoom.h"
 
+class UI;
+
 class Scheduler
 {
 private:
@@ -69,5 +71,6 @@ public:
 	/*Opens the input file and assigs the data to different data members*/
 	void loadInputFile(string fileName);
 
+	void runSimulation(UI* ui);
 };
 
