@@ -6,7 +6,7 @@ using namespace std;
 class UTherapy : public Treatment
 {
 public:
-	UTherapy(int duration = 0, int assignmentTime = 0) : Treatment(duration, assignmentTime) {}
+	UTherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, assignmentTime) {}
 
 
 	void canAssign()
@@ -14,8 +14,8 @@ public:
 
 	}
 
-	void moveToWait()
+	void moveToWait(Scheduler* s)
 	{
-
+		s->addToWaitE(patient);
 	}
 };

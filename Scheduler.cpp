@@ -7,21 +7,21 @@
 
 Scheduler::Scheduler() { }
 
-const LinkedQueue<Patient*>& Scheduler::getIdle() const { return idle; }
-const EarlyPList& Scheduler::getEarly() const { return early; }
-const PriQueue<Patient*>& Scheduler::getLate() const { return late; }
+LinkedQueue<Patient*>& Scheduler::getIdle() { return idle; }
+EarlyPList& Scheduler::getEarly() { return early; }
+PriQueue<Patient*>& Scheduler::getLate() { return late; }
 
-const UEWaitlist& Scheduler::getWaitU() const { return waitU; }
-const UEWaitlist& Scheduler::getWaitE() const { return waitE; }
-const XWaitlist& Scheduler::getWaitX() const { return waitX; }
+UEWaitlist& Scheduler::getWaitU() { return waitU; }
+UEWaitlist& Scheduler::getWaitE() { return waitE; }
+XWaitlist& Scheduler::getWaitX() { return waitX; }
 
-const PriQueue<Patient*>& Scheduler::getServing() const { return serving; }
+PriQueue<Patient*>& Scheduler::getServing() { return serving; }
 
-const LinkedQueue<UDevice*>& Scheduler::getUDevices() const { return uDevices; }
-const LinkedQueue<EDevice*>& Scheduler::getEDevices() const { return eDevices; }
-const LinkedQueue<XRoom*>& Scheduler::getXRooms() const { return xRooms; }
+LinkedQueue<UDevice*>& Scheduler::getUDevices() { return uDevices; }
+LinkedQueue<EDevice*>& Scheduler::getEDevices() { return eDevices; }
+LinkedQueue<XRoom*>& Scheduler::getXRooms() { return xRooms; }
 
-const ArrayStack<Patient*>& Scheduler::getFinish() const { return finish; }
+ArrayStack<Patient*>& Scheduler::getFinish() { return finish; }
 
 void Scheduler::loadInputFile(string fileName)
 {
@@ -74,7 +74,7 @@ void Scheduler::loadInputFile(string fileName)
 
 		file >> pt >> vt >> numTreatments;
 
-		Patient* newP = new Patient(i + 1, pt, vt, type);
+		Patient* newP = new Patient(this, i + 1, pt, vt, type);
 		addToIdle(newP);
 
 		for (int j = 0; j < numTreatments; j++)
@@ -88,11 +88,11 @@ void Scheduler::loadInputFile(string fileName)
 			switch (therapyType)
 			{
 				case 'E':
-					newP->addTreatment(new ETherapy(duration)); break;
+					newP->addTreatment(new ETherapy(newP, duration)); break;
 				case 'U':
-					newP->addTreatment(new UTherapy(duration)); break;
+					newP->addTreatment(new UTherapy(newP, duration)); break;
 				case 'X':
-					newP->addTreatment(new XTherapy(duration)); break;
+					newP->addTreatment(new XTherapy(newP, duration)); break;
 			}
 		}
 	}
@@ -107,9 +107,168 @@ void Scheduler::checkIdleForArrivedPatients()
 }
 
 void Scheduler::addToIdle(Patient* p) { idle.enqueue(p); }
-void Scheduler::addToEarly(Patient* p) { early.enqueue(p, p->getPt()); }
-void Scheduler::addToLate(Patient* p) { late.enqueue(p, p->getPt()); }
+void Scheduler::addToEarly() { Patient* p; idle.dequeue(p); early.enqueue(p, -p->getPt()); }
+void Scheduler::addToLate() { Patient* p; idle.dequeue(p); late.enqueue(p, -p->getPt()); }
 
 void Scheduler::addToWaitU(Patient* p) { waitU.enqueue(p); }
 void Scheduler::addToWaitE(Patient* p) { waitE.enqueue(p); }
 void Scheduler::addToWaitX(Patient* p) { waitX.enqueue(p); }
+
+#include "UI.h"
+
+void Scheduler::runSimulation(UI* ui)
+{
+    int ts = 0;
+    while (ts != -1)
+    {
+        cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+        ts++;
+        Patient* p = nullptr;
+        if (getIdle().peek(p))
+        {
+            // check if a patient has arrived
+            if (p->getVt() == ts)
+            {
+                // check if the patient is late or early
+                if (p->getPt() >= p->getVt())
+                    addToEarly();
+                else
+                    addToLate();
+            }
+        }
+
+        /*
+            Random Waiting Procedure
+        */
+        TherapyType therapy;
+        int chooseTherapy = getRandInRange(0, 100);
+        if (chooseTherapy < 33)
+            therapy = ELECTRO;
+        else if (chooseTherapy < 66)
+            therapy = ULTRA;
+        else
+            therapy = GYM;
+
+        int x = getRandInRange(0, 105);
+        cout << "####RANDOM: " << x << endl;
+
+        Patient* rp = nullptr;
+        int pri;
+
+        if (x < 15)
+        {
+            // dequeue next patient from early and get pointer to it
+            if (getEarly().dequeue(rp, pri))
+            {
+                switch (therapy)
+                {
+                case ELECTRO:
+                    getWaitE().enqueue(rp); break;
+                case ULTRA:
+                    getWaitU().enqueue(rp); break;
+                case GYM:
+                    getWaitX().enqueue(rp); break;
+                }
+            }
+        }
+        else if (x < 30)
+        {
+            // dequeue next patient from late and get pointer to it
+            if (getLate().dequeue(rp, pri))
+            {
+                int penalty = (rp->getVt() - rp->getPt()) / 2;
+                int newPt = penalty + rp->getPt();
+                rp->setPt(newPt);
+                switch (therapy)
+                {
+                case ELECTRO:
+                    getWaitE().insertSorted(rp); break;
+                case ULTRA:
+                    getWaitU().insertSorted(rp); break;
+                case GYM:
+                    getWaitX().insertSorted(rp); break;
+                }
+            }
+        }
+        else if (x < 45)
+        {
+            // move 2 next patients from a RandomWaiting to serving list
+            Patient* rp2 = nullptr;
+
+            bool getPatient1, getPatient2;
+
+            switch (therapy)
+            {
+            case ELECTRO:
+                getPatient1 = getWaitE().dequeue(rp);
+                getPatient2 = getWaitE().dequeue(rp2);
+                break;
+            case ULTRA:
+                getPatient1 = getWaitU().dequeue(rp);
+                getPatient2 = getWaitU().dequeue(rp2);
+                break;
+            case GYM:
+                getPatient1 = getWaitU().dequeue(rp);
+                getPatient2 = getWaitU().dequeue(rp2);
+            }
+
+            if (getPatient1)
+            {
+                // TODO: should we do a minus one to finish time or not
+                // get duration of next treatment in reqTreatment list (trivial)
+                int duration = rp->peekReqTreatment()->getDuration();
+                int finishTime = ts + duration;
+                getServing().enqueue(rp, -finishTime);
+                if (getPatient2)
+                {
+                    duration = rp2->peekReqTreatment()->getDuration();
+                    finishTime = ts + duration;
+                    getServing().enqueue(rp2, -finishTime);
+                }
+            }
+
+        }
+        else if (x < 60)
+        {
+            //TODO: should I use insertSorted or enqueue (knowing that the later breaks the PT sort in waitlist)
+            if (getServing().dequeue(rp, pri))
+            {
+                switch (therapy)
+                {
+                case ELECTRO:
+                    getWaitE().enqueue(rp); break;
+                case ULTRA:
+                    getWaitU().enqueue(rp); break;
+                case GYM:
+                    getWaitX().enqueue(rp); break;
+                }
+            }
+        }
+        else if (x < 75)
+        {
+            if (getServing().dequeue(rp, pri))
+            {
+                getFinish().push(rp);
+            }
+        }
+        else if (x < 90)
+        {
+            rp = getWaitX().pickRandCancelPatient();
+            if (rp != nullptr)
+            {
+                getFinish().push(rp);
+            }
+        }
+        else
+        {
+            getEarly().reschedule();
+        }
+
+        if (getFinish().getCount() == numPatients)
+            ts = -1;
+
+        ui->printAllInformation(*this, ts);
+
+        cin.get();
+    }
+}

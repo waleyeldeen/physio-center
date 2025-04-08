@@ -19,3 +19,10 @@ enum PatientStatus
 	SERV,
 	FNSH
 };
+
+enum TherapyType
+{
+	ULTRA,
+	ELECTRO,
+	GYM
+};

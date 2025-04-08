@@ -6,15 +6,15 @@ using namespace std;
 class ETherapy : public Treatment
 {
 public:
-	ETherapy(int duration = 0, int assignmentTime = 0) : Treatment(duration, assignmentTime) {}
+	ETherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, assignmentTime) {}
 
 	void canAssign()
 	{
 
 	}
 
-	void moveToWait()
+	void moveToWait(Scheduler* s)
 	{
-
+		s->addToWaitE(patient);
 	}
 };

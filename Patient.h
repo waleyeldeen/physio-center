@@ -4,6 +4,8 @@
 #include "Treatment.h"
 #include "DEFS.h"
 
+class Scheduler;
+
 class Patient
 {
 private:
@@ -11,10 +13,10 @@ private:
     PatientStatus status;
     LinkedQueue<Treatment*> reqTreatment;
     bool type;  // True: Normal, False: Recovering
+    Scheduler* s;
 
 public:
-    Patient();
-    Patient(int id, int pt, int vt, bool type);
+    Patient(Scheduler* s, int id, int pt, int vt, bool type);
     Patient(const Patient* other);
 
     // Getters
@@ -37,6 +39,7 @@ public:
     Treatment* peekReqTreatment();
     bool addTreatment(Treatment* newT);
     bool hasLastTreatment();
+    void moveNextTreatmentToWait();
 
     // Output stream operator
     friend std::ostream& operator<<(std::ostream& os, const Patient* p);
