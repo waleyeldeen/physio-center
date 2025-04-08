@@ -236,11 +236,11 @@ void Scheduler::runSimulation(UI* ui)
                 switch (therapy)
                 {
                 case ELECTRO:
-                    getWaitE().enqueue(rp); break;
+                    getWaitE().insertSorted(rp); break;
                 case ULTRA:
-                    getWaitU().enqueue(rp); break;
+                    getWaitU().insertSorted(rp); break;
                 case GYM:
-                    getWaitX().enqueue(rp); break;
+                    getWaitX().insertSorted(rp); break;
                 }
             }
         }
