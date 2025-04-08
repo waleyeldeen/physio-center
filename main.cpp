@@ -5,12 +5,13 @@ using namespace std;
 
 int main()
 {
-	Scheduler test;
+    srand(time(0));
+    Scheduler s;
+    UI* ui = new UI();
 
-	UI ui;
+    string name = ui->inInputFileName();
+    s.loadInputFile(name);
 
-	string name = ui.inInputFileName();
-	test.loadInputFile(name);
-	
-	ui.printAllInformation(test, 1);
+    // Call the new function in Scheduler
+    s.runSimulation(ui);
 }

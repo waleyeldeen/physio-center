@@ -66,13 +66,18 @@ public:
 	}
 
 	// prints all th contents of arraystack from top to bottom
-	void print() const
+	void print(bool newline = false) const
 	{
-		cout << "ArrayStack(top): ";
 		for (int i = top; i >= 0; i--)
 		{
 			cout << items[i];
-			if (i) cout << ", ";
+			if (i)
+			{
+				if (newline = true)
+					cout << endl;
+				else
+					cout << ", ";
+			}
 		}
 		cout << endl;
 	}

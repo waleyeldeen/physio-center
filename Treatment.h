@@ -3,13 +3,19 @@ using namespace std;
 #include <iostream>
 #include "Resource.h"
 
+/*Forward Declaration*/
+class Patient;
+class Scheduler;
+
 class Treatment
 {
 private:
 	int duration, assignmentTime;
 	Resource* assignedRes;
+protected:
+	Patient* patient;
 public:
-	Treatment(int duration = 0, int assignmentTime = 0) : duration(duration), assignmentTime(assignmentTime), assignedRes(nullptr) {}
+	Treatment(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : patient(patient), duration(duration), assignmentTime(assignmentTime), assignedRes(nullptr) {}
 
 	// getters
 	int getDuration()
@@ -31,5 +37,5 @@ public:
 	}
 
 	virtual void canAssign() = 0;
-	virtual void moveToWait() = 0;
+	virtual void moveToWait(Scheduler* s) = 0;
 };
