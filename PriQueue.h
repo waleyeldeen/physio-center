@@ -30,10 +30,12 @@ public:
     {
         PriNode<T>* current = head;
 
-        while (current)
+        int count = 0;
+        int pri;
+        while (current && count < 10)
         {
-            int x;
-            cout << current->getItem(x);
+            count++;
+            cout << current->getItem(pri);
             current = current->getNext();
             if (current)
                 if (newline)
