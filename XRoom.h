@@ -19,7 +19,7 @@ public:
 		else
 			z = "UnAvailable";
 
-		os << x->id << '/' << x->type << '/' << z << '/' << x->cap;
+		os << x->id << '/' << z << '/' << x->cap;
 		return os;
 	}
 
