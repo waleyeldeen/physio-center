@@ -230,6 +230,7 @@ void Scheduler::runSimulation(UI* ui)
         }
         else if (x < 60)
         {
+            //TODO: should I use insertSorted or enqueue (knowing that the later breaks the PT sort in waitlist)
             if (getServing().dequeue(rp, pri))
             {
                 switch (therapy)
@@ -263,7 +264,7 @@ void Scheduler::runSimulation(UI* ui)
             getEarly().reschedule();
         }
 
-        if (getFinish().getCount() == 10)
+        if (getFinish().getCount() == numPatients)
             ts = -1;
 
         ui->printAllInformation(*this, ts);
