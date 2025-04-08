@@ -149,13 +149,13 @@ void Scheduler::runSimulation(UI* ui)
         else
             therapy = GYM;
 
-        int x = getRandInRange(0, 105);
+        int x = getRandInRange(0, 100);
         cout << "####RANDOM: " << x << endl;
 
         Patient* rp = nullptr;
         int pri;
 
-        if (x < 15)
+        if (x < 10)
         {
             // dequeue next patient from early and get pointer to it
             if (getEarly().dequeue(rp, pri))
@@ -171,7 +171,7 @@ void Scheduler::runSimulation(UI* ui)
                 }
             }
         }
-        else if (x < 30)
+        else if (x < 20)
         {
             // dequeue next patient from late and get pointer to it
             if (getLate().dequeue(rp, pri))
@@ -190,7 +190,7 @@ void Scheduler::runSimulation(UI* ui)
                 }
             }
         }
-        else if (x < 45)
+        else if (x < 40)
         {
             // move 2 next patients from a RandomWaiting to serving list
             Patient* rp2 = nullptr;
@@ -228,7 +228,7 @@ void Scheduler::runSimulation(UI* ui)
             }
 
         }
-        else if (x < 60)
+        else if (x < 50)
         {
             //TODO: should I use insertSorted or enqueue (knowing that the later breaks the PT sort in waitlist)
             if (getServing().dequeue(rp, pri))
@@ -244,14 +244,14 @@ void Scheduler::runSimulation(UI* ui)
                 }
             }
         }
-        else if (x < 75)
+        else if (x < 60)
         {
             if (getServing().dequeue(rp, pri))
             {
                 getFinish().push(rp);
             }
         }
-        else if (x < 90)
+        else if (x < 70)
         {
             rp = getWaitX().pickRandCancelPatient();
             if (rp != nullptr)
@@ -259,7 +259,7 @@ void Scheduler::runSimulation(UI* ui)
                 getFinish().push(rp);
             }
         }
-        else
+        else if (x < 80)
         {
             getEarly().reschedule();
         }
