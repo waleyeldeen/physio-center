@@ -85,10 +85,9 @@ public:
 			{
 				backPtr = previous;
 			}
-			//delete current; // Free memory for the removed node
+			count--;
 		}
 
-		count--;
 
 		return patientPtr;
 	}
