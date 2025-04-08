@@ -24,6 +24,18 @@ public:
 	void available() { avail = true; }
 	void unavailable() { avail = false; }
 
+	friend ostream& operator<<(ostream& os, const Resource* r) {
+
+		string z;
+		if (r->avail == true)
+			z = "Available";
+		else
+			z = "UnAvailable";
+
+		os << r->id << '/' << r->type << '/' << z;
+		return os;
+	}
+
 	virtual void makeAbstract() = 0;
 };
 
