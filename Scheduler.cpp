@@ -103,7 +103,7 @@ void Scheduler::loadInputFile(string fileName)
 
 void Scheduler::checkIdleForArrivedPatients()
 {
-	return;
+    return;
 }
 
 void Scheduler::addToIdle(Patient* p) { idle.enqueue(p); }
@@ -121,7 +121,7 @@ void Scheduler::runSimulation(UI* ui)
     int ts = 0;
     while (ts != -1)
     {
-        cout << "@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@" << endl;
+        cout << "################################################################" << endl;
         ts++;
         Patient* p = nullptr;
         if (getIdle().peek(p))
@@ -149,14 +149,14 @@ void Scheduler::runSimulation(UI* ui)
         else
             therapy = GYM;
 
-        int x = getRandInRange(0, 105);
-        cout << "####RANDOM: " << x << endl;
+        int x = getRandInRange(0, 100);
 
         Patient* rp = nullptr;
         int pri;
 
-        if (x < 15)
+        if (x < 10)
         {
+            cout << "####  MOVING NEXT PATIENT FROM EARLY TO RANDOMWAITING  ####" << endl;
             // dequeue next patient from early and get pointer to it
             if (getEarly().dequeue(rp, pri))
             {
@@ -171,8 +171,10 @@ void Scheduler::runSimulation(UI* ui)
                 }
             }
         }
-        else if (x < 30)
+        else if (x < 20)
         {
+            cout << "####  MOVING NEXT PATIENT FROM LATE TO RANDOMWAITING  ####" << endl;
+
             // dequeue next patient from late and get pointer to it
             if (getLate().dequeue(rp, pri))
             {
@@ -190,8 +192,10 @@ void Scheduler::runSimulation(UI* ui)
                 }
             }
         }
-        else if (x < 45)
+        else if (x < 40)
         {
+            cout << "####  MOVING 2 NEXT PATIENTS FROM RANDOMWAITING TO SERVING  ####" << endl;
+
             // move 2 next patients from a RandomWaiting to serving list
             Patient* rp2 = nullptr;
 
@@ -228,8 +232,10 @@ void Scheduler::runSimulation(UI* ui)
             }
 
         }
-        else if (x < 60)
+        else if (x < 50)
         {
+            cout << "####  MOVING NEXT PATIENT FROM SERVING TO RANDOMWAITING  ####" << endl;
+
             //TODO: should I use insertSorted or enqueue (knowing that the later breaks the PT sort in waitlist)
             if (getServing().dequeue(rp, pri))
             {
@@ -244,25 +250,35 @@ void Scheduler::runSimulation(UI* ui)
                 }
             }
         }
-        else if (x < 75)
+        else if (x < 60)
         {
+            cout << "####  MOVING NEXT PATIENT FROM SERVING TO FINISH  ####" << endl;
+
             if (getServing().dequeue(rp, pri))
             {
                 getFinish().push(rp);
             }
         }
-        else if (x < 90)
+        else if (x < 70)
         {
+            cout << "####  MOVING RANDOM PATIENT FROM XWAITING TO FINISH  ####" << endl;
+
             rp = getWaitX().pickRandCancelPatient();
             if (rp != nullptr)
             {
                 getFinish().push(rp);
             }
         }
-        else
+        else if (x < 80)
         {
+            cout << "####  RESCHEDULE A RANDOM PATIENT IN EARLY LIST  ####" << endl;
+
             getEarly().reschedule();
         }
+        else
+            cout << "#### NO ACTION  ####" << endl;
+
+        cout << "################################################################" << endl;
 
         if (getFinish().getCount() == numPatients)
             ts = -1;

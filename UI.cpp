@@ -47,23 +47,23 @@ void UI::printAllInformation(Scheduler& sObj, int ts)
 
     cout << endl;
 
-    //cout << "=================  Avail E-Devices  =================" << endl
-    //    << sObj.getEDevices().getCount() << " Electro Devices: ";
-    //sObj.getEDevices().print();
+    cout << "=================  Avail E-Devices  =================" << endl
+        << sObj.getEDevices().getCount() << " Electro Devices: ";
+    sObj.getEDevices().print();
 
-    //cout << endl;
+    cout << endl;
 
-    //cout << "=================  Avail U-Devices  =================" << endl
-    //    << sObj.getUDevices().getCount() << " Ultra Devices: ";
-    //sObj.getUDevices().print();
+    cout << "=================  Avail U-Devices  =================" << endl
+        << sObj.getUDevices().getCount() << " Ultra Devices: ";
+    sObj.getUDevices().print();
 
-    //cout << endl;
+    cout << endl;
 
-    //cout << "=================  Avail X-Rooms  =================" << endl
-    //    << sObj.getXRooms().getCount() << " Rooms: ";
-    //sObj.getXRooms().print();
+    cout << "=================  Avail X-Rooms  =================" << endl
+        << sObj.getXRooms().getCount() << " Rooms: ";
+    sObj.getXRooms().print();
 
-    //cout << endl;
+    cout << endl;
 
     cout << "=================  Serving List  =================" << endl
         << sObj.getServing().getCount() << endl;
