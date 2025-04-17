@@ -13,5 +13,4 @@ int main()
     s.loadInputFile(name);
 
     // Call the new function in Scheduler
-    s.runSimulation(ui);
 }

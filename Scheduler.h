@@ -18,6 +18,8 @@ class UI;
 class Scheduler
 {
 private:
+	int ts;
+
 	LinkedQueue<Patient*> idle;
 	EarlyPList early;
 	PriQueue<Patient*> late;
@@ -36,7 +38,7 @@ private:
 
 	int pResc, pCancel, numPatients;
 
-	void addToIdle(Patient* p);
+	//void addToIdle(Patient* p);
 
 public:
 	Scheduler();
@@ -57,12 +59,8 @@ public:
 
 	ArrayStack<Patient*>& getFinish();
 
-	/*Called at each timestep to check the idle list for patients who
-	arrived and move them to early or late accordingle*/
-	void checkIdleForArrivedPatients();
-
-	void addToEarly();
-	void addToLate();
+	//void addToEarly();
+	//void addToLate();
 
 	void addToWaitU(Patient* p);
 	void addToWaitE(Patient* p);
@@ -71,6 +69,11 @@ public:
 	/*Opens the input file and assigs the data to different data members*/
 	void loadInputFile(string fileName);
 
-	void runSimulation(UI* ui);
+	//void runSimulation(UI* ui);
+
+	// PHASE 2 FUNCS
+	/*Called at each timestep to check the idle list for patients who
+	arrived and move them to early or late accordingle. If VT==PT then movetowait func is called*/
+	void moveArrivedPatients();
 };
 
