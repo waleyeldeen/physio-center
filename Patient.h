@@ -9,7 +9,7 @@ class Scheduler;
 class Patient
 {
 private:
-    int id, pt, vt;
+    int id, pt, vt, penalty;
     PatientStatus status;
     LinkedQueue<Treatment*> reqTreatment;
     bool type;  // True: Normal, False: Recovering
@@ -31,6 +31,7 @@ public:
     void setPt(int newPt);
     void setVt(int newVt);
     void setStatus(PatientStatus s);
+    void setPenalty(int newPenalty);
 
     // Treatment operations
     /*
@@ -40,6 +41,7 @@ public:
     bool addTreatment(Treatment* newT);
     bool hasLastTreatment();
     void moveNextTreatmentToWait();
+
 
     // Output stream operator
     friend std::ostream& operator<<(std::ostream& os, const Patient* p);

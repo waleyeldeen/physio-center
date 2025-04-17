@@ -302,9 +302,15 @@ void Scheduler::moveArrivedPatients()
             }
             else if (vt > pt)
             {
+				int penalty = (vt - pt) / 2;
                 // patient is late
                 late.enqueue(p, -pt);
+				// apply penalty of half the difference
+				p->setPenalty(penalty);
+				// set new PT (old pt + penalty)
+				p->setPt(pt + penalty);
             }
         }
     }
 }
+

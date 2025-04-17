@@ -1,7 +1,7 @@
 #include "Patient.h"
 
 Patient::Patient(Scheduler* s, int id, int pt, int vt, bool type)
-    : s(s), id(id), pt(pt), vt(vt), type(type) {
+    : s(s), id(id), pt(pt), vt(vt), type(type), penalty(0) {
 }
 
 Patient::Patient(const Patient* other)
@@ -24,6 +24,7 @@ void Patient::setId(int newId) { id = newId; }
 void Patient::setPt(int newPt) { pt = newPt; }
 void Patient::setVt(int newVt) { vt = newVt; }
 void Patient::setStatus(PatientStatus s) { status = s; }
+void Patient::setPenalty(int newPenalty) { penalty = newPenalty; }
 
 
 // Treatment operations
