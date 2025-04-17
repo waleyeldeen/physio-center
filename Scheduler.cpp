@@ -279,6 +279,18 @@ void Scheduler::addToWaitX(Patient* p) { waitX.enqueue(p); }
 //        cin.get();
 //    }
 //}
+void Scheduler::sim(UI* ui)
+{
+	while (true)
+	{
+		ts++;
+		moveArrivedPatients();
+
+		ui->printAllInformation(*this, ts);
+
+		cin.get();
+	}
+}
 
 void Scheduler::moveArrivedPatients()
 {
@@ -309,8 +321,14 @@ void Scheduler::moveArrivedPatients()
 				p->setPenalty(penalty);
 				// set new PT (old pt + penalty)
 				p->setPt(pt + penalty);
-            }
-        }
+			}
+			else if (vt == pt)
+			{
+				//TODO call move to waitlist func
+			}
+		}
+		else
+			break;
     }
 }
 

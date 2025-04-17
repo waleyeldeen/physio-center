@@ -70,6 +70,7 @@ public:
 	void loadInputFile(string fileName);
 
 	//void runSimulation(UI* ui);
+	void sim(UI* ui);
 
 	// PHASE 2 FUNCS
 	/*Called at each timestep to check the idle list for patients who
