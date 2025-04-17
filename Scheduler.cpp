@@ -227,7 +227,7 @@ void Scheduler::addToWaitX(Patient* p) { waitX.enqueue(p); }
 //        {
 //            cout << "####  MOVING NEXT PATIENT FROM SERVING TO RANDOMWAITING  ####" << endl;
 //
-//            //TODO: should I use insertSorted or enqueue (knowing that the later breaks the PT sort in waitlist)
+//            //[]TODO: should I use insertSorted or enqueue (knowing that the later breaks the PT sort in waitlist)
 //            if (getServing().dequeue(rp, pri))
 //            {
 //                switch (therapy)
@@ -299,24 +299,24 @@ void Scheduler::moveArrivedPatients()
     {
         Patient* p;
         idle.peek(p);
-        if (ts == p->getVt())
-        {
-            // found an arrived patient
-            idle.dequeue(p);
-            int pt = p->getPt();
-            int vt = p->getVt();
+		if (ts == p->getVt())
+		{
+			// found an arrived patient
+			idle.dequeue(p);
+			int pt = p->getPt();
+			int vt = p->getVt();
 
-            // check if patient is early, late or VT==PT
-            if (vt < pt)
-            {
-                // patient is early
-                early.enqueue(p, -pt);
-            }
-            else if (vt > pt)
-            {
+			// check if patient is early, late or VT==PT
+			if (vt < pt)
+			{
+				// patient is early
+				early.enqueue(p, -pt);
+			}
+			else if (vt > pt)
+			{
 				int penalty = (vt - pt) / 2;
-                // patient is late
-                late.enqueue(p, -pt);
+				// patient is late
+				late.enqueue(p, -pt);
 				// apply penalty of half the difference
 				p->setPenalty(penalty);
 				// set new PT (old pt + penalty)
