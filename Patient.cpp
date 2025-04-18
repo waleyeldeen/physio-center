@@ -18,6 +18,7 @@ int Patient::getPt() const { return pt; }
 int Patient::getVt() const { return vt; }
 PatientStatus Patient::getStatus() const { return status; }
 int Patient::getType() const { return type; }
+int Patient::getPenalty() const { return penalty; }
 
 // Setters
 void Patient::setId(int newId) { id = newId; }

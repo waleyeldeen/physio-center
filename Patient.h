@@ -25,6 +25,7 @@ public:
     int getVt() const;
     PatientStatus getStatus() const;
     int getType() const;
+    int getPenalty() const;
 
     // Setters
     void setId(int newId);
