@@ -332,3 +332,27 @@ void Scheduler::moveArrivedPatients()
     }
 }
 
+void Scheduler::moveEarlyPatientsToWait()
+{
+
+}
+
+void Scheduler::moveLatePatientsToWait()
+{
+
+}
+
+void Scheduler::moveNormPatientToWait()
+{
+	while (true)
+	{
+		Patient* p;
+		
+		
+	}
+}
+
+void Scheduler::moveRecPatientToWait()
+{
+
+}

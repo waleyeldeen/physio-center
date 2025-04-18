@@ -76,5 +76,23 @@ public:
 	/*Called at each timestep to check the idle list for patients who
 	arrived and move them to early or late accordingle. If VT==PT then movetowait func is called*/
 	void moveArrivedPatients();
+
+	/*
+		move patients(N or R) in early to appropiate waiting
+	*/
+	void moveEarlyPatientsToWait();
+
+	/*
+		move patients(N or R) in late to appropiate waiting
+	*/
+	void moveLatePatientsToWait();
+
+	/*
+		Check for patients in early with ts == pt and move them to appropiate waiting
+
+		
+	*/
+	void moveNormPatientToWait();
+	void moveRecPatientToWait();
 };
 
