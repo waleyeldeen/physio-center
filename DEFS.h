@@ -20,7 +20,7 @@ enum PatientStatus
 	FNSH
 };
 
-enum TherapyType
+enum TreatmentType
 {
 	ULTRA,
 	ELECTRO,

@@ -2,6 +2,7 @@
 using namespace std;
 #include <iostream>
 #include "Resource.h"
+#include "DEFS.h"
 
 /*Forward Declaration*/
 class Patient;
@@ -11,16 +12,22 @@ class Treatment
 {
 private:
 	int duration, assignmentTime;
+	const TreatmentType type;
 	Resource* assignedRes;
 protected:
 	Patient* patient;
 public:
-	Treatment(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : patient(patient), duration(duration), assignmentTime(assignmentTime), assignedRes(nullptr) {}
+	Treatment(Patient* patient = nullptr, int duration = 0, TreatmentType type = ULTRA, int assignmentTime = 0) : patient(patient), duration(duration), assignmentTime(assignmentTime), type(type), assignedRes(nullptr) {}
 
 	// getters
 	int getDuration()
 	{
 		return duration;
+	}
+
+	TreatmentType getType()
+	{
+		return type;
 	}
 
 
