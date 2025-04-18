@@ -286,6 +286,10 @@ void Scheduler::sim(UI* ui)
 		ts++;
 		moveArrivedPatients();
 
+		moveEarlyPatientsToWait();
+
+		moveLatePatientsToWait();
+
 		ui->printAllInformation(*this, ts);
 
 		cin.get();
@@ -297,9 +301,9 @@ void Scheduler::moveArrivedPatients()
     // case of 2 patients with same VT is handled using while loop
     while (true)
     {
-        Patient* p;
+        Patient* p = nullptr;
         idle.peek(p);
-		if (ts == p->getVt())
+		if (p && ts == p->getVt())
 		{
 			// found an arrived patient
 			idle.dequeue(p);
@@ -334,25 +338,129 @@ void Scheduler::moveArrivedPatients()
 
 void Scheduler::moveEarlyPatientsToWait()
 {
+	while (true)
+	{
+		Patient* p = nullptr;
+		int pri = 0;
+		early.peek(p, pri); // pri is negetive the appointment time
+		if (p && ts == -pri)
+		{
+			// dequeue appoitned patient from early
+			early.dequeue(p, pri);
 
+			// check if patient is normal or recovering
+			bool normal = p->getType();
+			if (normal == true)
+				moveNormPatientToWait(p);
+			else
+				moveRecPatientToWait(p);
+
+		}
+		else
+			break;
+	}
 }
 
 void Scheduler::moveLatePatientsToWait()
 {
-
-}
-
-void Scheduler::moveNormPatientToWait()
-{
 	while (true)
 	{
-		Patient* p;
-		
-		
+		Patient* p = nullptr;
+		int pri = 0;
+		late.peek(p, pri); // pri is negetive the appointment time
+		if (p && ts == p->getVt()+p->getPenalty())
+		{
+			// dequeue appoitned patient from early
+			late.dequeue(p, pri);
+
+			// check if patient is normal or recovering
+			bool normal = p->getType();
+			if (normal == true)
+				moveNormPatientToWait(p, true); // true is for late patients
+			else
+				moveRecPatientToWait(p, true); // true is for late patients
+
+		}
+		else
+			break;
 	}
 }
 
-void Scheduler::moveRecPatientToWait()
+void Scheduler::moveNormPatientToWait(Patient* p, bool isLate)
 {
+	// get type of first treatment in patient
+	Treatment* currentTreatment;
+	currentTreatment = p->peekReqTreatment();
+	TreatmentType type = currentTreatment->getType();
 
+	if (isLate == false)
+	{
+		if (type == ULTRA)
+			waitU.enqueue(p);
+		else if (type == ELECTRO)
+			waitE.enqueue(p);
+		else if (type == GYM)
+			waitX.enqueue(p);
+	}
+	else if (isLate == true)
+	{
+		if (type == ULTRA)
+			waitU.insertSorted(p);
+		else if (type == ELECTRO)
+			waitE.insertSorted(p);
+		else if (type == GYM)
+			waitX.insertSorted(p);
+	}
+}
+
+void Scheduler::moveRecPatientToWait(Patient* p, bool isLate)
+{
+	Treatment* currentTreatment;
+	currentTreatment = p->peekReqTreatment();
+	TreatmentType type = currentTreatment->getType();
+
+	// get wait with least latency
+	TreatmentType minLat = getMinLatencyWait();
+
+	if (isLate == false)
+	{
+		if (minLat == ULTRA)
+			waitU.enqueue(p);
+		else if (minLat == ELECTRO)
+			waitE.enqueue(p);
+		else if (minLat == GYM)
+			waitX.enqueue(p);
+	}
+	else if (isLate == true)
+	{
+		if (minLat == ULTRA)
+			waitU.insertSorted(p);
+		else if (minLat == ELECTRO)
+			waitE.insertSorted(p);
+		else if (minLat == GYM)
+			waitX.insertSorted(p);
+	}
+}
+
+
+TreatmentType Scheduler::getMinLatencyWait()
+{
+	int u, e, x, min;
+	TreatmentType type;
+	u = waitU.calcTreatmentLat();
+	e = waitE.calcTreatmentLat();
+	x = waitX.calcTreatmentLat();
+	
+	min = u;
+	type = ULTRA;
+	if (e < min)
+	{
+		min = e; type = ELECTRO;
+	}
+	else if (x < min)
+	{
+		min = x; type = GYM;
+	}
+
+	return type;
 }

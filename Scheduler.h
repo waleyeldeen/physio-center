@@ -88,11 +88,15 @@ public:
 	void moveLatePatientsToWait();
 
 	/*
-		Check for patients in early with ts == pt and move them to appropiate waiting
-
-		
+		Takes patient pointer as parameter and enqueue it
+		to appropiate waiting
 	*/
-	void moveNormPatientToWait();
-	void moveRecPatientToWait();
+	void moveNormPatientToWait(Patient* p, bool isLate = false);
+	void moveRecPatientToWait(Patient* p, bool isLate = false);
+
+	/*
+		return wait with least latency
+	*/
+	TreatmentType getMinLatencyWait();
 };
 
