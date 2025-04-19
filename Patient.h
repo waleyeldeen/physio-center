@@ -40,6 +40,10 @@ public:
         Return a pointer to the Treatment object at the front
     */
     Treatment* peekReqTreatment();
+
+    /*Checks if a certain treatment exists in reqTreatemnt list*/
+    bool hasTreatment(TreatmentType t);
+
     bool addTreatment(Treatment* newT);
     bool hasLastTreatment();
     void moveNextTreatmentToWait();

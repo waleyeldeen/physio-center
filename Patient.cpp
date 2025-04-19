@@ -38,6 +38,33 @@ Treatment* Patient::peekReqTreatment()
     return toBeReturned;
 }
 
+bool Patient::hasTreatment(TreatmentType tt)
+{
+    bool exist = false;
+    LinkedQueue<Treatment*> tempReqTreatment;
+
+    Treatment* t;
+
+    for (int i = 0; i < numOfTreatments; i++)
+    {
+        reqTreatment.dequeue(t);
+        if (tt == t->getType())
+        {
+            exist = true;
+        }
+        tempReqTreatment.enqueue(t);
+    }
+
+    // return the reqTreatment to its original state
+    for (int i = 0; i < numOfTreatments; i++)
+    {
+        tempReqTreatment.dequeue(t);
+        reqTreatment.enqueue(t);
+    }
+
+    return exist;
+}
+
 
 bool Patient::addTreatment(Treatment* newT)
 {
