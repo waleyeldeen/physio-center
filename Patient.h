@@ -9,14 +9,14 @@ class Scheduler;
 class Patient
 {
 private:
-    int id, pt, vt, penalty;
+    int id, pt, vt, penalty, numOfTreatments;
     PatientStatus status;
     LinkedQueue<Treatment*> reqTreatment;
     bool type;  // True: Normal, False: Recovering
     Scheduler* s;
 
 public:
-    Patient(Scheduler* s, int id, int pt, int vt, bool type);
+    Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool type);
     Patient(const Patient* other);
 
     // Getters
@@ -24,6 +24,7 @@ public:
     int getPt() const;
     int getVt() const;
     PatientStatus getStatus() const;
+    int getNumOfTreatments() const;
     int getType() const;
     int getPenalty() const;
 

@@ -74,7 +74,7 @@ void Scheduler::loadInputFile(string fileName)
 
 		file >> pt >> vt >> numTreatments;
 
-		Patient* newP = new Patient(this, i + 1, pt, vt, type);
+		Patient* newP = new Patient(this, i + 1, pt, vt, numTreatments, type);
 		idle.enqueue(newP);
 
 		for (int j = 0; j < numTreatments; j++)
