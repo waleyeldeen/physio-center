@@ -58,7 +58,7 @@ public:
 		default:
 			os << "NONE";
 		}
-		os << ", " << p->duration << ">>";
+		os << " " << p->duration << ">>";
 
 		return os;
 	}
