@@ -415,52 +415,73 @@ void Scheduler::moveNormPatientToWait(Patient* p, bool isLate)
 
 void Scheduler::moveRecPatientToWait(Patient* p, bool isLate)
 {
+	//TODO: remove isLate and use insteadSorted anyway
 	Treatment* currentTreatment;
 	currentTreatment = p->peekReqTreatment();
 	TreatmentType type = currentTreatment->getType();
 
-	// get wait with least latency
-	TreatmentType minLat = getMinLatencyWait();
+	// get array of asc order latencies
+	TreatmentType latArr[3];
+	getMinLatencyArray(latArr);
 
-	if (isLate == false)
+
+	// loop on latArr
+	for (int i = 0; i < 3; i++)
 	{
-		if (minLat == ULTRA)
-			waitU.enqueue(p);
-		else if (minLat == ELECTRO)
-			waitE.enqueue(p);
-		else if (minLat == GYM)
-			waitX.enqueue(p);
-	}
-	else if (isLate == true)
-	{
-		if (minLat == ULTRA)
-			waitU.insertSorted(p);
-		else if (minLat == ELECTRO)
-			waitE.insertSorted(p);
-		else if (minLat == GYM)
-			waitX.insertSorted(p);
+		bool treatmentExist = p->hasTreatment(latArr[i]);
+		// if true check which waitlist we are looking at and enqueue in it
+		if (treatmentExist)
+		{
+			switch (latArr[i])
+			{
+			case ULTRA:
+				waitU.insertSorted(p); break;
+			case ELECTRO:
+				waitE.insertSorted(p); break;
+			case GYM:
+				waitX.insertSorted(p); break;
+			}
+			// break from for loop as the priority is for the lowest latency that exists only
+			break;
+		}
 	}
 }
 
 
-TreatmentType Scheduler::getMinLatencyWait()
+void Scheduler::getMinLatencyArray(TreatmentType arr[3])
 {
-	int u, e, x, min;
-	TreatmentType type;
-	u = waitU.calcTreatmentLat();
-	e = waitE.calcTreatmentLat();
-	x = waitX.calcTreatmentLat();
-	
-	min = u;
-	type = ULTRA;
-	if (e < min)
-	{
-		min = e; type = ELECTRO;
-	}
-	else if (x < min)
-	{
-		min = x; type = GYM;
-	}
+	// Calculate latencies for each treatment type
+	int latencies[3];
+	latencies[0] = waitU.calcTreatmentLat(); // ULTRA
+	latencies[1] = waitE.calcTreatmentLat(); // ELECTRO
+	latencies[2] = waitX.calcTreatmentLat(); // GYM
 
-	return type;
+	// Map indices to treatment types
+	arr[0] = ULTRA;
+	arr[1] = ELECTRO;
+	arr[2] = GYM;
+
+    // Sort the treatment types in ascending order of latency using a basic bubble sort
+    bool swapped = true;
+       while (swapped)
+       {
+           swapped = false;
+           for (int i = 0; i < 2; ++i)
+           {
+               if (latencies[i] > latencies[i + 1])
+               {
+                   // Swap latencies  
+                   int tempLatency = latencies[i];
+                   latencies[i] = latencies[i + 1];
+                   latencies[i + 1] = tempLatency;
+
+                   // Swap corresponding treatment types  
+                   TreatmentType tempType = arr[i];
+                   arr[i] = arr[i + 1];
+                   arr[i + 1] = tempType;
+
+                   swapped = true;
+               }
+           }
+       }
 }

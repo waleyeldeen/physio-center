@@ -95,8 +95,8 @@ public:
 	void moveRecPatientToWait(Patient* p, bool isLate = false);
 
 	/*
-		return wait with least latency
+		return an array sorted asc by latency of each waitlist
 	*/
-	TreatmentType getMinLatencyWait();
+	void getMinLatencyArray(TreatmentType arr[3]);
 };
 
