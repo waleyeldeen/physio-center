@@ -432,14 +432,29 @@ void Scheduler::moveRecPatientToWait(Patient* p, bool isLate)
 		// if true check which waitlist we are looking at and enqueue in it
 		if (treatmentExist)
 		{
-			switch (latArr[i])
+			if (isLate == false)
 			{
-			case ULTRA:
-				waitU.insertSorted(p); break;
-			case ELECTRO:
-				waitE.insertSorted(p); break;
-			case GYM:
-				waitX.insertSorted(p); break;
+				switch (latArr[i])
+				{
+				case ULTRA:
+					waitU.enqueue(p); break;
+				case ELECTRO:
+					waitE.enqueue(p); break;
+				case GYM:
+					waitX.enqueue(p); break;
+				}
+			}
+			else if (isLate == true)
+			{
+				switch (latArr[i])
+				{
+				case ULTRA:
+					waitU.insertSorted(p); break;
+				case ELECTRO:
+					waitE.insertSorted(p); break;
+				case GYM:
+					waitX.insertSorted(p); break;
+				}
 			}
 			// break from for loop as the priority is for the lowest latency that exists only
 			break;
