@@ -66,7 +66,8 @@ std::ostream& operator<<(std::ostream& os, const Patient* p)
 {
     os << "[Patient ID: " << p->id << ", PT: " << p->pt
         << ", VT: " << p->vt << ", Type: "
-        << (p->type ? "N]" : "R]");
-
+        << (p->type ? "N" : "R") << ", ";
+    p->reqTreatment.print();
+    os << "]";
     return os;
 }
