@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 
+// TODO: should I use forward decs
 #include "LinkedQueue.h"
 #include "EarlyPList.h"
 #include "PriQueue.h"
@@ -12,6 +13,7 @@ using namespace std;
 #include "EDevice.h"
 #include "UDevice.h"
 #include "XRoom.h"
+#include "UI.h"
 
 class UI;
 
@@ -62,6 +64,11 @@ public:
 	//void addToEarly();
 	//void addToLate();
 
+	/*
+		functions called by Treatment::moveToWait()
+		They depend on the patient status (ERLY, LATE, SERV)
+		TODO: should they dequeue from the prevous one
+	*/
 	void addToWaitU(Patient* p);
 	void addToWaitE(Patient* p);
 	void addToWaitX(Patient* p);

@@ -101,11 +101,33 @@ void Scheduler::loadInputFile(string fileName)
 	file.close();
 }
 
-void Scheduler::addToWaitU(Patient* p) { waitU.enqueue(p); }
-void Scheduler::addToWaitE(Patient* p) { waitE.enqueue(p); }
-void Scheduler::addToWaitX(Patient* p) { waitX.enqueue(p); }
+void Scheduler::addToWaitU(Patient* p)
+{
+	PatientStatus status = p->getStatus();
+	if (status == ERLY)
+		waitU.enqueue(p);
+	else if (status == LATE || status == SERV)
+		waitU.insertSorted(p);
+}
 
-#include "UI.h"
+void Scheduler::addToWaitE(Patient* p)
+{
+	PatientStatus status = p->getStatus();
+	if (status == ERLY)
+		waitE.enqueue(p);
+	else if (status == LATE || status == SERV)
+		waitE.insertSorted(p);
+}
+
+void Scheduler::addToWaitX(Patient* p)
+{
+	PatientStatus status = p->getStatus();
+	if (status == ERLY)
+		waitX.enqueue(p);
+	else if (status == LATE || status == SERV)
+		waitX.insertSorted(p);
+}
+
 
 //void Scheduler::runSimulation(UI* ui)
 //{
