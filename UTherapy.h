@@ -16,6 +16,6 @@ public:
 
 	void moveToWait(Scheduler* s)
 	{
-		s->addToWaitE(patient);
+		s->addToWaitU(patient);
 	}
 };
