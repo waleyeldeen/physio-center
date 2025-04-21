@@ -13,6 +13,7 @@ public:
 		This function should pick a random patient from the Priority Queue
 		and change  the PT to random one in the future.
 		To fix the position of the patient in the Priority Queue, dequeue and enqueue the patient again
+		TODO: Make it return true if rescheduled and false if list is empty
 	*/
 	void reschedule()
 	{

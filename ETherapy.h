@@ -6,7 +6,7 @@ using namespace std;
 class ETherapy : public Treatment
 {
 public:
-	ETherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, assignmentTime) {}
+	ETherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, ELECTRO, assignmentTime) {}
 
 	void canAssign()
 	{

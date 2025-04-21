@@ -20,7 +20,7 @@ public:
 	*/
 	Patient* pickRandCancelPatient()
 	{
-		// TODO: what can I do if the list is empty
+		// []TODO: what can I do if the list is empty
 		if (this->isEmpty()) { return nullptr; }
 
 
