@@ -46,6 +46,14 @@ public:
 
     bool addTreatment(Treatment* newT);
     bool hasLastTreatment();
+
+    /*Reorder reqTreatment list so that the one with type tt is at the front*/
+    bool reorderReqTreatment(TreatmentType tt);
+
+    /*
+        Moves patient to waiting list (N or R)
+        Does not take into consideration of patient is ERLY or LATE
+    */
     void moveNextTreatmentToWait();
 
 

@@ -1,4 +1,5 @@
 #include "Patient.h"
+#include "Scheduler.h"
 
 Patient::Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool type)
     : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments), type(type), penalty(0) {
@@ -81,11 +82,58 @@ bool Patient::hasLastTreatment()
     return reqTreatment.getCount() == 1;
 }
 
+bool Patient::reorderReqTreatment(TreatmentType tt)
+{
+    Treatment* t = nullptr;
+    while (true)
+    {
+        if (reqTreatment.peek(t))
+        {
+            if (t->getType() != tt)
+            {
+                reqTreatment.dequeue(t);
+                reqTreatment.enqueue(t);
+            }
+            else if (t->getType() == tt)
+                break;
+        }
+    }
+    return true;
+}
+
 void Patient::moveNextTreatmentToWait()
 {
     Treatment* t;
-    reqTreatment.peek(t);
-    t->moveToWait(s);
+
+    if (type == true)
+    {
+        // patient is normal
+        reqTreatment.peek(t);
+        t->moveToWait(s);
+    }
+    else if (type == false)
+    {
+        // patient is recovering
+        TreatmentType arr[3];
+        s->getMinLatencyArray(arr);
+
+        // loop on arr
+        for (int i = 0; i < 3; i++)
+        {
+            TreatmentType currMinTreatmentType = arr[i];
+
+            // true if patient has the treatment in arr[i]
+            bool treatmentExist = hasTreatment(currMinTreatmentType);
+
+            if (treatmentExist)
+            {
+                reorderReqTreatment(currMinTreatmentType);
+                reqTreatment.peek(t);
+                t->moveToWait(s);
+                break;
+            }
+        }
+    }
 }
 
 // Output stream operator
