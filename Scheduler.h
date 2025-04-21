@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 
+// TODO: should I use forward decs
 #include "LinkedQueue.h"
 #include "EarlyPList.h"
 #include "PriQueue.h"
@@ -12,12 +13,15 @@ using namespace std;
 #include "EDevice.h"
 #include "UDevice.h"
 #include "XRoom.h"
+#include "UI.h"
 
 class UI;
 
 class Scheduler
 {
 private:
+	int ts;
+
 	LinkedQueue<Patient*> idle;
 	EarlyPList early;
 	PriQueue<Patient*> late;
@@ -36,7 +40,7 @@ private:
 
 	int pResc, pCancel, numPatients;
 
-	void addToIdle(Patient* p);
+	//void addToIdle(Patient* p);
 
 public:
 	Scheduler();
@@ -57,13 +61,14 @@ public:
 
 	ArrayStack<Patient*>& getFinish();
 
-	/*Called at each timestep to check the idle list for patients who
-	arrived and move them to early or late accordingle*/
-	void checkIdleForArrivedPatients();
+	//void addToEarly();
+	//void addToLate();
 
-	void addToEarly();
-	void addToLate();
-
+	/*
+		functions called by Treatment::moveToWait()
+		They depend on the patient status (ERLY, LATE, SERV)
+		TODO: should they dequeue from the prevous one
+	*/
 	void addToWaitU(Patient* p);
 	void addToWaitE(Patient* p);
 	void addToWaitX(Patient* p);
@@ -71,6 +76,27 @@ public:
 	/*Opens the input file and assigs the data to different data members*/
 	void loadInputFile(string fileName);
 
-	void runSimulation(UI* ui);
+	//void runSimulation(UI* ui);
+	void sim(UI* ui);
+
+	// PHASE 2 FUNCS
+	/*Called at each timestep to check the idle list for patients who
+	arrived and move them to early or late accordingle. If VT==PT then movetowait func is called*/
+	void moveArrivedPatients();
+
+	/*
+		move patients in early to appropiate waiting
+	*/
+	void moveEarlyPatientsToWait();
+
+	/*
+		move patients in late to appropiate waiting
+	*/
+	void moveLatePatientsToWait();
+
+	/*
+		return an array sorted asc by latency of each waitlist
+	*/
+	void getMinLatencyArray(TreatmentType arr[3]);
 };
 

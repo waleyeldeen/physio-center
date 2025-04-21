@@ -11,7 +11,7 @@ int main()
 
     string name = ui->inInputFileName();
     s.loadInputFile(name);
-
+    
+    s.sim(ui);
     // Call the new function in Scheduler
-    s.runSimulation(ui);
 }
