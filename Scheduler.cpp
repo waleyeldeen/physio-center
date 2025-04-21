@@ -337,6 +337,7 @@ void Scheduler::moveArrivedPatients()
 			{
 				// patient is early
 				early.enqueue(p, -pt);
+				p->setStatus(ERLY);
 			}
 			else if (vt > pt)
 			{
@@ -347,6 +348,7 @@ void Scheduler::moveArrivedPatients()
 				p->setPenalty(penalty);
 				// set new PT (old pt + penalty)
 				p->setPt(pt + penalty);
+				p->setStatus(LATE);
 			}
 			else if (vt == pt)
 			{
@@ -376,7 +378,7 @@ void Scheduler::moveEarlyPatientsToWait()
 				moveNormPatientToWait(p);
 			else
 				moveRecPatientToWait(p);
-
+			 
 		}
 		else
 			break;
@@ -410,78 +412,12 @@ void Scheduler::moveLatePatientsToWait()
 
 void Scheduler::moveNormPatientToWait(Patient* p, bool isLate)
 {
-	// get type of first treatment in patient
-	Treatment* currentTreatment;
-	currentTreatment = p->peekReqTreatment();
-	TreatmentType type = currentTreatment->getType();
-
-	if (isLate == false)
-	{
-		if (type == ULTRA)
-			waitU.enqueue(p);
-		else if (type == ELECTRO)
-			waitE.enqueue(p);
-		else if (type == GYM)
-			waitX.enqueue(p);
-	}
-	else if (isLate == true)
-	{
-		if (type == ULTRA)
-			waitU.insertSorted(p);
-		else if (type == ELECTRO)
-			waitE.insertSorted(p);
-		else if (type == GYM)
-			waitX.insertSorted(p);
-	}
+	p->moveNextTreatmentToWait();
 }
 
 void Scheduler::moveRecPatientToWait(Patient* p, bool isLate)
 {
-	//TODO: remove isLate and use insteadSorted anyway
-	Treatment* currentTreatment;
-	currentTreatment = p->peekReqTreatment();
-	TreatmentType type = currentTreatment->getType();
-
-	// get array of asc order latencies
-	TreatmentType latArr[3];
-	getMinLatencyArray(latArr);
-
-
-	// loop on latArr
-	for (int i = 0; i < 3; i++)
-	{
-		bool treatmentExist = p->hasTreatment(latArr[i]);
-		// if true check which waitlist we are looking at and enqueue in it
-		if (treatmentExist)
-		{
-			if (isLate == false)
-			{
-				switch (latArr[i])
-				{
-				case ULTRA:
-					waitU.enqueue(p); break;
-				case ELECTRO:
-					waitE.enqueue(p); break;
-				case GYM:
-					waitX.enqueue(p); break;
-				}
-			}
-			else if (isLate == true)
-			{
-				switch (latArr[i])
-				{
-				case ULTRA:
-					waitU.insertSorted(p); break;
-				case ELECTRO:
-					waitE.insertSorted(p); break;
-				case GYM:
-					waitX.insertSorted(p); break;
-				}
-			}
-			// break from for loop as the priority is for the lowest latency that exists only
-			break;
-		}
-	}
+	p->moveNextTreatmentToWait();
 }
 
 
