@@ -85,21 +85,14 @@ public:
 	void moveArrivedPatients();
 
 	/*
-		move patients(N or R) in early to appropiate waiting
+		move patients in early to appropiate waiting
 	*/
 	void moveEarlyPatientsToWait();
 
 	/*
-		move patients(N or R) in late to appropiate waiting
+		move patients in late to appropiate waiting
 	*/
 	void moveLatePatientsToWait();
-
-	/*
-		Takes patient pointer as parameter and enqueue it
-		to appropiate waiting
-	*/
-	void moveNormPatientToWait(Patient* p, bool isLate = false);
-	void moveRecPatientToWait(Patient* p, bool isLate = false);
 
 	/*
 		return an array sorted asc by latency of each waitlist
