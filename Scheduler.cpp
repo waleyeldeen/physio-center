@@ -373,7 +373,7 @@ void Scheduler::moveEarlyPatientsToWait()
 			early.dequeue(p, pri);
 
 			// check if patient is normal or recovering
-			bool normal = p->getType();
+			bool normal = p->getIsNormal();
 			if (normal == true)
 				moveNormPatientToWait(p);
 			else
@@ -398,7 +398,7 @@ void Scheduler::moveLatePatientsToWait()
 			late.dequeue(p, pri);
 
 			// check if patient is normal or recovering
-			bool normal = p->getType();
+			bool normal = p->getIsNormal();
 			if (normal == true)
 				moveNormPatientToWait(p, true); // true is for late patients
 			else

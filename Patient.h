@@ -12,11 +12,11 @@ private:
     int id, pt, vt, penalty, numOfTreatments;
     PatientStatus status;
     LinkedQueue<Treatment*> reqTreatment;
-    bool type;  // True: Normal, False: Recovering
+    bool isNormal;  // True: Normal, False: Recovering
     Scheduler* s;
 
 public:
-    Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool type);
+    Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal);
     Patient(const Patient* other);
 
     // Getters
@@ -25,7 +25,7 @@ public:
     int getVt() const;
     PatientStatus getStatus() const;
     int getNumOfTreatments() const;
-    int getType() const;
+    int getIsNormal() const;
     int getPenalty() const;
 
     // Setters
