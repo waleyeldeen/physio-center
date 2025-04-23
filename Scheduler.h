@@ -2,7 +2,6 @@
 #include <iostream>
 using namespace std;
 
-// TODO: should I use forward decs
 #include "LinkedQueue.h"
 #include "EarlyPList.h"
 #include "PriQueue.h"
@@ -13,15 +12,12 @@ using namespace std;
 #include "EDevice.h"
 #include "UDevice.h"
 #include "XRoom.h"
-#include "UI.h"
 
 class UI;
 
 class Scheduler
 {
 private:
-	int ts;
-
 	LinkedQueue<Patient*> idle;
 	EarlyPList early;
 	PriQueue<Patient*> late;
@@ -40,7 +36,9 @@ private:
 
 	int pResc, pCancel, numPatients;
 
-	//void addToIdle(Patient* p);
+	void addToIdle(Patient* p);
+
+	int ts = 0;
 
 public:
 	Scheduler();
@@ -61,42 +59,32 @@ public:
 
 	ArrayStack<Patient*>& getFinish();
 
-	//void addToEarly();
-	//void addToLate();
+	/*Called at each timestep to check the idle list for patients who
+	arrived and move them to early or late accordingle*/
+	void checkIdleForArrivedPatients();
 
-	/*
-		functions called by Treatment::moveToWait()
-		They depend on the patient status (ERLY, LATE, SERV)
-		TODO: should they dequeue from the prevous one
-	*/
+	void addToEarly();
+	void addToLate();
+
 	void addToWaitU(Patient* p);
 	void addToWaitE(Patient* p);
 	void addToWaitX(Patient* p);
 
+	void addToServe(Patient* p);
+
 	/*Opens the input file and assigs the data to different data members*/
 	void loadInputFile(string fileName);
 
-	//void runSimulation(UI* ui);
-	void sim(UI* ui);
+	void runSimulation(UI* ui);
 
-	// PHASE 2 FUNCS
-	/*Called at each timestep to check the idle list for patients who
-	arrived and move them to early or late accordingle. If VT==PT then movetowait func is called*/
-	void moveArrivedPatients();
+	// Getter for TimeStep
+	int GetTimeStep() const;
 
-	/*
-		move patients in early to appropiate waiting
-	*/
-	void moveEarlyPatientsToWait();
+	// Assigning Patients with Treatments functions
+	void Move_EWaitngPTs_to_Serve(); // Assign P with E
+	void Move_UWaitingPTs_to_Serve(); // Assign P with U
+	void Move_XWaitingPTs_to_Serve(); // Assign P with X
 
-	/*
-		move patients in late to appropiate waiting
-	*/
-	void moveLatePatientsToWait();
-
-	/*
-		return an array sorted asc by latency of each waitlist
-	*/
-	void getMinLatencyArray(TreatmentType arr[3]);
+	void IncrementTimeStep();
 };
 

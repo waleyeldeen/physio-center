@@ -19,6 +19,7 @@
     <ClCompile Include="Patient.cpp">
       <Filter>Patient</Filter>
     </ClCompile>
+    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="UI.h">
@@ -60,9 +61,6 @@
     <ClInclude Include="Patient.h">
       <Filter>Patient</Filter>
     </ClInclude>
-    <ClInclude Include="XWaitlist.h">
-      <Filter>DS</Filter>
-    </ClInclude>
     <ClInclude Include="Treatment.h">
       <Filter>Treatments</Filter>
     </ClInclude>
@@ -88,6 +86,9 @@
       <Filter>Resources</Filter>
     </ClInclude>
     <ClInclude Include="DEFS.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="XWaitlist.h">
       <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>

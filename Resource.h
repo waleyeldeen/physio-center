@@ -20,7 +20,6 @@ public:
 
 	// setters
 	void setId(int newId) { id = newId; }
-
 	void available() { avail = true; }
 	void unavailable() { avail = false; }
 
