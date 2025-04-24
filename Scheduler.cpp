@@ -123,29 +123,14 @@ void Scheduler::addToServe(Patient* p) { serving.enqueue(p, -p->peekReqTreatment
 
 #include "UI.h"
 
-int Scheduler::GetTimeStep() const { return ts; }
+int Scheduler::getTimeStep() const { return ts; }
 
-void Scheduler::Move_EWaitngPTs_to_Serve()
+void Scheduler::moveUWaitPatientsToServe()
 {
-    ETherapy* ETh = new ETherapy();
-    EDevice* E;
-    Patient* Pt;
-    while (ETh->canAssign(this) && this->getWaitE().getCount() != 0)
-    {
-        this->getWaitE().dequeue(Pt);
-        this->getEDevices().dequeue(E);
-        Pt->peekReqTreatment()->setAssignmentTime(ts);
-        Pt->peekReqTreatment()->setAssignedRes(E);
-        this->addToServe(Pt);
-    }
-}
-
-void Scheduler::Move_UWaitingPTs_to_Serve()
-{
-    UTherapy* UTh = new UTherapy();
+    UTherapy* uTherapy = new UTherapy();
     UDevice* U;
     Patient* Pt;
-    while (UTh->canAssign(this) && this->getWaitU().getCount() != 0)
+    while (uTherapy->canAssign(this) && this->getWaitU().getCount() != 0)
     {
         this->getWaitU().dequeue(Pt);
         this->getUDevices().dequeue(U);
@@ -156,12 +141,29 @@ void Scheduler::Move_UWaitingPTs_to_Serve()
 
 }
 
-void Scheduler::Move_XWaitingPTs_to_Serve()
+
+void Scheduler::moveEWaitPatientsToServe()
 {
-    XTherapy* XTh = new XTherapy();
+    ETherapy* eTherapy = new ETherapy();
+    EDevice* E;
+    Patient* Pt;
+    while (eTherapy->canAssign(this) && this->getWaitE().getCount() != 0)
+    {
+        this->getWaitE().dequeue(Pt);
+        this->getEDevices().dequeue(E);
+        Pt->peekReqTreatment()->setAssignmentTime(ts);
+        Pt->peekReqTreatment()->setAssignedRes(E);
+        this->addToServe(Pt);
+    }
+}
+
+
+void Scheduler::moveXWaitPatientsToServe()
+{
+    XTherapy* xTherapy = new XTherapy();
     XRoom* X;
     Patient* Pt;
-    while (XTh->canAssign(this) && this->getWaitX().getCount() != 0)
+    while (xTherapy->canAssign(this) && this->getWaitX().getCount() != 0)
     {
         this->getWaitX().dequeue(Pt);
         this->getXRooms().peek(X);

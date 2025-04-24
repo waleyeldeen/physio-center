@@ -78,13 +78,12 @@ public:
 	void runSimulation(UI* ui);
 
 	// Getter for TimeStep
-	int GetTimeStep() const;
+	int getTimeStep() const;
 
 	// Assigning Patients with Treatments functions
-	void Move_EWaitngPTs_to_Serve(); // Assign P with E
-	void Move_UWaitingPTs_to_Serve(); // Assign P with U
-	void Move_XWaitingPTs_to_Serve(); // Assign P with X
+	void moveUWaitPatientsToServe(); // Assign P with U
+	void moveEWaitPatientsToServe(); // Assign P with E
+	void moveXWaitPatientsToServe(); // Assign P with X
 
-	void IncrementTimeStep();
+	void incrementTimeStep();
 };
-
