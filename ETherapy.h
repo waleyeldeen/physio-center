@@ -6,11 +6,15 @@ using namespace std;
 class ETherapy : public Treatment
 {
 public:
-	ETherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, ELECTRO, assignmentTime) {}
+	ETherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0, Resource* AssignedRes = nullptr) : Treatment(patient, duration, assignmentTime, AssignedRes) {}
 
-	void canAssign()
+	bool canAssign(Scheduler* s)
 	{
-
+		
+		if (s->getEDevices().getCount() != 0)
+			return true;
+		else
+			return false;
 	}
 
 	void moveToWait(Scheduler* s)

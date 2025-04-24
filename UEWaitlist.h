@@ -61,7 +61,5 @@ public:
             latency = latency + current->getItem()->peekReqTreatment()->getDuration();
             current = current->getNext();
         }
-
-        return latency;
     }
 };

@@ -5,7 +5,7 @@
 #include "UTherapy.h"
 #include "XTherapy.h"
 
-Scheduler::Scheduler() { ts = 0; }
+Scheduler::Scheduler() { }
 
 LinkedQueue<Patient*>& Scheduler::getIdle() { return idle; }
 EarlyPList& Scheduler::getEarly() { return early; }
@@ -55,7 +55,7 @@ void Scheduler::loadInputFile(string fileName)
 	for (int i = 0; i < numXRooms; i++)
 	{
 		// for the sake of the code I will make the id of each resource the i*10
-		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM));
+		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM, xCap[i]));
 	}
 
 	// input pCancel and pResc
@@ -73,9 +73,10 @@ void Scheduler::loadInputFile(string fileName)
 		int pt, vt, numTreatments;
 
 		file >> pt >> vt >> numTreatments;
+        
 
-		Patient* newP = new Patient(this, i + 1, pt, vt, numTreatments, type);
-		idle.enqueue(newP);
+		Patient* newP = new Patient(this, i + 1, pt, vt, type);
+		addToIdle(newP);
 
 		for (int j = 0; j < numTreatments; j++)
 		{
@@ -101,164 +102,73 @@ void Scheduler::loadInputFile(string fileName)
 	file.close();
 }
 
-void Scheduler::addToWaitU(Patient* p)
+void Scheduler::checkIdleForArrivedPatients()
 {
-	PatientStatus status = p->getStatus();
-	if (status == ERLY)
-		waitU.enqueue(p);
-	else if (status == LATE || status == SERV)
-		waitU.insertSorted(p);
+	return;
 }
 
-void Scheduler::addToWaitE(Patient* p)
+void Scheduler::addToIdle(Patient* p) { idle.enqueue(p); }
+void Scheduler::addToEarly() { Patient* p; idle.dequeue(p); early.enqueue(p, -p->getPt()); }
+void Scheduler::addToLate() { Patient* p; idle.dequeue(p); late.enqueue(p, -p->getPt()); }
+
+void Scheduler::addToWaitU(Patient* p) { waitU.enqueue(p); }
+void Scheduler::addToWaitE(Patient* p) { waitE.enqueue(p); }
+void Scheduler::addToWaitX(Patient* p) { waitX.enqueue(p); }
+
+void Scheduler::addToServe(Patient* p) { serving.enqueue(p, -p->peekReqTreatment()->getDuration() - ts); }
+
+#include "UI.h"
+
+int Scheduler::getTs() const { return ts; }
+
+void Scheduler::moveUWaitPatientsToServe()
 {
-	PatientStatus status = p->getStatus();
-	if (status == ERLY)
-		waitE.enqueue(p);
-	else if (status == LATE || status == SERV)
-		waitE.insertSorted(p);
-}
-
-void Scheduler::addToWaitX(Patient* p)
-{
-	PatientStatus status = p->getStatus();
-	if (status == ERLY)
-		waitX.enqueue(p);
-	else if (status == LATE || status == SERV)
-		waitX.insertSorted(p);
-}
-
-void Scheduler::sim(UI* ui)
-{
-	while (true)
-	{
-		ts++;
-		moveArrivedPatients();
-
-		moveEarlyPatientsToWait();
-
-		moveLatePatientsToWait();
-
-		ui->printAllInformation(*this, ts);
-
-		cin.get();
-	}
-}
-
-void Scheduler::moveArrivedPatients()
-{
-    // case of 2 patients with same VT is handled using while loop
-    while (true)
+    UTherapy* uTherapy = new UTherapy();
+    UDevice* uDevice;
+    Patient* p;
+    while (uTherapy->canAssign(this) && this->getWaitU().getCount() != 0)
     {
-        Patient* p = nullptr;
-        idle.peek(p);
-		if (p && ts == p->getVt())
-		{
-			// found an arrived patient
-			idle.dequeue(p);
-			int pt = p->getPt();
-			int vt = p->getVt();
+        this->getWaitU().dequeue(p);
+        this->getUDevices().dequeue(uDevice);
+        p->peekReqTreatment()->setAssignmentTime(ts);
+        p->peekReqTreatment()->setAssignedRes(uDevice);
+        this->addToServe(p);
+    }
 
-			// check if patient is early, late or VT==PT
-			if (vt < pt)
-			{
-				// patient is early
-				early.enqueue(p, -pt);
-				p->setStatus(ERLY);
-			}
-			else if (vt > pt)
-			{
-				int penalty = (vt - pt) / 2;
-				// patient is late
-				late.enqueue(p, -pt);
-				// apply penalty of half the difference
-				p->setPenalty(penalty);
-				// set new PT (old pt + penalty)
-				p->setPt(pt + penalty);
-				p->setStatus(LATE);
-			}
-			else if (vt == pt)
-			{
-				//TODO call move to waitlist func
-			}
-		}
-		else
-			break;
+}
+
+
+void Scheduler::moveEWaitPatientsToServe()
+{
+    ETherapy* eTherapy = new ETherapy();
+    EDevice* eDevice;
+    Patient* p;
+    while (eTherapy->canAssign(this) && this->getWaitE().getCount() != 0)
+    {
+        this->getWaitE().dequeue(p);
+        this->getEDevices().dequeue(eDevice);
+        p->peekReqTreatment()->setAssignmentTime(ts);
+        p->peekReqTreatment()->setAssignedRes(eDevice);
+        this->addToServe(p);
     }
 }
 
-void Scheduler::moveEarlyPatientsToWait()
+
+void Scheduler::moveXWaitPatientsToServe()
 {
-	while (true)
-	{
-		Patient* p = nullptr;
-		int pri = 0;
-		early.peek(p, pri); // pri is negetive the appointment time
-		if (p && ts == -pri)
-		{
-			// dequeue appoitned patient from early
-			early.dequeue(p, pri);
+    XTherapy* xTherapy = new XTherapy();
+    XRoom* xRoom;
+    Patient* p;
+    while (xTherapy->canAssign(this) && this->getWaitX().getCount() != 0)
+    {
+        this->getWaitX().dequeue(p);
+        this->getXRooms().peek(xRoom);
+        xRoom->incrementNumOfPTsIn();
+        if (xRoom->getCounter() == xRoom->getCapacity())
+            this->getXRooms().dequeue(xRoom);
+        p->peekReqTreatment()->setAssignmentTime(ts);
+        p->peekReqTreatment()->setAssignedRes(xRoom);
+        this->addToServe(p);
+    }
 
-			p->moveNextTreatmentToWait();
-		}
-		else
-			break;
-	}
-}
-
-void Scheduler::moveLatePatientsToWait()
-{
-	while (true)
-	{
-		Patient* p = nullptr;
-		int pri = 0;
-		late.peek(p, pri); // pri is negetive the appointment time
-		if (p && ts == p->getVt()+p->getPenalty())
-		{
-			// dequeue appoitned patient from early
-			late.dequeue(p, pri);
-
-			p->moveNextTreatmentToWait();
-		}
-		else
-			break;
-	}
-}
-
-void Scheduler::getMinLatencyArray(TreatmentType arr[3])
-{
-	// Calculate latencies for each treatment type
-	int latencies[3];
-	latencies[0] = waitU.calcTreatmentLat(); // ULTRA
-	latencies[1] = waitE.calcTreatmentLat(); // ELECTRO
-	latencies[2] = waitX.calcTreatmentLat(); // GYM
-
-	// Map indices to treatment types
-	arr[0] = ULTRA;
-	arr[1] = ELECTRO;
-	arr[2] = GYM;
-
-    // Sort the treatment types in ascending order of latency using a basic bubble sort
-    bool swapped = true;
-       while (swapped)
-       {
-           swapped = false;
-           for (int i = 0; i < 2; ++i)
-           {
-               if (latencies[i] > latencies[i + 1])
-               {
-                   // Swap latencies  
-                   int tempLatency = latencies[i];
-                   latencies[i] = latencies[i + 1];
-                   latencies[i + 1] = tempLatency;
-
-                   // Swap corresponding treatment types  
-                   TreatmentType tempType = arr[i];
-                   arr[i] = arr[i + 1];
-                   arr[i + 1] = tempType;
-
-                   swapped = true;
-               }
-           }
-       }
 }

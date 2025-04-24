@@ -5,13 +5,6 @@ using namespace std;
 
 int main()
 {
-    srand(time(0));
-    Scheduler s;
-    UI* ui = new UI();
 
-    string name = ui->inInputFileName();
-    s.loadInputFile(name);
-    
-    s.sim(ui);
-    // Call the new function in Scheduler
+    return 0;
 }
