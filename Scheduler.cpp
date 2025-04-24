@@ -129,7 +129,10 @@ void Scheduler::addToWaitX(Patient* p)
 }
 
 // TODO: fix
-void Scheduler::addToServe(Patient* p) { serving.enqueue(p, -p->peekReqTreatment()->getDuration() - ts); }
+void Scheduler::addToServe(Patient* p) {
+	int ft = p->peekReqTreatment()->getDuration() + p->peekReqTreatment()->getAssignmentTime();
+	serving.enqueue(p, -ft);
+}
 
 void Scheduler::sim(UI* ui)
 {
@@ -143,8 +146,8 @@ void Scheduler::sim(UI* ui)
 		moveLatePatientsToWait();
 
 		moveUWaitPatientsToServe();
-		//moveEWaitPatientsToServe();
-		//moveXWaitPatientsToServe();
+		moveEWaitPatientsToServe();
+		moveXWaitPatientsToServe();
 
 		ui->printAllInformation(*this, ts);
 
@@ -292,15 +295,12 @@ void Scheduler::moveUWaitPatientsToServe()
 void Scheduler::moveEWaitPatientsToServe()
 {
 	Patient* p;
-	waitE.peek(p);
-
 	Treatment* eTherapy;
-	eTherapy = p->peekReqTreatment();
-
 	EDevice* eDevice;
 
-	while (ETherapy::canAssign(this) && waitE.getCount() != 0)
+	while (ETherapy::canAssign(this) && waitE.peek(p))
 	{
+		eTherapy = p->peekReqTreatment();
 		waitE.dequeue(p);
 		eDevices.dequeue(eDevice);
 
@@ -314,22 +314,19 @@ void Scheduler::moveEWaitPatientsToServe()
 void Scheduler::moveXWaitPatientsToServe()
 {
 	Patient* p;
-	waitX.peek(p);
-
 	Treatment* xTherapy;
-	xTherapy = p->peekReqTreatment();
-
 	XRoom* xRoom;
 
-	while (XTherapy::canAssign(this) && waitX.getCount() != 0)
+	while (XTherapy::canAssign(this) && waitX.peek(p))
 	{
+		xTherapy = p->peekReqTreatment();
 		waitX.dequeue(p);
 		xRooms.peek(xRoom);
 
 		xRoom->incrementNumOfPts();
 
 		if (xRoom->getNumOfPts() == xRoom->getCapacity())
-			this->getXRooms().dequeue(xRoom);
+			xRooms.dequeue(xRoom);
 
 		xTherapy->setAssignmentTime(ts);
 		xTherapy->setAssignedRes(xRoom);

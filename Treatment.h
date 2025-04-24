@@ -30,6 +30,11 @@ public:
 		return type;
 	}
 
+	int getAssignmentTime() const
+	{
+		return assignmentTime;
+	}
+
 
 	void setAssignedRes(Resource* newResource)
 	{
