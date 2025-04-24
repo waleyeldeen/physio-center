@@ -268,48 +268,71 @@ void Scheduler::getMinLatencyArray(TreatmentType arr[3])
 
 void Scheduler::moveUWaitPatientsToServe()
 {
-	UTherapy* uTherapy = new UTherapy();
-	UDevice* uDevice;
 	Patient* p;
-	while (uTherapy->canAssign(this) && this->getWaitU().getCount() != 0)
+	waitU.peek(p);
+	
+	Treatment* uTherapy;
+	uTherapy = p->peekReqTreatment();
+
+	UDevice* uDevice;
+
+	while (uTherapy->canAssign(this) && waitU.getCount() != 0)
 	{
-		this->getWaitU().dequeue(p);
-		this->getUDevices().dequeue(uDevice);
-		p->peekReqTreatment()->setAssignmentTime(ts);
-		p->peekReqTreatment()->setAssignedRes(uDevice);
+		waitU.dequeue(p);
+		uDevices.dequeue(uDevice);
+
+		uTherapy->setAssignmentTime(ts);
+		uTherapy->setAssignedRes(uDevice);
+
 		this->addToServe(p);
 	}
 }
 
 void Scheduler::moveEWaitPatientsToServe()
 {
-	ETherapy* eTherapy = new ETherapy();
-	EDevice* eDevice;
 	Patient* p;
-	while (eTherapy->canAssign(this) && this->getWaitE().getCount() != 0)
+	waitE.peek(p);
+
+	Treatment* eTherapy;
+	eTherapy = p->peekReqTreatment();
+
+	EDevice* eDevice;
+
+	while (eTherapy->canAssign(this) && waitE.getCount() != 0)
 	{
-		this->getWaitE().dequeue(p);
-		this->getEDevices().dequeue(eDevice);
-		p->peekReqTreatment()->setAssignmentTime(ts);
-		p->peekReqTreatment()->setAssignedRes(eDevice);
+		waitE.dequeue(p);
+		eDevices.dequeue(eDevice);
+
+		eTherapy->setAssignmentTime(ts);
+		eTherapy->setAssignedRes(eDevice);
+
 		this->addToServe(p);
 	}
 }
 
 void Scheduler::moveXWaitPatientsToServe()
 {
-	XTherapy* xTherapy = new XTherapy();
-	XRoom* xRoom;
 	Patient* p;
-	while (xTherapy->canAssign(this) && this->getWaitX().getCount() != 0)
+	waitX.peek(p);
+
+	Treatment* xTherapy;
+	xTherapy = p->peekReqTreatment();
+
+	XRoom* xRoom;
+
+	while (xTherapy->canAssign(this) && waitX.getCount() != 0)
 	{
-		this->getWaitX().dequeue(p);
-		this->getXRooms().peek(xRoom);
+		waitX.dequeue(p);
+		xRooms.peek(xRoom);
+
 		xRoom->incrementNumOfPts();
+
 		if (xRoom->getNumOfPts() == xRoom->getCapacity())
 			this->getXRooms().dequeue(xRoom);
-		p->peekReqTreatment()->setAssignmentTime(ts);
-		p->peekReqTreatment()->setAssignedRes(xRoom);
+
+		xTherapy->setAssignmentTime(ts);
+		xTherapy->setAssignedRes(xRoom);
+
 		this->addToServe(p);
 	}
 }
