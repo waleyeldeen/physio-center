@@ -20,7 +20,7 @@ private:
     
 
 public:
-    Patient(Scheduler* s, int id, int pt, int vt, bool type, PatientStatus st, Treatment* curr);
+    Patient(Scheduler* s, int id, int pt, int vt, bool type);
     Patient(const Patient* other);
 
     // Getters
@@ -29,7 +29,6 @@ public:
     int getVt() const;
     int getType() const;
     PatientStatus getStatus() const;
-    Treatment* getCurrentTreat() const;
     
 
     // Setters
@@ -38,7 +37,6 @@ public:
     void setVt(int newVt);
     void setType(bool newType);
     void setStatus(PatientStatus newStatus);
-    void setCurrentTreat(Treatment* newTreat);
 
     // Treatment operations
     /*
