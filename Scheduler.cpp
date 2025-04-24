@@ -123,20 +123,20 @@ void Scheduler::addToServe(Patient* p) { serving.enqueue(p, -p->peekReqTreatment
 
 #include "UI.h"
 
-int Scheduler::getTimeStep() const { return ts; }
+int Scheduler::getTs() const { return ts; }
 
 void Scheduler::moveUWaitPatientsToServe()
 {
     UTherapy* uTherapy = new UTherapy();
-    UDevice* U;
-    Patient* Pt;
+    UDevice* uDevice;
+    Patient* p;
     while (uTherapy->canAssign(this) && this->getWaitU().getCount() != 0)
     {
-        this->getWaitU().dequeue(Pt);
-        this->getUDevices().dequeue(U);
-        Pt->peekReqTreatment()->setAssignmentTime(ts);
-        Pt->peekReqTreatment()->setAssignedRes(U);
-        this->addToServe(Pt);
+        this->getWaitU().dequeue(p);
+        this->getUDevices().dequeue(uDevice);
+        p->peekReqTreatment()->setAssignmentTime(ts);
+        p->peekReqTreatment()->setAssignedRes(uDevice);
+        this->addToServe(p);
     }
 
 }
@@ -145,15 +145,15 @@ void Scheduler::moveUWaitPatientsToServe()
 void Scheduler::moveEWaitPatientsToServe()
 {
     ETherapy* eTherapy = new ETherapy();
-    EDevice* E;
-    Patient* Pt;
+    EDevice* eDevice;
+    Patient* p;
     while (eTherapy->canAssign(this) && this->getWaitE().getCount() != 0)
     {
-        this->getWaitE().dequeue(Pt);
-        this->getEDevices().dequeue(E);
-        Pt->peekReqTreatment()->setAssignmentTime(ts);
-        Pt->peekReqTreatment()->setAssignedRes(E);
-        this->addToServe(Pt);
+        this->getWaitE().dequeue(p);
+        this->getEDevices().dequeue(eDevice);
+        p->peekReqTreatment()->setAssignmentTime(ts);
+        p->peekReqTreatment()->setAssignedRes(eDevice);
+        this->addToServe(p);
     }
 }
 
@@ -161,18 +161,18 @@ void Scheduler::moveEWaitPatientsToServe()
 void Scheduler::moveXWaitPatientsToServe()
 {
     XTherapy* xTherapy = new XTherapy();
-    XRoom* X;
-    Patient* Pt;
+    XRoom* xRoom;
+    Patient* p;
     while (xTherapy->canAssign(this) && this->getWaitX().getCount() != 0)
     {
-        this->getWaitX().dequeue(Pt);
-        this->getXRooms().peek(X);
-        X->incrementNumOfPTsIn();
-        if (X->getCounter() == X->getCapacity())
-            this->getXRooms().dequeue(X);
-        Pt->peekReqTreatment()->setAssignmentTime(ts);
-        Pt->peekReqTreatment()->setAssignedRes(X);
-        this->addToServe(Pt);
+        this->getWaitX().dequeue(p);
+        this->getXRooms().peek(xRoom);
+        xRoom->incrementNumOfPTsIn();
+        if (xRoom->getCounter() == xRoom->getCapacity())
+            this->getXRooms().dequeue(xRoom);
+        p->peekReqTreatment()->setAssignmentTime(ts);
+        p->peekReqTreatment()->setAssignedRes(xRoom);
+        this->addToServe(p);
     }
 
 }

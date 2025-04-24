@@ -78,7 +78,7 @@ public:
 	void runSimulation(UI* ui);
 
 	// Getter for TimeStep
-	int getTimeStep() const;
+	int getTs() const;
 
 	// Assigning Patients with Treatments functions
 	void moveUWaitPatientsToServe(); // Assign P with U
