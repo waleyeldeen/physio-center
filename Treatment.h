@@ -2,68 +2,67 @@
 using namespace std;
 #include <iostream>
 #include "Resource.h"
+#include "DEFS.h"
 
 /*Forward Declaration*/
 class Patient;
 class Scheduler;
 
 class Treatment
-{	
-protected:
+{
+private:
 	int duration, assignmentTime;
+	const TreatmentType type;
 	Resource* assignedRes;
+protected:
 	Patient* patient;
 public:
-	Treatment(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0, Resource* AssignedRes = nullptr) : patient(patient), duration(duration), assignmentTime(assignmentTime), assignedRes(AssignedRes) {}
+	Treatment(Patient* patient = nullptr, int duration = 0, TreatmentType type = ULTRA, int assignmentTime = 0) : patient(patient), duration(duration), assignmentTime(assignmentTime), type(type), assignedRes(nullptr) {}
 
 	// getters
-	int getDuration()
+	int getDuration() const
 	{
 		return duration;
 	}
-	int getAssignmentTime()
+
+	TreatmentType getType() const
 	{
-		return assignmentTime;
-	}
-	Resource* getAssignedResource()
-	{
-		return assignedRes;
-	}
-	Patient* getPatient()
-	{
-		return patient;
+		return type;
 	}
 
-	// setters
-	void setDuration(int x)
-	{
-		duration = x;
-	}
-	void setAssignmentTime(int y)
-	{
-		assignmentTime = y;
-	}
+
 	void setAssignedRes(Resource* newResource)
 	{
 		assignedRes = newResource;
 		assignedRes->unavailable();
 	}
-	void setPatient(Patient* P)
+
+	// TODO: update it to make it do the check automatically
+	void finishTreatment()
 	{
-		patient = P;
+		assignedRes->available();
 	}
 
-	
-	void finishTreatment(int TimeStep)
+	// Output stream operator
+	friend std::ostream& operator<<(std::ostream& os, const Treatment* p)
 	{
+		os << "<<";
+		switch (p->type)
+		{
+		case ULTRA:
+			os << "ULTRA"; break;
+		case ELECTRO:
+			os << "ELECTRO"; break;
+		case  GYM:
+			os << "GYM"; break;
+		default:
+			os << "NONE";
+		}
+		os << " " << p->duration << ">>";
 
-			patient = nullptr;
-			duration = 0;
-			assignmentTime = 0;
-			assignedRes->available();
-
+		return os;
 	}
 
-	virtual bool canAssign(Scheduler* s) = 0;
+	virtual void canAssign() = 0;
 	virtual void moveToWait(Scheduler* s) = 0;
 };

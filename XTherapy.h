@@ -6,16 +6,12 @@ using namespace std;
 class XTherapy : public Treatment
 {
 public:
-	XTherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0, Resource* AssignedRes = nullptr) : Treatment(patient, duration, assignmentTime, AssignedRes) {}
+	XTherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, GYM, assignmentTime) {}
 
 
-	bool canAssign(Scheduler* s)
+	void canAssign()
 	{
-		
-		if (s->getXRooms().getCount() != 0)
-			return true;
-		else
-			return false;
+
 	}
 
 	void moveToWait(Scheduler* s)

@@ -8,7 +8,6 @@ class XRoom : public Resource
 private:
 
 	int cap;
-	int counter = 0;
 public:
 	XRoom(int id = 0, ResourceType type = NONE, int cap = 0) : Resource(id, type), cap(cap) {}
 
@@ -22,31 +21,6 @@ public:
 
 		os << x->id << '/' << z << '/' << x->cap;
 		return os;
-	}
-
-	void setCapacity(int c)
-	{
-		cap = c;
-	}
-
-	int getCapacity()
-	{
-		return cap;
-	}
-
-	void setCounter(int x)
-	{
-		counter = x;
-	}
-
-	int getCounter()
-	{
-		return counter;
-	}
-
-	void incrementNumOfPTsIn()
-	{
-		counter++;
 	}
 
 	void makeAbstract() {}
