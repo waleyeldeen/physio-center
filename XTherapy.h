@@ -11,7 +11,6 @@ public:
 
 	bool canAssign(Scheduler* s)
 	{
-		// TODO fix
 		if (s->getXRooms().getCount() != 0)
 			return true;
 		else
