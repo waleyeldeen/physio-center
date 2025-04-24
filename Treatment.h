@@ -37,6 +37,11 @@ public:
 		assignedRes->unavailable();
 	}
 
+	void setAssignmentTime(int ts)
+	{
+		assignmentTime = ts;
+	}
+
 	// TODO: update it to make it do the check automatically
 	void finishTreatment()
 	{
@@ -63,6 +68,6 @@ public:
 		return os;
 	}
 
-	virtual void canAssign() = 0;
+	virtual bool canAssign(Scheduler* s) = 0;
 	virtual void moveToWait(Scheduler* s) = 0;
 };

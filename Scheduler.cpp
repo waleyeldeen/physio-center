@@ -55,7 +55,7 @@ void Scheduler::loadInputFile(string fileName)
 	for (int i = 0; i < numXRooms; i++)
 	{
 		// for the sake of the code I will make the id of each resource the i*10
-		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM));
+		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM, xCap[i]));
 	}
 
 	// input pCancel and pResc
@@ -127,6 +127,9 @@ void Scheduler::addToWaitX(Patient* p)
 	else if (status == LATE || status == SERV)
 		waitX.insertSorted(p);
 }
+
+// TODO: fix
+void Scheduler::addToServe(Patient* p) { serving.enqueue(p, -p->peekReqTreatment()->getDuration() - ts); }
 
 void Scheduler::sim(UI* ui)
 {
@@ -261,4 +264,52 @@ void Scheduler::getMinLatencyArray(TreatmentType arr[3])
                }
            }
        }
+}
+
+void Scheduler::moveUWaitPatientsToServe()
+{
+	UTherapy* uTherapy = new UTherapy();
+	UDevice* uDevice;
+	Patient* p;
+	while (uTherapy->canAssign(this) && this->getWaitU().getCount() != 0)
+	{
+		this->getWaitU().dequeue(p);
+		this->getUDevices().dequeue(uDevice);
+		p->peekReqTreatment()->setAssignmentTime(ts);
+		p->peekReqTreatment()->setAssignedRes(uDevice);
+		this->addToServe(p);
+	}
+}
+
+void Scheduler::moveEWaitPatientsToServe()
+{
+	ETherapy* eTherapy = new ETherapy();
+	EDevice* eDevice;
+	Patient* p;
+	while (eTherapy->canAssign(this) && this->getWaitE().getCount() != 0)
+	{
+		this->getWaitE().dequeue(p);
+		this->getEDevices().dequeue(eDevice);
+		p->peekReqTreatment()->setAssignmentTime(ts);
+		p->peekReqTreatment()->setAssignedRes(eDevice);
+		this->addToServe(p);
+	}
+}
+
+void Scheduler::moveXWaitPatientsToServe()
+{
+	XTherapy* xTherapy = new XTherapy();
+	XRoom* xRoom;
+	Patient* p;
+	while (xTherapy->canAssign(this) && this->getWaitX().getCount() != 0)
+	{
+		this->getWaitX().dequeue(p);
+		this->getXRooms().peek(xRoom);
+		xRoom->incrementNumOfPts();
+		if (xRoom->getNumOfPts() == xRoom->getCapacity())
+			this->getXRooms().dequeue(xRoom);
+		p->peekReqTreatment()->setAssignmentTime(ts);
+		p->peekReqTreatment()->setAssignedRes(xRoom);
+		this->addToServe(p);
+	}
 }

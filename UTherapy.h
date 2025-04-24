@@ -9,9 +9,12 @@ public:
 	UTherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, ULTRA, assignmentTime) {}
 
 
-	void canAssign()
+	bool canAssign(Scheduler* s)
 	{
-
+		if (s->getUDevices().getCount() != 0)
+			return true;
+		else
+			return false;
 	}
 
 	void moveToWait(Scheduler* s)

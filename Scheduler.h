@@ -73,6 +73,8 @@ public:
 	void addToWaitE(Patient* p);
 	void addToWaitX(Patient* p);
 
+	void addToServe(Patient* p);
+
 	/*Opens the input file and assigs the data to different data members*/
 	void loadInputFile(string fileName);
 
@@ -98,5 +100,9 @@ public:
 		return an array sorted asc by latency of each waitlist
 	*/
 	void getMinLatencyArray(TreatmentType arr[3]);
+
+	void moveUWaitPatientsToServe();
+	void moveEWaitPatientsToServe();
+	void moveXWaitPatientsToServe();
 };
 
