@@ -38,7 +38,7 @@ public:
 		else
 			z = "UnAvailable";
 
-		os << x->id << '/' << z << '/' << x->cap;
+		os << "[ID: " << x->id << ", " << z << ", Cap: " << x->cap << "]";
 		return os;
 	}
 
