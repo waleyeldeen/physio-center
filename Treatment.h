@@ -68,6 +68,6 @@ public:
 		return os;
 	}
 
-	virtual bool canAssign(Scheduler* s) = 0;
+    //static bool canAssign(Scheduler* s) = 0;
 	virtual void moveToWait(Scheduler* s) = 0;
 };

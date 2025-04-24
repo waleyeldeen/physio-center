@@ -9,7 +9,7 @@ public:
 	UTherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, ULTRA, assignmentTime) {}
 
 
-	bool canAssign(Scheduler* s)
+	static bool canAssign(Scheduler* s)
 	{
 		if (s->getUDevices().getCount() != 0)
 			return true;

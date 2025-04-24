@@ -142,6 +142,10 @@ void Scheduler::sim(UI* ui)
 
 		moveLatePatientsToWait();
 
+		moveUWaitPatientsToServe();
+		//moveEWaitPatientsToServe();
+		//moveXWaitPatientsToServe();
+
 		ui->printAllInformation(*this, ts);
 
 		cin.get();
@@ -269,15 +273,12 @@ void Scheduler::getMinLatencyArray(TreatmentType arr[3])
 void Scheduler::moveUWaitPatientsToServe()
 {
 	Patient* p;
-	waitU.peek(p);
-	
 	Treatment* uTherapy;
-	uTherapy = p->peekReqTreatment();
-
 	UDevice* uDevice;
 
-	while (uTherapy->canAssign(this) && waitU.getCount() != 0)
+	while (waitU.peek(p) && UTherapy::canAssign(this))
 	{
+		uTherapy = p->peekReqTreatment();
 		waitU.dequeue(p);
 		uDevices.dequeue(uDevice);
 
@@ -298,7 +299,7 @@ void Scheduler::moveEWaitPatientsToServe()
 
 	EDevice* eDevice;
 
-	while (eTherapy->canAssign(this) && waitE.getCount() != 0)
+	while (ETherapy::canAssign(this) && waitE.getCount() != 0)
 	{
 		waitE.dequeue(p);
 		eDevices.dequeue(eDevice);
@@ -320,7 +321,7 @@ void Scheduler::moveXWaitPatientsToServe()
 
 	XRoom* xRoom;
 
-	while (xTherapy->canAssign(this) && waitX.getCount() != 0)
+	while (XTherapy::canAssign(this) && waitX.getCount() != 0)
 	{
 		waitX.dequeue(p);
 		xRooms.peek(xRoom);
