@@ -30,11 +30,21 @@ public:
 		return type;
 	}
 
+	int getAssignmentTime() const
+	{
+		return assignmentTime;
+	}
+
 
 	void setAssignedRes(Resource* newResource)
 	{
 		assignedRes = newResource;
 		assignedRes->unavailable();
+	}
+
+	void setAssignmentTime(int ts)
+	{
+		assignmentTime = ts;
 	}
 
 	// TODO: update it to make it do the check automatically
@@ -63,6 +73,6 @@ public:
 		return os;
 	}
 
-	virtual void canAssign() = 0;
+    //static bool canAssign(Scheduler* s) = 0;
 	virtual void moveToWait(Scheduler* s) = 0;
 };

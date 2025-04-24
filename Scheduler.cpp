@@ -55,7 +55,7 @@ void Scheduler::loadInputFile(string fileName)
 	for (int i = 0; i < numXRooms; i++)
 	{
 		// for the sake of the code I will make the id of each resource the i*10
-		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM));
+		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM, xCap[i]));
 	}
 
 	// input pCancel and pResc
@@ -128,6 +128,12 @@ void Scheduler::addToWaitX(Patient* p)
 		waitX.insertSorted(p);
 }
 
+// TODO: fix
+void Scheduler::addToServe(Patient* p) {
+	int ft = p->peekReqTreatment()->getDuration() + p->peekReqTreatment()->getAssignmentTime();
+	serving.enqueue(p, -ft);
+}
+
 void Scheduler::sim(UI* ui)
 {
 	while (true)
@@ -138,6 +144,10 @@ void Scheduler::sim(UI* ui)
 		moveEarlyPatientsToWait();
 
 		moveLatePatientsToWait();
+
+		moveUWaitPatientsToServe();
+		moveEWaitPatientsToServe();
+		moveXWaitPatientsToServe();
 
 		ui->printAllInformation(*this, ts);
 
@@ -261,4 +271,66 @@ void Scheduler::getMinLatencyArray(TreatmentType arr[3])
                }
            }
        }
+}
+
+void Scheduler::moveUWaitPatientsToServe()
+{
+	Patient* p;
+	Treatment* uTherapy;
+	UDevice* uDevice;
+
+	while (waitU.peek(p) && UTherapy::canAssign(this))
+	{
+		uTherapy = p->peekReqTreatment();
+		waitU.dequeue(p);
+		uDevices.dequeue(uDevice);
+
+		uTherapy->setAssignmentTime(ts);
+		uTherapy->setAssignedRes(uDevice);
+
+		this->addToServe(p);
+	}
+}
+
+void Scheduler::moveEWaitPatientsToServe()
+{
+	Patient* p;
+	Treatment* eTherapy;
+	EDevice* eDevice;
+
+	while (ETherapy::canAssign(this) && waitE.peek(p))
+	{
+		eTherapy = p->peekReqTreatment();
+		waitE.dequeue(p);
+		eDevices.dequeue(eDevice);
+
+		eTherapy->setAssignmentTime(ts);
+		eTherapy->setAssignedRes(eDevice);
+
+		this->addToServe(p);
+	}
+}
+
+void Scheduler::moveXWaitPatientsToServe()
+{
+	Patient* p;
+	Treatment* xTherapy;
+	XRoom* xRoom;
+
+	while (XTherapy::canAssign(this) && waitX.peek(p))
+	{
+		xTherapy = p->peekReqTreatment();
+		waitX.dequeue(p);
+		xRooms.peek(xRoom);
+
+		xRoom->incrementNumOfPts();
+
+		if (xRoom->getNumOfPts() == xRoom->getCapacity())
+			xRooms.dequeue(xRoom);
+
+		xTherapy->setAssignmentTime(ts);
+		xTherapy->setAssignedRes(xRoom);
+
+		this->addToServe(p);
+	}
 }

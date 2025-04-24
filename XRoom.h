@@ -6,10 +6,29 @@ using namespace std;
 class XRoom : public Resource
 {
 private:
-
-	int cap;
+	const int cap;
+	int numOfPts;
 public:
-	XRoom(int id = 0, ResourceType type = NONE, int cap = 0) : Resource(id, type), cap(cap) {}
+	XRoom(int id = 0, ResourceType type = NONE, int cap = 0) : Resource(id, type), cap(cap) 
+	{
+		numOfPts = 0;
+	}
+
+
+	int getCapacity() const
+	{
+		return cap;
+	}
+
+	int getNumOfPts() const
+	{
+		return numOfPts;
+	}
+
+	void incrementNumOfPts()
+	{
+		numOfPts++;
+	}
 
 	friend ostream& operator<<(ostream& os, const XRoom* x) {
 
@@ -19,7 +38,7 @@ public:
 		else
 			z = "UnAvailable";
 
-		os << x->id << '/' << z << '/' << x->cap;
+		os << "[ID: " << x->id << ", " << z << ", Cap: " << x->cap << ", Pts: " << x->getNumOfPts() << "]";
 		return os;
 	}
 

@@ -32,7 +32,7 @@ public:
 		else
 			z = "UnAvailable";
 
-		os << r->id << '/' << z;
+		os << "[ID: " << r->id << ", " << z << "]";
 		return os;
 	}
 

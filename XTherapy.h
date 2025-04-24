@@ -9,9 +9,12 @@ public:
 	XTherapy(Patient* patient = nullptr, int duration = 0, int assignmentTime = 0) : Treatment(patient, duration, GYM, assignmentTime) {}
 
 
-	void canAssign()
+	static bool canAssign(Scheduler* s)
 	{
-
+		if (s->getXRooms().getCount() != 0)
+			return true;
+		else
+			return false;
 	}
 
 	void moveToWait(Scheduler* s)
