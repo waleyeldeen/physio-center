@@ -4,6 +4,9 @@
 #include "ETherapy.h"
 #include "UTherapy.h"
 #include "XTherapy.h"
+#include "fstream"
+#include "iostream"
+
 
 Scheduler::Scheduler() { ts = 0; }
 
@@ -334,3 +337,20 @@ void Scheduler::moveXWaitPatientsToServe()
 		this->addToServe(p);
 	}
 }
+
+void Scheduler::outputFile()
+{
+	int totalwaitingtime=0;
+	int totaltreatmnenttime = 0;
+	ofstream myfile;
+	myfile.open("outputFile.txt ");
+	myfile << " PID  PType  PT  VT  FT  WT  TT  Cancel  Resc " << endl;
+	while (!finish.isEmpty()) {
+		Patient* P;
+		finish.pop(P);
+		myfile << P->getId() << "  " << P->endl;
+		totalwaitingtime+=P->
+		
+	}
+}
+

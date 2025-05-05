@@ -14,6 +14,8 @@ using namespace std;
 #include "UDevice.h"
 #include "XRoom.h"
 #include "UI.h"
+#include "fstream"
+#include "iostream"
 
 class UI;
 
@@ -104,5 +106,7 @@ public:
 	void moveUWaitPatientsToServe();
 	void moveEWaitPatientsToServe();
 	void moveXWaitPatientsToServe();
+	void outputFile();
+
 };
 
