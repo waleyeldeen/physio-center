@@ -21,6 +21,7 @@ PatientStatus Patient::getStatus() const { return status; }
 int Patient::getNumOfTreatments() const { return numOfTreatments; }
 bool Patient::getIsNormal() const { return isNormal; }
 int Patient::getPenalty() const { return penalty; }
+int Patient::getTT() const { return tt; }
 
 // Setters
 void Patient::setId(int newId) { id = newId; }
@@ -73,6 +74,7 @@ bool Patient::addTreatment(Treatment* newT)
     {
         reqTreatment.enqueue(newT);
         return true;
+        tt = tt + newT->getDuration();
     }
     return false;
 }
@@ -134,6 +136,8 @@ void Patient::moveNextTreatmentToWait()
             }
         }
     }
+    // update status
+    status = WAIT;
 }
 
 // Output stream operator

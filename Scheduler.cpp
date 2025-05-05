@@ -135,6 +135,8 @@ void Scheduler::addToWaitX(Patient* p)
 void Scheduler::addToServe(Patient* p) {
 	int ft = p->peekReqTreatment()->getDuration() + p->peekReqTreatment()->getAssignmentTime();
 	serving.enqueue(p, -ft);
+	// update status
+	p->setStatus(SERV);
 }
 
 void Scheduler::sim(UI* ui)
