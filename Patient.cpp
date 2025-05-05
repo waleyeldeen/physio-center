@@ -19,7 +19,7 @@ int Patient::getPt() const { return pt; }
 int Patient::getVt() const { return vt; }
 PatientStatus Patient::getStatus() const { return status; }
 int Patient::getNumOfTreatments() const { return numOfTreatments; }
-int Patient::getIsNormal() const { return isNormal; }
+bool Patient::getIsNormal() const { return isNormal; }
 int Patient::getPenalty() const { return penalty; }
 
 // Setters

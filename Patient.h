@@ -25,7 +25,7 @@ public:
     int getVt() const;
     PatientStatus getStatus() const;
     int getNumOfTreatments() const;
-    int getIsNormal() const;
+    bool getIsNormal() const;
     int getPenalty() const;
 
     // Setters
