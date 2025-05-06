@@ -18,10 +18,10 @@ public:
 		Note that the function can only be called on xWaitlist, so the current treatment will always
 		be gym (presumably).
 	*/
-	Patient* pickRandCancelPatient()
+	bool pickRandCancelPatient(Patient* p)
 	{
 		// []TODO: what can I do if the list is empty
-		if (this->isEmpty()) { return nullptr; }
+		if (this->isEmpty()) { return false; }
 
 
 		Node<Patient*>* current = nullptr;
@@ -30,42 +30,27 @@ public:
 		bool isLastTreatment = false;
 		int randomIteration;
 
-		// to track how many patients are checked
-		int counter = 0;
-		bool* arr = new bool[this->getCount()];
-		for (int i = 0; i < this->getCount(); i++)
-			arr[i] = false;
+		// generate a number between 0 and number of patient in waitlist
+		// the minus 1 is because we already started at frontPtr
+		// I could remove the minus one but make i = 1 initially
+		randomIteration = getRandInRange(0, this->getCount() - 1);
 
 		// pick the random patient and check if he has xTherapy as his last treatment
-		while (!isLastTreatment && counter != this->getCount())
+		// we have to traverse through the nodes to reach a pointer to the patient we want to cancel
+		// incase randomIteration = 0, then for loop won't be executed making the current point to front
+		current = frontPtr;
+		for (int i = 0; i < randomIteration; i++)
 		{
-			current = frontPtr;
-
-			// generate a number between 0 and number of patient in waitlist
-			// the minus 1 is because we already started at frontPtr
-			// I could remove the minus one but make i = 1 initially
-			randomIteration = getRandInRange(0, this->getCount() - 1);
-
-			// do not go through the same patient twice
-			if (arr[randomIteration] == true)
-				continue;
-
-			counter++;
-			arr[randomIteration] = true;
-
-			// we have to traverse through the nodes to reach a pointer to the patient we want to cancel
-			// incase randomIteration = 0, then for loop won't be executed making the current point to front
-			for (int i = 0; i < randomIteration; i++)
-			{
-				previous = current;
-				current = current->getNext();
-			}
-
-			isLastTreatment = current->getItem()->hasLastTreatment();
-
-			if (!isLastTreatment && counter == this->getCount())
-				return nullptr;
+			previous = current;
+			current = current->getNext();
 		}
+
+		isLastTreatment = current->getItem()->hasLastTreatment();
+		p = current->getItem();
+
+		// if XTherapy is not the last treatment 
+		if (!isLastTreatment)
+			return false;
 
 		// remove node from queue
 		// incase we want to remove patient at front of queue
@@ -88,7 +73,6 @@ public:
 			count--;
 		}
 
-
-		return patientPtr;
+		return true;
 	}
 };
