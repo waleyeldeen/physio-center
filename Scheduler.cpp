@@ -139,6 +139,8 @@ void Scheduler::sim(UI* ui)
 	while (true)
 	{
 		ts++;
+		rescAndCancelCaller();
+
 		moveArrivedPatients();
 
 		moveEarlyPatientsToWait();
@@ -157,7 +159,7 @@ void Scheduler::sim(UI* ui)
 
 void Scheduler::rescAndCancelCaller()
 {
-	Patient* p;
+	Patient* p = nullptr;
 	int rescRand = getRandInRange(0, 100);
 	int cancelRand = getRandInRange(0, 100);
 
