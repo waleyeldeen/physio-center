@@ -336,16 +336,16 @@ void Scheduler::moveXWaitPatientsToServe()
 	}
 }
 
-void Scheduler::fromIntreatToWaitOrFinish()
+void Scheduler::fromServeToWaitOrFinish()
 {
 	Patient* p=nullptr;
-	int Ft;
-	serving.peek(p, Ft);
-	Ft = -Ft;
-	while (p && Ft<=ts ) 
+	int ft;
+	serving.peek(p, ft);
+	ft = -ft;
+	while (p && ft <= ts) 
 	{
-			serving.dequeue(p, Ft);
-			Ft = -Ft;
+			serving.dequeue(p, ft);
+			ft = -ft;
 			Treatment* t = p->peekReqTreatment();
 			p->finishNextTreatment();
 			switch (t->getType())
@@ -360,8 +360,10 @@ void Scheduler::fromIntreatToWaitOrFinish()
 				//this is not done
 				break;
 			}
+
 			t = nullptr;
 			t = p->peekReqTreatment();
+
 			if (t)
 			{
 				t->moveToWait(this);
@@ -370,9 +372,10 @@ void Scheduler::fromIntreatToWaitOrFinish()
 			{
 				finish.push(p);
 			}
+
 			p = nullptr;
-			serving.peek(p,Ft);
-			Ft = -Ft;
+			serving.peek(p,ft);
+			ft = -ft;
 	}
 }
 ;

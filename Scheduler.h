@@ -106,7 +106,7 @@ public:
 	void moveEWaitPatientsToServe();
 	void moveXWaitPatientsToServe();
 
-	void fromIntreatToWaitOrFinish();
+	void fromServeToWaitOrFinish();
 
 };
 
