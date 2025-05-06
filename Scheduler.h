@@ -114,7 +114,7 @@ public:
 	void moveEWaitPatientsToServe();
 	void moveXWaitPatientsToServe();
 
-	void fromServeToWaitOrFinish();
+	void moveFromServeToWaitOrFinish();
 
 };
 

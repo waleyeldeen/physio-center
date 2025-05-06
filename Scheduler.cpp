@@ -144,6 +144,8 @@ void Scheduler::sim(UI* ui)
 	while (true)
 	{
 		ts++;
+		moveFromServeToWaitOrFinish();
+
 		moveUWaitPatientsToServe();
 		moveEWaitPatientsToServe();
 		moveXWaitPatientsToServe();
@@ -383,7 +385,7 @@ void Scheduler::moveXWaitPatientsToServe()
 	}
 }
 
-void Scheduler::fromServeToWaitOrFinish()
+void Scheduler::moveFromServeToWaitOrFinish()
 {
 	Patient* p=nullptr;
 	int ft;
@@ -394,7 +396,6 @@ void Scheduler::fromServeToWaitOrFinish()
 			serving.dequeue(p, ft);
 			ft = -ft;
 			Treatment* t = p->peekReqTreatment();
-			p->finishNextTreatment();
 			switch (t->getType())
 			{
 			case ELECTRO:
@@ -407,6 +408,8 @@ void Scheduler::fromServeToWaitOrFinish()
 				//this is not done
 				break;
 			}
+
+			p->finishNextTreatment();
 
 			t = nullptr;
 			t = p->peekReqTreatment();
