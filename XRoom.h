@@ -31,14 +31,7 @@ public:
 	}
 
 	friend ostream& operator<<(ostream& os, const XRoom* x) {
-
-		string z;
-		if (x->avail == true)
-			z = "Available";
-		else
-			z = "UnAvailable";
-
-		os << "[ID: " << x->id << ", " << z << ", Cap: " << x->cap << ", Pts: " << x->getNumOfPts() << "]";
+		os << "[ID: " << x->id << ", " << ", Cap: " << x->cap << ", Pts: " << x->getNumOfPts() << "]";
 		return os;
 	}
 

@@ -42,18 +42,11 @@ public:
 	void setAssignedRes(Resource* newResource)
 	{
 		assignedRes = newResource;
-		assignedRes->unavailable();
 	}
 
 	void setAssignmentTime(int ts)
 	{
 		assignmentTime = ts;
-	}
-
-	// TODO: update it to make it do the check automatically
-	void finishTreatment()
-	{
-		assignedRes->available();
 	}
 
 	// Output stream operator
