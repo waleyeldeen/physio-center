@@ -136,6 +136,19 @@ void Patient::moveNextTreatmentToWait()
     }
 }
 
+bool Patient::finishNextTreatment()
+{
+    Treatment* t;
+
+    if (reqTreatment.isEmpty())
+    {
+        return false;
+    }
+    reqTreatment.dequeue(t);
+    delete t;
+    return true;
+}
+
 // Output stream operator
 std::ostream& operator<<(std::ostream& os, const Patient* p)
 {

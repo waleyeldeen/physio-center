@@ -38,6 +38,7 @@ private:
 
 	ArrayStack<Patient*> finish;
 
+
 	int pResc, pCancel, numPatients;
 
 	//void addToIdle(Patient* p);
@@ -104,5 +105,8 @@ public:
 	void moveUWaitPatientsToServe();
 	void moveEWaitPatientsToServe();
 	void moveXWaitPatientsToServe();
+
+	void fromIntreatToWaitOrFinish();
+
 };
 

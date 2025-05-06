@@ -139,15 +139,16 @@ void Scheduler::sim(UI* ui)
 	while (true)
 	{
 		ts++;
+		moveUWaitPatientsToServe();
+		moveEWaitPatientsToServe();
+		moveXWaitPatientsToServe();
+
 		moveArrivedPatients();
 
 		moveEarlyPatientsToWait();
 
 		moveLatePatientsToWait();
 
-		moveUWaitPatientsToServe();
-		moveEWaitPatientsToServe();
-		moveXWaitPatientsToServe();
 
 		ui->printAllInformation(*this, ts);
 
@@ -334,3 +335,44 @@ void Scheduler::moveXWaitPatientsToServe()
 		this->addToServe(p);
 	}
 }
+
+void Scheduler::fromIntreatToWaitOrFinish()
+{
+	Patient* p=nullptr;
+	int Ft;
+	serving.peek(p, Ft);
+	Ft = -Ft;
+	while (p && Ft<=ts ) 
+	{
+			serving.dequeue(p, Ft);
+			Ft = -Ft;
+			Treatment* t = p->peekReqTreatment();
+			p->finishNextTreatment();
+			switch (t->getType())
+			{
+			case ELECTRO:
+				eDevices.enqueue((EDevice*)t->getAssignedRes());
+				break;
+			case ULTRA:
+				uDevices.enqueue((UDevice*)t->getAssignedRes());
+				break;
+			case GYM:
+				//this is not done
+				break;
+			}
+			t = nullptr;
+			t = p->peekReqTreatment();
+			if (t)
+			{
+				t->moveToWait(this);
+			}
+			else
+			{
+				finish.push(p);
+			}
+			p = nullptr;
+			serving.peek(p,Ft);
+			Ft = -Ft;
+	}
+}
+;
