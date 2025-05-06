@@ -34,7 +34,10 @@ public:
 	{
 		return assignmentTime;
 	}
-
+	Resource* getAssignedRes()
+	{
+		return assignedRes;
+	}
 
 	void setAssignedRes(Resource* newResource)
 	{

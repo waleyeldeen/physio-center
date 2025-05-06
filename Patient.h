@@ -67,7 +67,11 @@ public:
     */
     void moveNextTreatmentToWait(int ts);
 
+    bool finishNextTreatment();
+
+    
 
     // Output stream operator
     friend std::ostream& operator<<(std::ostream& os, const Patient* p);
+
 };
