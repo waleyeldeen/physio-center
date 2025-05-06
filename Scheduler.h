@@ -81,6 +81,11 @@ public:
 	//void runSimulation(UI* ui);
 	void sim(UI* ui);
 
+	/*
+		call EarlyPList.cancel() and XWaitlist.cancel() according to pCancel and pResc
+	*/
+	void rescAndCancelCaller();
+
 	// PHASE 2 FUNCS
 	/*Called at each timestep to check the idle list for patients who
 	arrived and move them to early or late accordingle. If VT==PT then movetowait func is called*/

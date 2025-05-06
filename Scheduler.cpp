@@ -155,6 +155,33 @@ void Scheduler::sim(UI* ui)
 	}
 }
 
+void Scheduler::rescAndCancelCaller()
+{
+	Patient* p;
+	int rescRand = getRandInRange(0, 100);
+	int cancelRand = getRandInRange(0, 100);
+
+	// call resc function
+	// TODO: merge 2 if conditions in one condition
+	if (rescRand < pResc)
+	{
+		if (early.reschedule(p)) // successfully rescheduled a patient
+		{
+			p->canceled();
+			cout << "Patient canceled" << p->getId();
+		}
+	}
+
+	if (cancelRand < pCancel)
+	{
+		if (waitX.pickRandCancelPatient(p))
+		{
+			p->resced();
+			cout << "Patient resced" << p->getId();
+		}
+	}
+}
+
 void Scheduler::moveArrivedPatients()
 {
     // case of 2 patients with same VT is handled using while loop
