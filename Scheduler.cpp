@@ -164,7 +164,13 @@ void Scheduler::sim(UI* ui)
 
 		ui->printAllInformation(*this, ts);
 
-		cin.get();
+		// check if all patients are in finish and output the file accordingly
+		if (finish.getCount() == numPatients)
+		{
+			outputFile();
+			cout << "DONE!!!!!!!!!!!!!";
+		} else
+			cin.get();
 	}
 }
 
