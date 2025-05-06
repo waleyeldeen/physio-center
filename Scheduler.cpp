@@ -26,6 +26,10 @@ LinkedQueue<XRoom*>& Scheduler::getXRooms() { return xRooms; }
 
 ArrayStack<Patient*>& Scheduler::getFinish() { return finish; }
 
+int Scheduler::getNumPatients() const { return numPatients; }
+int Scheduler::getNumEarlyPatients() const { return numEarlyPatients; }
+int Scheduler::getNumLatePatients() const { return numLatePatients; }
+
 void Scheduler::loadInputFile(string fileName)
 {
 	fstream file(fileName);
@@ -135,6 +139,7 @@ void Scheduler::addToWaitX(Patient* p)
 void Scheduler::addToServe(Patient* p) {
 	int ft = p->peekReqTreatment()->getDuration() + p->peekReqTreatment()->getAssignmentTime();
 	serving.enqueue(p, -ft);
+	p->updateWt(ts);
 	// update status
 	p->setStatus(SERV);
 }
@@ -144,20 +149,53 @@ void Scheduler::sim(UI* ui)
 	while (true)
 	{
 		ts++;
+		moveUWaitPatientsToServe();
+		moveEWaitPatientsToServe();
+		moveXWaitPatientsToServe();
+
+		rescAndCancelCaller();
+
 		moveArrivedPatients();
 
 		moveEarlyPatientsToWait();
 
 		moveLatePatientsToWait();
 
-		moveUWaitPatientsToServe();
-		moveEWaitPatientsToServe();
-		moveXWaitPatientsToServe();
-
 		ui->printAllInformation(*this, ts);
 
 		cin.get();
 	}
+}
+
+bool Scheduler::rescAndCancelCaller()
+{
+	Patient* p = nullptr;
+	int rescRand = getRandInRange(0, 100);
+	int cancelRand = getRandInRange(0, 100);
+
+	// call resc function
+	// TODO: merge 2 if conditions in one condition
+	if (rescRand < pResc)
+	{
+		if (early.reschedule(p)) // successfully rescheduled a patient
+		{
+			p->resced();
+			cout << "Patient resced" << p->getId();
+		}
+	}
+
+	if (cancelRand < pCancel)
+	{
+		if (waitX.pickRandCancelPatient(p))
+		{
+			p->canceled();
+			cout << "Patient canceled" << p->getId();
+		}
+	}
+
+	if (rescRand < pResc || cancelRand < pCancel)
+		return true;
+	return true;
 }
 
 void Scheduler::moveArrivedPatients()
@@ -180,6 +218,8 @@ void Scheduler::moveArrivedPatients()
 				// patient is early
 				early.enqueue(p, -pt);
 				p->setStatus(ERLY);
+
+				numEarlyPatients++;
 			}
 			else if (vt > pt)
 			{
@@ -191,10 +231,16 @@ void Scheduler::moveArrivedPatients()
 				// set new PT (old pt + penalty)
 				p->setPt(pt + penalty);
 				p->setStatus(LATE);
+
+				numLatePatients++;
 			}
 			else if (vt == pt)
 			{
-				//TODO call move to waitlist func
+				p->setStatus(ERLY);
+				p->moveNextTreatmentToWait(ts);
+				moveUWaitPatientsToServe();
+				moveEWaitPatientsToServe();
+				moveXWaitPatientsToServe();
 			}
 		}
 		else
@@ -214,7 +260,10 @@ void Scheduler::moveEarlyPatientsToWait()
 			// dequeue appoitned patient from early
 			early.dequeue(p, pri);
 
-			p->moveNextTreatmentToWait();
+			// there is a scheduler pointer in patient so there is no need to pass
+			//   ts as an arguments but I made the decision to do so to make it more
+			//   more intentional
+			p->moveNextTreatmentToWait(ts);
 		}
 		else
 			break;
@@ -233,7 +282,7 @@ void Scheduler::moveLatePatientsToWait()
 			// dequeue appoitned patient from early
 			late.dequeue(p, pri);
 
-			p->moveNextTreatmentToWait();
+			p->moveNextTreatmentToWait(ts);
 		}
 		else
 			break;

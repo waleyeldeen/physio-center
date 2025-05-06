@@ -2,8 +2,9 @@
 #include "Scheduler.h"
 
 Patient::Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal)
-    : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments), isNormal(isNormal), penalty(0) {
-}
+    : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments),
+        isNormal(isNormal), penalty(0), tt(0), cancel(false), resc(false),
+        wt(0) {}
 
 Patient::Patient(const Patient* other)
 {
@@ -21,7 +22,10 @@ PatientStatus Patient::getStatus() const { return status; }
 int Patient::getNumOfTreatments() const { return numOfTreatments; }
 bool Patient::getIsNormal() const { return isNormal; }
 int Patient::getPenalty() const { return penalty; }
-int Patient::getTT() const { return tt; }
+int Patient::getTt() const { return tt; }
+int Patient::getWt() const { return wt; }
+bool Patient::getResc() const { return resc; }
+bool Patient::getCancel() const { return cancel; }
 
 // Setters
 void Patient::setId(int newId) { id = newId; }
@@ -29,6 +33,11 @@ void Patient::setPt(int newPt) { pt = newPt; }
 void Patient::setVt(int newVt) { vt = newVt; }
 void Patient::setStatus(PatientStatus s) { status = s; }
 void Patient::setPenalty(int newPenalty) { penalty = newPenalty; }
+
+void Patient::resced() { resc = true; }
+void Patient::canceled() { cancel = true; }
+
+void Patient::updateWt(int ts) { wt = wt + (ts - assignmentTimeForWaitlist); }
 
 
 // Treatment operations
@@ -103,7 +112,7 @@ bool Patient::reorderReqTreatment(TreatmentType tt)
     return true;
 }
 
-void Patient::moveNextTreatmentToWait()
+void Patient::moveNextTreatmentToWait(int ts)
 {
     Treatment* t;
 
@@ -136,6 +145,7 @@ void Patient::moveNextTreatmentToWait()
             }
         }
     }
+    assignmentTimeForWaitlist = ts; // used for calculating WT
     // update status
     status = WAIT;
 }

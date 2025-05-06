@@ -40,7 +40,7 @@ private:
 
 	ArrayStack<Patient*> finish;
 
-	int pResc, pCancel, numPatients;
+	int pResc, pCancel, numPatients, numEarlyPatients, numLatePatients;
 
 	//void addToIdle(Patient* p);
 
@@ -63,6 +63,10 @@ public:
 
 	ArrayStack<Patient*>& getFinish();
 
+	int getNumPatients() const;
+	int getNumEarlyPatients() const;
+	int getNumLatePatients() const;
+
 	//void addToEarly();
 	//void addToLate();
 
@@ -82,6 +86,11 @@ public:
 
 	//void runSimulation(UI* ui);
 	void sim(UI* ui);
+
+	/*
+		call EarlyPList.cancel() and XWaitlist.cancel() according to pCancel and pResc
+	*/
+	bool rescAndCancelCaller();
 
 	// PHASE 2 FUNCS
 	/*Called at each timestep to check the idle list for patients who

@@ -14,8 +14,10 @@ private:
     LinkedQueue<Treatment*> reqTreatment;
     bool isNormal;  // True: Normal, False: Recovering
     Scheduler* s;
-    int tt;
-
+    int tt;  // total treatment time
+    int wt;  // total waiting time
+    bool cancel, resc;
+    int assignmentTimeForWaitlist; // used for calculating WT
 public:
     Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal);
     Patient(const Patient* other);
@@ -28,7 +30,10 @@ public:
     int getNumOfTreatments() const;
     bool getIsNormal() const;
     int getPenalty() const;
-    int getTT() const;
+    int getTt() const;
+    int getWt() const;
+    bool getResc() const;
+    bool getCancel() const;
 
     // Setters
     void setId(int newId);
@@ -36,6 +41,10 @@ public:
     void setVt(int newVt);
     void setStatus(PatientStatus s);
     void setPenalty(int newPenalty);
+
+    void resced();
+    void canceled();
+    void updateWt(int ts);
 
     // Treatment operations
     /*
@@ -56,7 +65,7 @@ public:
         Moves patient to waiting list (N or R)
         Does not take into consideration of patient is ERLY or LATE
     */
-    void moveNextTreatmentToWait();
+    void moveNextTreatmentToWait(int ts);
 
 
     // Output stream operator
