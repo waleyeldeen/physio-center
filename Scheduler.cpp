@@ -394,14 +394,78 @@ void Scheduler::outputFile()
 	int totalwaitingtime=0;
 	int totaltreatmnenttime = 0;
 	ofstream myfile;
-	myfile.open("outputFile.txt ");
+	myfile.open("outputFile.txt");
 	myfile << " PID  PType  PT  VT  FT  WT  TT  Cancel  Resc " << endl;
+	Patient* P;
+	char x;
+	int N = 0;
+	int R = 0;
+	int totalWaiting_N = 0;
+	int totalWaiting_R = 0;
+	int totalTreatment_N = 0;
+	int totalTreatment_R = 0;
+	int avgWaiting_N = 0;
+	int avgWaiting_R = 0;
+	int avgTreatment_N = 0;
+	int avgTreatment_R = 0;
+
+
+
 	while (!finish.isEmpty()) {
-		Patient* P;
 		finish.pop(P);
-		myfile << P->getId() << "  " << P->endl;
-		totalwaitingtime+=P->
-		
+
+		if (P->getIsNormal())
+		{
+			x = 'N';
+			N++;
+			totalWaiting_N += P->getWt();
+			totalTreatment_N += P->getTt();
+
+		}
+		else {
+			x = 'R';
+			R++;
+			totalWaiting_R += P->getWt();
+			totalTreatment_R += P->getTt();
+		}
+
+		myfile << P->getId() << "  " << x << "  "<<P->getPt()<< "  "<< P->getVt()<<"  "<< "FT value"<< "  "<< P->getWt()<< "  "<< P->getTt()<< "  "<< P->getCancel()<< "  "<< P->getResc() << endl;
+
+
+	
+
+
 	}
+	if (N == 0) {
+		cout << " No N patients in f list" << endl;
+		return;
+	}
+	else if (R == 0)
+	{
+		cout << " No R patients in f list" << endl;
+		return;
+
+	}
+	myfile << " Total number of timesteps= " << "  "<<  endl;
+	myfile << " Total Number of all, N and R patients = " << N + R << ", " << N << ", " << R << endl;
+
+	avgWaiting_N = totalWaiting_N / N;
+	avgWaiting_R = totalWaiting_R / R;
+
+	myfile << " Average total waiting time for all , N, R patients= " << (totalWaiting_N + totalWaiting_R) / (N + R) << ", " << avgWaiting_N << ", " << avgWaiting_R << endl;
+
+	avgTreatment_N = totalTreatment_N / N;
+	avgTreatment_R = totalTreatment_R / R;
+
+	myfile << " Average total treatment time for all , N, R patients= " << (totalTreatment_N + totalTreatment_R) / (N + R) << ", " << avgTreatment_N << ", " << avgTreatment_R << endl;
+
+	myfile << "Percentage of patients of an accepted cancellation= " << pCancel << "%" << endl;
+	myfile << " Percentage of patients of an accepted rescheduling= " << pResc << "%" << endl;
+
+	myfile << "Percentage of early patients=  " << (numEarlyPatients / numPatients) * 100 << "%" << endl;
+	myfile << " Percentage of late patients= " << (numLatePatients / numPatients) * 100 << "%" << endl;
+	myfile << " Average late penalty= " << "  " << endl;
+
+	myfile.close();
 }
 
