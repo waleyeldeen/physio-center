@@ -84,7 +84,7 @@ public:
 	/*
 		call EarlyPList.cancel() and XWaitlist.cancel() according to pCancel and pResc
 	*/
-	void rescAndCancelCaller();
+	bool rescAndCancelCaller();
 
 	// PHASE 2 FUNCS
 	/*Called at each timestep to check the idle list for patients who

@@ -157,7 +157,7 @@ void Scheduler::sim(UI* ui)
 	}
 }
 
-void Scheduler::rescAndCancelCaller()
+bool Scheduler::rescAndCancelCaller()
 {
 	Patient* p = nullptr;
 	int rescRand = getRandInRange(0, 100);
@@ -182,6 +182,10 @@ void Scheduler::rescAndCancelCaller()
 			cout << "Patient canceled" << p->getId();
 		}
 	}
+
+	if (rescRand < pResc || cancelRand < pCancel)
+		return true;
+	return true;
 }
 
 void Scheduler::moveArrivedPatients()
