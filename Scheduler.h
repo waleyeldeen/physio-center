@@ -115,6 +115,9 @@ public:
 	void moveUWaitPatientsToServe();
 	void moveEWaitPatientsToServe();
 	void moveXWaitPatientsToServe();
+
+	void moveFromServeToWaitOrFinish();
+
 	void outputFile();
 
 };
