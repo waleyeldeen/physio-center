@@ -14,7 +14,8 @@ private:
     LinkedQueue<Treatment*> reqTreatment;
     bool isNormal;  // True: Normal, False: Recovering
     Scheduler* s;
-
+    int tt;
+    bool cancel, resc;
 public:
     Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal);
     Patient(const Patient* other);

@@ -2,7 +2,7 @@
 #include "Scheduler.h"
 
 Patient::Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal)
-    : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments), isNormal(isNormal), penalty(0) {
+    : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments), isNormal(isNormal), penalty(0), tt(0), cancel(false), resc(false) {
 }
 
 Patient::Patient(const Patient* other)
