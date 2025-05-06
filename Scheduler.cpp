@@ -242,7 +242,10 @@ void Scheduler::moveEarlyPatientsToWait()
 			// dequeue appoitned patient from early
 			early.dequeue(p, pri);
 
-			p->moveNextTreatmentToWait();
+			// there is a scheduler pointer in patient so there is no need to pass
+			//   ts as an arguments but I made the decision to do so to make it more
+			//   more intentional
+			p->moveNextTreatmentToWait(ts);
 		}
 		else
 			break;
@@ -261,7 +264,7 @@ void Scheduler::moveLatePatientsToWait()
 			// dequeue appoitned patient from early
 			late.dequeue(p, pri);
 
-			p->moveNextTreatmentToWait();
+			p->moveNextTreatmentToWait(ts);
 		}
 		else
 			break;

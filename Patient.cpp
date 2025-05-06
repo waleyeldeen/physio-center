@@ -106,7 +106,7 @@ bool Patient::reorderReqTreatment(TreatmentType tt)
     return true;
 }
 
-void Patient::moveNextTreatmentToWait()
+void Patient::moveNextTreatmentToWait(int ts)
 {
     Treatment* t;
 
@@ -139,6 +139,7 @@ void Patient::moveNextTreatmentToWait()
             }
         }
     }
+    assignmentTimeForWaitlist = ts; // used for calculating WT
 }
 
 // Output stream operator
