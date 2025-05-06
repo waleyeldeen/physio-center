@@ -18,7 +18,7 @@ public:
 		Note that the function can only be called on xWaitlist, so the current treatment will always
 		be gym (presumably).
 	*/
-	bool pickRandCancelPatient(Patient* p)
+	bool pickRandCancelPatient(Patient*& p)
 	{
 		// []TODO: what can I do if the list is empty
 		if (this->isEmpty()) { return false; }

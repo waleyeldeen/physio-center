@@ -169,8 +169,8 @@ void Scheduler::rescAndCancelCaller()
 	{
 		if (early.reschedule(p)) // successfully rescheduled a patient
 		{
-			p->canceled();
-			cout << "Patient canceled" << p->getId();
+			p->resced();
+			cout << "Patient resced" << p->getId();
 		}
 	}
 
@@ -178,8 +178,8 @@ void Scheduler::rescAndCancelCaller()
 	{
 		if (waitX.pickRandCancelPatient(p))
 		{
-			p->resced();
-			cout << "Patient resced" << p->getId();
+			p->canceled();
+			cout << "Patient canceled" << p->getId();
 		}
 	}
 }

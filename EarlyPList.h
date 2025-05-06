@@ -15,7 +15,7 @@ public:
 		To fix the position of the patient in the Priority Queue, dequeue and enqueue the patient again
 		TODO: Make it return true if rescheduled and false if list is empty
 	*/
-	bool reschedule(Patient* p)
+	bool reschedule(Patient*& p)
 	{
 		if (this->isEmpty()) { return false; }
 		// the -1 is to avoid being close to the nullptr (end of queue)
@@ -50,7 +50,7 @@ public:
 			count--;
 		}
 		
-		int newPt = selectedPatient->getPt() + getRandInRange(0, selectedPatient->getPt()/2);
+		int newPt = selectedPatient->getPt() + getRandInRange(1, selectedPatient->getPt()/2);
 		selectedPatient->setPt(newPt);
 
 		this->enqueue(selectedPatient, -newPt);
