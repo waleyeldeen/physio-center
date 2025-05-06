@@ -145,3 +145,75 @@ std::ostream& operator<<(std::ostream& os, const Patient* p)
     p->reqTreatment.print();
     return os;
 }
+
+// Bonus Part
+void Patient::Set_Tool_1(int x)
+{
+    Tool1 = Tool_1;
+    Tools_Durations[0] = x;
+}
+void Patient::Set_Tool_2(int y)
+{
+    Tool2 = Tool_2;
+    Tools_Durations[1] = y;
+}
+void Patient::Set_Tool_3(int z)
+{
+    Tool3 = Tool_3;
+    Tools_Durations[2] = z;
+}
+
+
+void Patient::Unset_Tool_1()
+{
+    Tool1 = NON;
+}
+void Patient::Unset_Tool_2()
+{
+    Tool2 = NON;
+}
+void Patient::Unset_Tool_3()
+{
+    Tool3 = NON;
+}
+
+void Patient::Set_Active_Tool(int t)
+{
+    Active_Tool = t;
+}
+void Patient::Unset_Active_Tool()
+{
+    Active_Tool = 0;
+}
+
+
+int Patient::Get_Active_Tool()
+{
+    return Active_Tool;
+}
+
+Tools Patient::GetTool_1()
+{
+    return Tool1;
+}
+Tools Patient::GetTool_2()
+{
+    return Tool2;
+}
+Tools Patient::GetTool_3()
+{
+    return Tool3;
+}
+
+int Patient::Get_Duration_1()
+{
+    return Tools_Durations[0];
+}
+int Patient::Get_Duration_2()
+{
+    return Tools_Durations[1];
+}
+int Patient::Get_Duration_3()
+{
+    return Tools_Durations[2];
+}

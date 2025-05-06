@@ -23,6 +23,7 @@ LinkedQueue<XRoom*>& Scheduler::getXRooms() { return xRooms; }
 
 ArrayStack<Patient*>& Scheduler::getFinish() { return finish; }
 
+
 void Scheduler::loadInputFile(string fileName)
 {
 	fstream file(fileName);
@@ -30,18 +31,29 @@ void Scheduler::loadInputFile(string fileName)
 	// input number of devices
 	int numEDevices, numUDevices, numXRooms;
 	file >> numEDevices >> numUDevices >> numXRooms;
-	
+
 	// input capacities of gym rooms
 	int* xCap = new int[numXRooms];
-	for (int i = 0; i < numXRooms; i++)
+	int* numTools_1, * numTools_2, * numTools_3;
+	numTools_1 = new int[numXRooms];
+	numTools_2 = new int[numXRooms];
+	numTools_3 = new int[numXRooms];
+	for (int i = 0; i < numXRooms; i++) 
+	{
 		file >> xCap[i];
+		file >> numTools_1[i];
+		file >> numTools_2[i];
+		file >> numTools_3[i];
+	}
+
+
 
 	// add device objects
 	// Electro Devices
 	for (int i = 0; i < numEDevices; i++)
 	{
 		// for the sake of the code I will make the id of each resource the i*10
-		eDevices.enqueue(new EDevice((i+1) * 10, EDEVICE));
+		eDevices.enqueue(new EDevice((i + 1) * 10, EDEVICE));
 	}
 
 	// Ultrasound Devices
@@ -55,17 +67,33 @@ void Scheduler::loadInputFile(string fileName)
 	for (int i = 0; i < numXRooms; i++)
 	{
 		// for the sake of the code I will make the id of each resource the i*10
-		xRooms.enqueue(new XRoom((i + 1) * 1000, XROOM, xCap[i]));
+		XRoom* x = new XRoom((i + 1) * 1000, XROOM, xCap[i]);
+		for (int j = 0; j < numTools_1[i]; j++)
+		{
+			x->increment_Tool_1();
+		}
+		for (int k = 0; k < numTools_1[i]; k++)
+		{
+			x->increment_Tool_2();
+		}
+		for (int o = 0; o < numTools_1[i]; o++)
+		{
+			x->increment_Tool_3();
+		}
+		if (xCap[i] != 0 && x->GetSumOfTools() != 0)
+			xRooms.enqueue(x);
+
+		// Assume that the capacity can never be larger than the sum of all tools in the room (Not Logical)
 	}
 
 	// input pCancel and pResc
 	file >> this->pCancel >> this->pResc;
-	
+
 	// input number of patients
 	file >> numPatients;
 
-	for (int i = 0; i < numPatients; i++)
-	{
+  for (int i = 0; i < numPatients; i++)
+  {
 		char inType;
 		file >> inType;
 		bool type = (inType == 'N') ? true : false;
@@ -77,27 +105,52 @@ void Scheduler::loadInputFile(string fileName)
 		Patient* newP = new Patient(this, i + 1, pt, vt, numTreatments, type);
 		idle.enqueue(newP);
 
+
 		for (int j = 0; j < numTreatments; j++)
+
 		{
-			char therapyType;
-			file >> therapyType;
+	         char therapyType;
+	         file >> therapyType;
 
-			int duration;
-			file >> duration;
+	          int duration;
+	          file >> duration;
 
-			switch (therapyType)
-			{
-				case 'E':
-					newP->addTreatment(new ETherapy(newP, duration)); break;
-				case 'U':
-					newP->addTreatment(new UTherapy(newP, duration)); break;
-				case 'X':
-					newP->addTreatment(new XTherapy(newP, duration)); break;
-			}
-		}
-	}
+	            switch (therapyType)
+                {
+	              case 'E':
+		             newP->addTreatment(new ETherapy(newP, duration)); break;
+	              case 'U':
+		             newP->addTreatment(new UTherapy(newP, duration)); break;
+	              case 'X':
+		             int NumOfRequiredTools;
+		             file >> NumOfRequiredTools;
+		             int* ToolType = new int[NumOfRequiredTools];
+		             int* Durations = new int[NumOfRequiredTools];
+		             for (int i = 0; i < NumOfRequiredTools; i++)
+		             {
+			              file >> ToolType[i];
+			              file >> Durations[i];
+			              switch (ToolType[i])
+			              {
+			               case '1':
+				             newP->Set_Tool_1(Durations[i]); break;
+			               case '2':
+				             newP->Set_Tool_2(Durations[i]); break;
+			               case '3':
+				             newP->Set_Tool_3(Durations[i]); break;
+			              }
+			                // Sum of Durations Array Elements should be equal to the value "duration"
+		             }
+		               newP->addTreatment(new XTherapy(newP, duration)); break;
+	            }
+        }
 
-	
+
+
+
+  }
+
+
 	file.close();
 }
 
@@ -311,26 +364,177 @@ void Scheduler::moveEWaitPatientsToServe()
 	}
 }
 
+
 void Scheduler::moveXWaitPatientsToServe()
 {
-	Patient* p;
-	Treatment* xTherapy;
-	XRoom* xRoom;
-
-	while (XTherapy::canAssign(this) && waitX.peek(p))
+	Patient* PT;
+	PriQueue<Patient*> TEMP;
+	int Khairy;
+	while (this->getServing().dequeue(PT, Khairy))
 	{
-		xTherapy = p->peekReqTreatment();
-		waitX.dequeue(p);
-		xRooms.peek(xRoom);
 
-		xRoom->incrementNumOfPts();
+		if (PT->peekReqTreatment()->Get_X_Room() != nullptr)
+		{
 
-		if (xRoom->getNumOfPts() == xRoom->getCapacity())
-			xRooms.dequeue(xRoom);
+			if ((PT->peekReqTreatment()->getAssignmentTime() + PT->peekReqTreatment()->getDuration()) == ts)
+			{
+				XRoom* X = PT->peekReqTreatment()->Get_X_Room();
 
-		xTherapy->setAssignmentTime(ts);
-		xTherapy->setAssignedRes(xRoom);
+				Resource* R = new XRoom();
+				PT->peekReqTreatment()->setAssignedRes(R);
+				PT->peekReqTreatment()->Set_X_Room(nullptr);
 
-		this->addToServe(p);
+				X->decrementNumOfPTsIn();
+				if ((X->getNumOfPts() + 1) == X->getCapacity())
+					this->getXRooms().enqueue(X);
+
+				PT->peekReqTreatment()->setAssignmentTime(0);
+				PT->peekReqTreatment()->setDuration(0);
+
+
+				int Active = PT->Get_Active_Tool();
+				PT->Set_Active_Tool(0);
+
+				if (Active == 1)
+				{
+					X->increment_Tool_1();
+				}
+				else if (Active == 2)
+				{
+					X->increment_Tool_2();
+				}
+				else if (Active == 3)
+				{
+					X->increment_Tool_3();
+				}
+
+				if (PT->GetTool_1() == NON && PT->GetTool_2() == NON && PT->GetTool_3() == NON)
+					this->getFinish().push(PT);
+				else
+					this->addToWaitX(PT);
+			}
+			else
+				TEMP.enqueue(PT, Khairy);
+		}
+		else
+			TEMP.enqueue(PT, Khairy);
 	}
+
+	while (TEMP.dequeue(PT, Khairy))
+		this->getServing().enqueue(PT, Khairy);
+
+	XTherapy* XTh = new XTherapy();
+	XRoom* XX;
+	Patient* PP;
+
+	LinkedQueue<XRoom*> Temporary;
+	XWaitlist temp;
+	while (this->getXRooms().dequeue(XX))
+	{
+
+		while (XX->GetNumOfTool_1() != 0 && this->getWaitX().getCount() != 0)
+		{
+			while (this->getWaitX().dequeue(PP))
+			{
+				if (PP->GetTool_1() == Tool_1 && PP->Get_Active_Tool() == 0)
+				{
+
+					XX->incrementNumOfPts();
+					XX->decrement_Tool_1();
+					PP->peekReqTreatment()->setAssignmentTime(ts);
+					PP->peekReqTreatment()->setAssignedRes(XX);
+					PP->peekReqTreatment()->Set_X_Room(XX);
+					PP->peekReqTreatment()->setDuration(PP->Get_Duration_1());
+					PP->Unset_Tool_1();
+					PP->Set_Active_Tool(1);
+					this->addToServe(PP);
+
+				}
+				else
+					temp.enqueue(PP);
+			}
+		}
+		if (XX->getNumOfPts() != XX->getCapacity() && XX->GetSumOfTools() != 0)
+			Temporary.enqueue(XX);
+	}
+
+	while (Temporary.dequeue(XX))
+		this->getXRooms().enqueue(XX);
+
+	while (temp.dequeue(PP))
+		this->getWaitX().enqueue(PP);
+
+
+	while (this->getXRooms().dequeue(XX))
+	{
+
+		while (XX->GetNumOfTool_2() != 0 && this->getWaitX().getCount() != 0)
+		{
+			while (this->getWaitX().dequeue(PP))
+			{
+				if (PP->GetTool_2() == Tool_2 && PP->Get_Active_Tool() == 0)
+				{
+
+					XX->incrementNumOfPts();
+					XX->decrement_Tool_2();
+					PP->peekReqTreatment()->setAssignmentTime(ts);
+					PP->peekReqTreatment()->setAssignedRes(XX);
+					PP->peekReqTreatment()->Set_X_Room(XX);
+					PP->peekReqTreatment()->setDuration(PP->Get_Duration_2());
+					PP->Unset_Tool_2();
+					PP->Set_Active_Tool(2);
+					this->addToServe(PP);
+
+				}
+				else
+					temp.enqueue(PP);
+			}
+		}
+		if (XX->getNumOfPts() != XX->getCapacity() && XX->GetSumOfTools() != 0)
+			Temporary.enqueue(XX);
+	}
+
+	while (Temporary.dequeue(XX))
+		this->getXRooms().enqueue(XX);
+
+	while (temp.dequeue(PP))
+		this->getWaitX().enqueue(PP);
+
+
+	while (this->getXRooms().dequeue(XX))
+	{
+
+		while (XX->GetNumOfTool_3() != 0 && this->getWaitX().getCount() != 0)
+		{
+			while (this->getWaitX().dequeue(PP))
+			{
+				if (PP->GetTool_3() == Tool_3 && PP->Get_Active_Tool() == 0)
+				{
+
+					XX->incrementNumOfPts();
+					XX->decrement_Tool_3();
+					PP->peekReqTreatment()->setAssignmentTime(ts);
+					PP->peekReqTreatment()->setAssignedRes(XX);
+					PP->peekReqTreatment()->Set_X_Room(XX);
+					PP->peekReqTreatment()->setDuration(PP->Get_Duration_3());
+					PP->Unset_Tool_3();
+					PP->Set_Active_Tool(3);
+					this->addToServe(PP);
+
+				}
+				else
+					temp.enqueue(PP);
+			}
+		}
+		if (XX->getNumOfPts() != XX->getCapacity() && XX->GetSumOfTools() != 0)
+			Temporary.enqueue(XX);
+	}
+
+	while (Temporary.dequeue(XX))
+		this->getXRooms().enqueue(XX);
+
+	while (temp.dequeue(PP))
+		this->getWaitX().enqueue(PP);
+
+
 }

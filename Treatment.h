@@ -4,6 +4,8 @@ using namespace std;
 #include "Resource.h"
 #include "DEFS.h"
 
+#include"XRoom.h"
+
 /*Forward Declaration*/
 class Patient;
 class Scheduler;
@@ -14,12 +16,18 @@ private:
 	int duration, assignmentTime;
 	const TreatmentType type;
 	Resource* assignedRes;
+
+	XRoom* xroom = nullptr;
 protected:
 	Patient* patient;
 public:
 	Treatment(Patient* patient = nullptr, int duration = 0, TreatmentType type = ULTRA, int assignmentTime = 0) : patient(patient), duration(duration), assignmentTime(assignmentTime), type(type), assignedRes(nullptr) {}
 
-	// getters
+	void setDuration(int x)
+	{
+		duration = x;
+	}
+
 	int getDuration() const
 	{
 		return duration;
@@ -30,16 +38,24 @@ public:
 		return type;
 	}
 
-	int getAssignmentTime() const
+
+	Patient* getPatient()
 	{
-		return assignmentTime;
+		return patient;
 	}
 
-
+	
 	void setAssignedRes(Resource* newResource)
 	{
 		assignedRes = newResource;
+		if (newResource->getType() == GYM)
+			return;
 		assignedRes->unavailable();
+	}
+
+	Resource* getAssignedResource()
+	{
+		return assignedRes;
 	}
 
 	void setAssignmentTime(int ts)
@@ -47,10 +63,25 @@ public:
 		assignmentTime = ts;
 	}
 
+	int getAssignmentTime() const
+	{
+		return assignmentTime;
+	}
+
 	// TODO: update it to make it do the check automatically
 	void finishTreatment()
 	{
 		assignedRes->available();
+	}
+
+	void Set_X_Room(XRoom* x)
+	{
+		xroom = x;
+	}
+
+	XRoom* Get_X_Room()
+	{
+		return xroom;
 	}
 
 	// Output stream operator

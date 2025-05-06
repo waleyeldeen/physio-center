@@ -15,6 +15,16 @@ private:
     bool isNormal;  // True: Normal, False: Recovering
     Scheduler* s;
 
+    Tools Tool1 = NON;
+    Tools Tool2 = NON;
+    Tools Tool3 = NON;
+    int Tools_Durations[3] = { 0,0,0 };
+    // index 0 represents the duration of tool 1 
+    // index 1 represents the duration of tool 2 
+    // index 2 represents the duration of tool 3
+
+    int Active_Tool = 0; // Indicates the current tool that this patient is currently using
+
 public:
     Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal);
     Patient(const Patient* other);
@@ -59,4 +69,29 @@ public:
 
     // Output stream operator
     friend std::ostream& operator<<(std::ostream& os, const Patient* p);
+
+    //Bonus Part
+    void Set_Tool_1(int x);
+    void Set_Tool_2(int y);
+    void Set_Tool_3(int z);
+
+
+    void Unset_Tool_1();
+    void Unset_Tool_2();
+    void Unset_Tool_3();
+
+    void Set_Active_Tool(int t);
+    void Unset_Active_Tool();
+
+    int Get_Active_Tool();
+
+    Tools GetTool_1();
+    Tools GetTool_2();
+    Tools GetTool_3();
+
+
+
+    int Get_Duration_1();
+    int Get_Duration_2();
+    int Get_Duration_3();
 };

@@ -26,3 +26,11 @@ enum TreatmentType
 	ELECTRO,
 	GYM
 };
+
+enum Tools
+{
+	Tool_1,
+	Tool_2,
+	Tool_3,
+	NON
+};
