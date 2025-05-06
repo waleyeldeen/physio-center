@@ -21,6 +21,8 @@ PatientStatus Patient::getStatus() const { return status; }
 int Patient::getNumOfTreatments() const { return numOfTreatments; }
 int Patient::getIsNormal() const { return isNormal; }
 int Patient::getPenalty() const { return penalty; }
+bool Patient::getResc() const { return resc; }
+bool Patient::getCancel() const { return cancel; }
 
 // Setters
 void Patient::setId(int newId) { id = newId; }
@@ -28,6 +30,9 @@ void Patient::setPt(int newPt) { pt = newPt; }
 void Patient::setVt(int newVt) { vt = newVt; }
 void Patient::setStatus(PatientStatus s) { status = s; }
 void Patient::setPenalty(int newPenalty) { penalty = newPenalty; }
+
+void Patient::resced() { resc = true; }
+void Patient::canceled() { cancel = true; }
 
 
 // Treatment operations

@@ -28,6 +28,8 @@ public:
     int getNumOfTreatments() const;
     int getIsNormal() const;
     int getPenalty() const;
+    bool getResc() const;
+    bool getCancel() const;
 
     // Setters
     void setId(int newId);
@@ -35,6 +37,9 @@ public:
     void setVt(int newVt);
     void setStatus(PatientStatus s);
     void setPenalty(int newPenalty);
+
+    void resced();
+    void canceled();
 
     // Treatment operations
     /*
