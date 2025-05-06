@@ -28,6 +28,21 @@ public:
 	void incrementNumOfPts()
 	{
 		numOfPts++;
+		if (numOfPts > cap)
+			cerr << "ERROR in room Capacity";
+	}
+
+	void decrementNumOfPts()
+	{
+		numOfPts--;
+		if (numOfPts < 0)
+			cerr << "ERROR in room Capacity";
+	}
+
+	bool isFull()
+	{
+		if (cap == numOfPts) return true;
+		return false;
 	}
 
 	friend ostream& operator<<(ostream& os, const XRoom* x) {
