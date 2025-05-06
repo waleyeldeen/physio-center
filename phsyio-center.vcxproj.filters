@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="DS" />
+    <Filter Include="Patient" />
+    <Filter Include="Helpers" />
+    <Filter Include="Resources" />
+    <Filter Include="Treatments" />
+    <Filter Include="Scheduler" />
+    <Filter Include="UI" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="UI.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="Scheduler.cpp">
+      <Filter>Scheduler</Filter>
+    </ClCompile>
+    <ClCompile Include="Patient.cpp">
+      <Filter>Patient</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="UI.h">
+      <Filter>UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scheduler.h">
+      <Filter>Scheduler</Filter>
+    </ClInclude>
+    <ClInclude Include="StackADT.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="ArrayStack.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="LinkedQueue.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="QueueADT.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="PriQueue.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="PriNode.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="EarlyPList.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="UEWaitlist.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+    <ClInclude Include="Helpers.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="Patient.h">
+      <Filter>Patient</Filter>
+    </ClInclude>
+    <ClInclude Include="Treatment.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="XTherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="UTherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="ETherapy.h">
+      <Filter>Treatments</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="XRoom.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="UDevice.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="EDevice.h">
+      <Filter>Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="DEFS.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="XWaitlist.h">
+      <Filter>DS</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
