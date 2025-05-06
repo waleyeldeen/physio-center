@@ -390,6 +390,50 @@ void Scheduler::moveXWaitPatientsToServe()
 	}
 }
 
+void Scheduler::moveFromServeToWaitOrFinish()
+{
+	Patient* p=nullptr;
+	int ft;
+	serving.peek(p, ft);
+	ft = -ft;
+	while (p && ft <= ts) 
+	{
+			serving.dequeue(p, ft);
+			ft = -ft;
+			Treatment* t = p->peekReqTreatment();
+			switch (t->getType())
+			{
+			case ELECTRO:
+				eDevices.enqueue((EDevice*)t->getAssignedRes());
+				break;
+			case ULTRA:
+				uDevices.enqueue((UDevice*)t->getAssignedRes());
+				break;
+			case GYM:
+				//this is not done
+				break;
+			}
+
+			p->finishNextTreatment();
+
+			t = nullptr;
+			t = p->peekReqTreatment();
+
+			if (t)
+			{
+				t->moveToWait(this);
+			}
+			else
+			{
+				finish.push(p);
+			}
+
+			p = nullptr;
+			serving.peek(p,ft);
+			ft = -ft;
+	}
+};
+
 void Scheduler::outputFile()
 {
 	int totalwaitingtime=0;
@@ -469,50 +513,3 @@ void Scheduler::outputFile()
 
 	myfile.close();
 }
-
-}
-
-void Scheduler::moveFromServeToWaitOrFinish()
-{
-	Patient* p=nullptr;
-	int ft;
-	serving.peek(p, ft);
-	ft = -ft;
-	while (p && ft <= ts) 
-	{
-			serving.dequeue(p, ft);
-			ft = -ft;
-			Treatment* t = p->peekReqTreatment();
-			switch (t->getType())
-			{
-			case ELECTRO:
-				eDevices.enqueue((EDevice*)t->getAssignedRes());
-				break;
-			case ULTRA:
-				uDevices.enqueue((UDevice*)t->getAssignedRes());
-				break;
-			case GYM:
-				//this is not done
-				break;
-			}
-
-			p->finishNextTreatment();
-
-			t = nullptr;
-			t = p->peekReqTreatment();
-
-			if (t)
-			{
-				t->moveToWait(this);
-			}
-			else
-			{
-				finish.push(p);
-			}
-
-			p = nullptr;
-			serving.peek(p,ft);
-			ft = -ft;
-	}
-}
-;

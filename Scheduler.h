@@ -119,6 +119,5 @@ public:
 	void moveFromServeToWaitOrFinish();
 
 	void outputFile();
-
 };
 
