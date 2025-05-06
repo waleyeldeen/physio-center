@@ -38,7 +38,7 @@ private:
 
 	ArrayStack<Patient*> finish;
 
-	int pResc, pCancel, numPatients;
+	int pResc, pCancel, numPatients, numEarlyPatients, numLatePatients;
 
 	//void addToIdle(Patient* p);
 
@@ -60,6 +60,10 @@ public:
 	LinkedQueue<XRoom*>& getXRooms();
 
 	ArrayStack<Patient*>& getFinish();
+
+	int getNumPatients() const;
+	int getNumEarlyPatients() const;
+	int getNumLatePatients() const;
 
 	//void addToEarly();
 	//void addToLate();

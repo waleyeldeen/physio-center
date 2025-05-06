@@ -23,6 +23,10 @@ LinkedQueue<XRoom*>& Scheduler::getXRooms() { return xRooms; }
 
 ArrayStack<Patient*>& Scheduler::getFinish() { return finish; }
 
+int Scheduler::getNumPatients() const { return numPatients; }
+int Scheduler::getNumEarlyPatients() const { return numEarlyPatients; }
+int Scheduler::getNumLatePatients() const { return numLatePatients; }
+
 void Scheduler::loadInputFile(string fileName)
 {
 	fstream file(fileName);
@@ -132,6 +136,7 @@ void Scheduler::addToWaitX(Patient* p)
 void Scheduler::addToServe(Patient* p) {
 	int ft = p->peekReqTreatment()->getDuration() + p->peekReqTreatment()->getAssignmentTime();
 	serving.enqueue(p, -ft);
+	p->updateWt(ts);
 }
 
 void Scheduler::sim(UI* ui)
@@ -139,6 +144,10 @@ void Scheduler::sim(UI* ui)
 	while (true)
 	{
 		ts++;
+		moveUWaitPatientsToServe();
+		moveEWaitPatientsToServe();
+		moveXWaitPatientsToServe();
+
 		rescAndCancelCaller();
 
 		moveArrivedPatients();
@@ -146,10 +155,6 @@ void Scheduler::sim(UI* ui)
 		moveEarlyPatientsToWait();
 
 		moveLatePatientsToWait();
-
-		moveUWaitPatientsToServe();
-		moveEWaitPatientsToServe();
-		moveXWaitPatientsToServe();
 
 		ui->printAllInformation(*this, ts);
 
@@ -208,6 +213,8 @@ void Scheduler::moveArrivedPatients()
 				// patient is early
 				early.enqueue(p, -pt);
 				p->setStatus(ERLY);
+
+				numEarlyPatients++;
 			}
 			else if (vt > pt)
 			{
@@ -219,10 +226,16 @@ void Scheduler::moveArrivedPatients()
 				// set new PT (old pt + penalty)
 				p->setPt(pt + penalty);
 				p->setStatus(LATE);
+
+				numLatePatients++;
 			}
 			else if (vt == pt)
 			{
-				//TODO call move to waitlist func
+				p->setStatus(ERLY);
+				p->moveNextTreatmentToWait(ts);
+				moveUWaitPatientsToServe();
+				moveEWaitPatientsToServe();
+				moveXWaitPatientsToServe();
 			}
 		}
 		else

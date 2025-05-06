@@ -14,7 +14,8 @@ private:
     LinkedQueue<Treatment*> reqTreatment;
     bool isNormal;  // True: Normal, False: Recovering
     Scheduler* s;
-    int tt; // total treatment time
+    int tt;  // total treatment time
+    int wt;  // total waiting time
     bool cancel, resc;
     int assignmentTimeForWaitlist; // used for calculating WT
 public:
@@ -29,6 +30,8 @@ public:
     int getNumOfTreatments() const;
     int getIsNormal() const;
     int getPenalty() const;
+    int getTt() const;
+    int getWt() const;
     bool getResc() const;
     bool getCancel() const;
 
@@ -41,6 +44,7 @@ public:
 
     void resced();
     void canceled();
+    void updateWt(int ts);
 
     // Treatment operations
     /*

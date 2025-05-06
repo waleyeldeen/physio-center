@@ -2,8 +2,9 @@
 #include "Scheduler.h"
 
 Patient::Patient(Scheduler* s, int id, int pt, int vt, int numOfTreatments, bool isNormal)
-    : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments), isNormal(isNormal), penalty(0), tt(0), cancel(false), resc(false) {
-}
+    : s(s), id(id), pt(pt), vt(vt), numOfTreatments(numOfTreatments),
+        isNormal(isNormal), penalty(0), tt(0), cancel(false), resc(false),
+        wt(0) {}
 
 Patient::Patient(const Patient* other)
 {
@@ -21,6 +22,8 @@ PatientStatus Patient::getStatus() const { return status; }
 int Patient::getNumOfTreatments() const { return numOfTreatments; }
 int Patient::getIsNormal() const { return isNormal; }
 int Patient::getPenalty() const { return penalty; }
+int Patient::getTt() const { return tt; }
+int Patient::getWt() const { return wt; }
 bool Patient::getResc() const { return resc; }
 bool Patient::getCancel() const { return cancel; }
 
@@ -33,6 +36,8 @@ void Patient::setPenalty(int newPenalty) { penalty = newPenalty; }
 
 void Patient::resced() { resc = true; }
 void Patient::canceled() { cancel = true; }
+
+void Patient::updateWt(int ts) { wt = wt + (ts - assignmentTimeForWaitlist); }
 
 
 // Treatment operations
