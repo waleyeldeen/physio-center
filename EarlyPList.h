@@ -35,6 +35,11 @@ public:
 			current = current->getNext();
 		}
 
+		// ensure that patient has not been rescheduled before
+		int x;
+		if (current->getItem(x)->getResc() == true)
+			return false;
+
 		// remove node from queue incase we want to remove patient at front of queue
 		if (current == head)
 		{
@@ -50,7 +55,7 @@ public:
 			count--;
 		}
 		
-		int newPt = selectedPatient->getPt() + getRandInRange(1, selectedPatient->getPt()/2);
+		int newPt = selectedPatient->getPt() + getRandInRange(1, 10);
 		selectedPatient->setPt(newPt);
 
 		this->enqueue(selectedPatient, -newPt);
