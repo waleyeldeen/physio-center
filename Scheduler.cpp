@@ -499,16 +499,12 @@ void Scheduler::outputFile()
 	int avgWaiting_R = 0;
 	int avgTreatment_N = 0;
 	int avgTreatment_R = 0;
-<<<<<<< Updated upstream
 	int N = 0;
 	int R = 0; 
 	int E = 0;
 	int L = 0;
-=======
 	int total_penalty = 0;
 
-
->>>>>>> Stashed changes
 	while (!finish.isEmpty()) {
 		finish.pop(P);
 		total_penalty = total_penalty + P->getPenalty();
@@ -528,15 +524,8 @@ void Scheduler::outputFile()
 			R++;
 		}
 
-<<<<<<< Updated upstream
-		// here
-
-		myfile << P->getId() << "   " << x << "   "<<P->getPt()<< "   "
-			<< P->getVt()<<"  "<< P->getFt() << "   "<< P->getWt()
-=======
 		myfile << P->getId() << "   " << x << "   "<<P->getPt()<< "   "
 			<< P->getVt()<<"   "<< P->getFt() << "   "<< P->getWt()
->>>>>>> Stashed changes
 			<< "   "<< P->getTt()<< "   "<< P->getCancel()<< "   "
 			<< P->getResc() << endl;
 
@@ -550,13 +539,9 @@ void Scheduler::outputFile()
 		//return;
 
 	}
-<<<<<<< Updated upstream
-	myfile << " Total number of timesteps= " << ts <<  endl;
-	myfile << " Total Number of all, N and R patients = " << numNPatients + numRPatients << ", " << numNPatients << ", " << numRPatients << endl;
-=======
+
 	myfile << " Total number of timesteps = " << "  " << ts << endl;
 	myfile << " Total Number of all, N and R patients = " << numPatients << ", " << numNPatients << ", " << numRPatients << endl;
->>>>>>> Stashed changes
 
 	if (N > 0) {
 		avgWaiting_N = totalWaiting_N / N;
@@ -578,27 +563,8 @@ void Scheduler::outputFile()
 	}
 	myfile << " Average total waiting time for all , N, R patients= " << (totalWaiting_N + totalWaiting_R) / (numNPatients + numRPatients) << ", " << avgWaiting_N << ", " << avgWaiting_R << endl;
 
-
-
 	myfile << " Average total treatment time for all , N, R patients= " << (totalTreatment_N + totalTreatment_R) / (numNPatients + numRPatients) << ", " << avgTreatment_N << ", " << avgTreatment_R << endl;
 
-<<<<<<< Updated upstream
-
-
-
-	double cancelA = getNumOfSussessfullCancels();
-	double rescA = getNumOfSuccessfullRescs();
-
-
-
-	myfile << "Percentage of patients of an accepted cancellation= " << cancelA/getNumOfCancels() *100 << "%" << endl;
-	myfile << " Percentage of patients of an accepted rescheduling= " << rescA/getNumOfRescs()*100 << "%" << endl;
-	
-
-	myfile << "Percentage of early patients=  " << static_cast<double>(numEarlyPatients) / numPatients * 100 << "%" << endl;
-	myfile << " Percentage of late patients= " << static_cast<double>(numLatePatients) / numPatients * 100 << "%" << endl;
-	myfile << " Average late penalty= " << static_cast<double>(numLatePatients)/numPatients << endl;
-=======
 	float rescs = ((float)numOfSuccessfullRescs / (float)numOfRescs) * 100.0;
 	float cancelations = ((float)numOfSuccessfullCancels / (float)numOfCancels) * 100.0;
 
@@ -608,7 +574,5 @@ void Scheduler::outputFile()
 	myfile << "Percentage of early patients=  " << (int)(((float)numEarlyPatients / (float)numPatients) * 100.0) << "%" << endl;
 	myfile << " Percentage of late patients= " << (int)(((float)numLatePatients / (float)numPatients) * 100.0) << "%" << endl;
 	myfile << " Average late penalty= " << "  " << (int)(((float)total_penalty / (float)numLatePatients)) << endl;
->>>>>>> Stashed changes
-
 	myfile.close();
 }
