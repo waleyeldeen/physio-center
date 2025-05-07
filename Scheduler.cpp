@@ -7,6 +7,7 @@
 #include "fstream"
 #include "iostream"
 
+using namespace std;
 
 Scheduler::Scheduler() {
 	ts = 0; numOfCancels = 0; numEarlyPatients = 0;
@@ -489,29 +490,34 @@ void Scheduler::outputFile()
 	int avgWaiting_R = 0;
 	int avgTreatment_N = 0;
 	int avgTreatment_R = 0;
-
-
+	int N = 0;
+	int R = 0; 
+	int E = 0;
+	int L = 0;
 	while (!finish.isEmpty()) {
 		finish.pop(P);
 
 		if (P->getIsNormal())
 		{
 			x = 'N';
-			numNPatients++;
+			//numNPatients++;
 			totalWaiting_N += P->getWt();
 			totalTreatment_N += P->getTt();
-
+			N++;
 		}
 		else {
 			x = 'R';
-			numRPatients++;
+			//numRPatients++;
 			totalWaiting_R += P->getWt();
 			totalTreatment_R += P->getTt();
+			R++;
 		}
 
-		myfile << P->getId() << "  " << x << "  "<<P->getPt()<< "  "
-			<< P->getVt()<<"  "<< P->getFt() << "  "<< P->getWt()
-			<< "  "<< P->getTt()<< "  "<< P->getCancel()<< "  "
+		// here
+
+		myfile << P->getId() << "   " << x << "   "<<P->getPt()<< "   "
+			<< P->getVt()<<"  "<< P->getFt() << "   "<< P->getWt()
+			<< "   "<< P->getTt()<< "   "<< P->getCancel()<< "   "
 			<< P->getResc() << endl;
 
 	}
@@ -525,25 +531,48 @@ void Scheduler::outputFile()
 		//return;
 
 	}
-	myfile << " Total number of timesteps= " << "  "<<  endl;
+	myfile << " Total number of timesteps= " << ts <<  endl;
 	myfile << " Total Number of all, N and R patients = " << numNPatients + numRPatients << ", " << numNPatients << ", " << numRPatients << endl;
 
-	avgWaiting_N = totalWaiting_N / numNPatients;
-	avgWaiting_R = totalWaiting_R / numRPatients;
+	if (N > 0) {
+		avgWaiting_N = totalWaiting_N / N;
+		avgTreatment_N = totalTreatment_N / N;
+	}
+	else {
+		avgWaiting_N = 0;
+		avgTreatment_N = 0;
+	}
 
+	if (R > 0) {
+		avgTreatment_R = totalTreatment_R / R;
+		avgWaiting_R = totalWaiting_R / R;
+
+	}
+	else {
+		avgWaiting_R = 0;
+		avgWaiting_R = 0;
+	}
 	myfile << " Average total waiting time for all , N, R patients= " << (totalWaiting_N + totalWaiting_R) / (numNPatients + numRPatients) << ", " << avgWaiting_N << ", " << avgWaiting_R << endl;
 
-	avgTreatment_N = totalTreatment_N / numNPatients;
-	avgTreatment_R = totalTreatment_R / numRPatients;
+
 
 	myfile << " Average total treatment time for all , N, R patients= " << (totalTreatment_N + totalTreatment_R) / (numNPatients + numRPatients) << ", " << avgTreatment_N << ", " << avgTreatment_R << endl;
 
-	myfile << "Percentage of patients of an accepted cancellation= " << pCancel << "%" << endl;
-	myfile << " Percentage of patients of an accepted rescheduling= " << pResc << "%" << endl;
 
-	myfile << "Percentage of early patients=  " << (numEarlyPatients / numPatients) * 100 << "%" << endl;
-	myfile << " Percentage of late patients= " << (numLatePatients / numPatients) * 100 << "%" << endl;
-	myfile << " Average late penalty= " << "  " << endl;
+
+
+	double cancelA = getNumOfSussessfullCancels();
+	double rescA = getNumOfSuccessfullRescs();
+
+
+
+	myfile << "Percentage of patients of an accepted cancellation= " << cancelA/getNumOfCancels() *100 << "%" << endl;
+	myfile << " Percentage of patients of an accepted rescheduling= " << rescA/getNumOfRescs()*100 << "%" << endl;
+	
+
+	myfile << "Percentage of early patients=  " << static_cast<double>(numEarlyPatients) / numPatients * 100 << "%" << endl;
+	myfile << " Percentage of late patients= " << static_cast<double>(numLatePatients) / numPatients * 100 << "%" << endl;
+	myfile << " Average late penalty= " << static_cast<double>(numLatePatients)/numPatients << endl;
 
 	myfile.close();
 }
