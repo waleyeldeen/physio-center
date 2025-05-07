@@ -565,8 +565,13 @@ void Scheduler::outputFile()
 
 	myfile << " Average total treatment time for all , N, R patients= " << (totalTreatment_N + totalTreatment_R) / (numNPatients + numRPatients) << ", " << avgTreatment_N << ", " << avgTreatment_R << endl;
 
-	float rescs = ((float)numOfSuccessfullRescs / (float)numOfRescs) * 100.0;
-	float cancelations = ((float)numOfSuccessfullCancels / (float)numOfCancels) * 100.0;
+	float rescs = 0.0;
+	float cancelations = 0.0;
+	if (numOfRescs> 0)
+		float rescs = ((float)numOfSuccessfullRescs / (float)numOfRescs) * 100.0;
+
+	if (numOfCancels > 0)
+		cancelations = ((float)numOfSuccessfullCancels / (float)numOfCancels) * 100.0;
 
 	myfile << "Percentage of patients of an accepted cancellation= " << (int)cancelations << "%" << endl;
 	myfile << " Percentage of patients of an accepted rescheduling= " << (int)rescs << "%" << endl;
