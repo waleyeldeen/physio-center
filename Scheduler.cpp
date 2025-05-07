@@ -155,12 +155,11 @@ void Scheduler::sim(UI* ui)
 		moveEWaitPatientsToServe();
 		moveXWaitPatientsToServe();
 
-		moveArrivedPatients();
-
 		moveEarlyPatientsToWait();
 
 		moveLatePatientsToWait();
 
+		moveArrivedPatients();
 
 		ui->printAllInformation(*this, ts);
 
@@ -407,18 +406,22 @@ void Scheduler::moveFromServeToWaitOrFinish()
 			serving.dequeue(p, ft);
 			ft = -ft;
 			Treatment* t = p->peekReqTreatment();
-			switch (t->getType())
+
+            if (t->getType() == ELECTRO) 
 			{
-			case ELECTRO:
-				eDevices.enqueue((EDevice*)t->getAssignedRes());
-				break;
-			case ULTRA:
-				uDevices.enqueue((UDevice*)t->getAssignedRes());
-				break;
-			case GYM:
-				//this is not done
-				break;
-			}
+               eDevices.enqueue((EDevice*)t->getAssignedRes());
+            } 
+			else if (t->getType() == ULTRA)
+			{
+               uDevices.enqueue((UDevice*)t->getAssignedRes());
+            } 
+			else if (t->getType() == GYM)
+			{
+               XRoom* xRoom = (XRoom*)t->getAssignedRes();
+			   if (xRoom->isFull())
+				   xRooms.enqueue(xRoom);
+			   xRoom->decrementNumOfPts();
+            }
 
 			p->finishNextTreatment();
 
