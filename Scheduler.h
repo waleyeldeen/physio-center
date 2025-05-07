@@ -41,7 +41,7 @@ private:
 	ArrayStack<Patient*> finish;
 
 	int pResc, pCancel, numPatients, numEarlyPatients, numLatePatients, numNPatients, numRPatients;
-
+	int numOfRescs, numOfCancels, numOfSuccessfullRescs, numOfSuccessfullCancels;
 	//void addToIdle(Patient* p);
 
 public:
@@ -66,6 +66,10 @@ public:
 	int getNumPatients() const;
 	int getNumEarlyPatients() const;
 	int getNumLatePatients() const;
+	int getNumOfRescs() const;
+	int getNumOfSuccessfullRescs() const;
+	int getNumOfCancels() const;
+	int getNumOfSussessfullCancels() const;
 
 	//void addToEarly();
 	//void addToLate();

@@ -8,7 +8,11 @@
 #include "iostream"
 
 
-Scheduler::Scheduler() { ts = 0; }
+Scheduler::Scheduler() {
+	ts = 0; numOfCancels = 0; numEarlyPatients = 0;
+	numLatePatients = 0; numOfRescs = 0; numOfSuccessfullRescs = 0;
+	numOfSuccessfullCancels = 0;
+}
 
 LinkedQueue<Patient*>& Scheduler::getIdle() { return idle; }
 EarlyPList& Scheduler::getEarly() { return early; }
@@ -29,6 +33,10 @@ ArrayStack<Patient*>& Scheduler::getFinish() { return finish; }
 int Scheduler::getNumPatients() const { return numPatients; }
 int Scheduler::getNumEarlyPatients() const { return numEarlyPatients; }
 int Scheduler::getNumLatePatients() const { return numLatePatients; }
+int Scheduler::getNumOfRescs() const { return numOfRescs; }
+int Scheduler::getNumOfSuccessfullRescs() const { return numOfSuccessfullRescs; }
+int Scheduler::getNumOfCancels() const { return numOfCancels; }
+int Scheduler::getNumOfSussessfullCancels() const { return numOfSuccessfullCancels; }
 
 void Scheduler::loadInputFile(string fileName)
 {
@@ -185,20 +193,24 @@ bool Scheduler::rescAndCancelCaller()
 	// TODO: merge 2 if conditions in one condition
 	if (rescRand < pResc)
 	{
+		numOfRescs++;
 		if (early.reschedule(p)) // successfully rescheduled a patient
 		{
 			p->resced();
 			cout << "Patient resced" << p->getId();
+			numOfSuccessfullRescs++;
 		}
 	}
 
 	if (cancelRand < pCancel)
 	{
+		numOfCancels++;
 		if (waitX.pickRandCancelPatient(p))
 		{
 			p->canceled();
 			finish.push(p);
 			cout << "Patient canceled" << p->getId();
+			numOfSuccessfullCancels++;
 		}
 	}
 
