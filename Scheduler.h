@@ -40,7 +40,7 @@ private:
 
 	ArrayStack<Patient*> finish;
 
-	int pResc, pCancel, numPatients, numEarlyPatients, numLatePatients;
+	int pResc, pCancel, numPatients, numEarlyPatients, numLatePatients, numNPatients, numRPatients;
 
 	//void addToIdle(Patient* p);
 

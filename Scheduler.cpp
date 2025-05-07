@@ -149,6 +149,8 @@ void Scheduler::sim(UI* ui)
 	while (true)
 	{
 		ts++;
+		rescAndCancelCaller();
+
 		moveFromServeToWaitOrFinish();
 
 		moveUWaitPatientsToServe();
@@ -195,13 +197,14 @@ bool Scheduler::rescAndCancelCaller()
 		if (waitX.pickRandCancelPatient(p))
 		{
 			p->canceled();
+			finish.push(p);
 			cout << "Patient canceled" << p->getId();
 		}
 	}
 
 	if (rescRand < pResc || cancelRand < pCancel)
 		return true;
-	return true;
+	return false;
 }
 
 void Scheduler::moveArrivedPatients()
@@ -218,6 +221,11 @@ void Scheduler::moveArrivedPatients()
 			int pt = p->getPt();
 			int vt = p->getVt();
 
+			if (p->getIsNormal())
+				numNPatients++;
+			else if (!p->getIsNormal())
+				numRPatients++;
+
 			// check if patient is early, late or VT==PT
 			if (vt < pt)
 			{
@@ -230,6 +238,12 @@ void Scheduler::moveArrivedPatients()
 			else if (vt > pt)
 			{
 				int penalty = (vt - pt) / 2;
+
+				// ensure that patient has penalty of atleast 1
+				// even if he arrived 1 ts later than PT
+				if (penalty == 0)
+					penalty = 1; 
+
 				// patient is late
 				late.enqueue(p, -pt);
 				// apply penalty of half the difference
@@ -407,6 +421,8 @@ void Scheduler::moveFromServeToWaitOrFinish()
 			ft = -ft;
 			Treatment* t = p->peekReqTreatment();
 
+			p->updateTt(t->getDuration());
+
             if (t->getType() == ELECTRO) 
 			{
                eDevices.enqueue((EDevice*)t->getAssignedRes());
@@ -435,6 +451,7 @@ void Scheduler::moveFromServeToWaitOrFinish()
 			else
 			{
 				finish.push(p);
+				p->setFt(ts);
 			}
 
 			p = nullptr;
@@ -452,8 +469,6 @@ void Scheduler::outputFile()
 	myfile << " PID  PType  PT  VT  FT  WT  TT  Cancel  Resc " << endl;
 	Patient* P;
 	char x;
-	int N = 0;
-	int R = 0;
 	int totalWaiting_N = 0;
 	int totalWaiting_R = 0;
 	int totalTreatment_N = 0;
@@ -464,54 +479,52 @@ void Scheduler::outputFile()
 	int avgTreatment_R = 0;
 
 
-
 	while (!finish.isEmpty()) {
 		finish.pop(P);
 
 		if (P->getIsNormal())
 		{
 			x = 'N';
-			N++;
+			numNPatients++;
 			totalWaiting_N += P->getWt();
 			totalTreatment_N += P->getTt();
 
 		}
 		else {
 			x = 'R';
-			R++;
+			numRPatients++;
 			totalWaiting_R += P->getWt();
 			totalTreatment_R += P->getTt();
 		}
 
-		myfile << P->getId() << "  " << x << "  "<<P->getPt()<< "  "<< P->getVt()<<"  "<< "FT value"<< "  "<< P->getWt()<< "  "<< P->getTt()<< "  "<< P->getCancel()<< "  "<< P->getResc() << endl;
-
-
-	
-
+		myfile << P->getId() << "  " << x << "  "<<P->getPt()<< "  "
+			<< P->getVt()<<"  "<< P->getFt() << "  "<< P->getWt()
+			<< "  "<< P->getTt()<< "  "<< P->getCancel()<< "  "
+			<< P->getResc() << endl;
 
 	}
-	if (N == 0) {
+	if (numNPatients == 0) {
 		cout << " No N patients in f list" << endl;
-		return;
+		//return;
 	}
-	else if (R == 0)
+	else if (numRPatients == 0)
 	{
 		cout << " No R patients in f list" << endl;
-		return;
+		//return;
 
 	}
 	myfile << " Total number of timesteps= " << "  "<<  endl;
-	myfile << " Total Number of all, N and R patients = " << N + R << ", " << N << ", " << R << endl;
+	myfile << " Total Number of all, N and R patients = " << numNPatients + numRPatients << ", " << numNPatients << ", " << numRPatients << endl;
 
-	avgWaiting_N = totalWaiting_N / N;
-	avgWaiting_R = totalWaiting_R / R;
+	avgWaiting_N = totalWaiting_N / numNPatients;
+	avgWaiting_R = totalWaiting_R / numRPatients;
 
-	myfile << " Average total waiting time for all , N, R patients= " << (totalWaiting_N + totalWaiting_R) / (N + R) << ", " << avgWaiting_N << ", " << avgWaiting_R << endl;
+	myfile << " Average total waiting time for all , N, R patients= " << (totalWaiting_N + totalWaiting_R) / (numNPatients + numRPatients) << ", " << avgWaiting_N << ", " << avgWaiting_R << endl;
 
-	avgTreatment_N = totalTreatment_N / N;
-	avgTreatment_R = totalTreatment_R / R;
+	avgTreatment_N = totalTreatment_N / numNPatients;
+	avgTreatment_R = totalTreatment_R / numRPatients;
 
-	myfile << " Average total treatment time for all , N, R patients= " << (totalTreatment_N + totalTreatment_R) / (N + R) << ", " << avgTreatment_N << ", " << avgTreatment_R << endl;
+	myfile << " Average total treatment time for all , N, R patients= " << (totalTreatment_N + totalTreatment_R) / (numNPatients + numRPatients) << ", " << avgTreatment_N << ", " << avgTreatment_R << endl;
 
 	myfile << "Percentage of patients of an accepted cancellation= " << pCancel << "%" << endl;
 	myfile << " Percentage of patients of an accepted rescheduling= " << pResc << "%" << endl;
