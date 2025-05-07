@@ -16,6 +16,7 @@ private:
     Scheduler* s;
     int tt;  // total treatment time
     int wt;  // total waiting time
+    int ft;  // time at which patient finished his last treatment
     bool cancel, resc;
     int assignmentTimeForWaitlist; // used for calculating WT
 public:
@@ -32,6 +33,7 @@ public:
     int getPenalty() const;
     int getTt() const;
     int getWt() const;
+    int getFt() const;
     bool getResc() const;
     bool getCancel() const;
 
@@ -39,12 +41,14 @@ public:
     void setId(int newId);
     void setPt(int newPt);
     void setVt(int newVt);
+    void setFt(int newFt);
     void setStatus(PatientStatus s);
     void setPenalty(int newPenalty);
 
     void resced();
     void canceled();
     void updateWt(int ts);
+    void updateTt(int duration);
 
     // Treatment operations
     /*

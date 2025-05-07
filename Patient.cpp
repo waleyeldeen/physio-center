@@ -24,6 +24,7 @@ bool Patient::getIsNormal() const { return isNormal; }
 int Patient::getPenalty() const { return penalty; }
 int Patient::getTt() const { return tt; }
 int Patient::getWt() const { return wt; }
+int Patient::getFt() const { return ft; }
 bool Patient::getResc() const { return resc; }
 bool Patient::getCancel() const { return cancel; }
 
@@ -31,6 +32,7 @@ bool Patient::getCancel() const { return cancel; }
 void Patient::setId(int newId) { id = newId; }
 void Patient::setPt(int newPt) { pt = newPt; }
 void Patient::setVt(int newVt) { vt = newVt; }
+void Patient::setFt(int newFt) { ft = newFt; }
 void Patient::setStatus(PatientStatus s) { status = s; }
 void Patient::setPenalty(int newPenalty) { penalty = newPenalty; }
 
@@ -38,6 +40,11 @@ void Patient::resced() { resc = true; }
 void Patient::canceled() { cancel = true; }
 
 void Patient::updateWt(int ts) { wt = wt + (ts - assignmentTimeForWaitlist); }
+
+void Patient::updateTt(int duration)
+{
+    tt = tt + duration;
+}
 
 
 // Treatment operations
